@@ -6,150 +6,93 @@
 <title>DANIBOOM WEB | Principal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
-body{background:#0b0b0b;color:#fff}
+body{background:#050505;color:#fff; overflow-x: hidden;}
 
-/* HEADER */
+/* --- HEADER --- */
 header{
   position:fixed;top:0;width:100%;z-index:1000;
   display:flex;justify-content:space-between;align-items:center;
-  padding:1rem 2rem;background:rgba(0,0,0,.5);
-  backdrop-filter:blur(10px);
+  padding:1.2rem 1.5rem; background:rgba(0,0,0,0.9);
+  backdrop-filter:blur(10px); border-bottom: 2px solid gold;
 }
-.logo{display:flex;align-items:center;gap:1rem}
-.logo img{width:50px;height:50px;border-radius:50%;border:2px solid gold}
+.logo{display:flex;align-items:center;gap:0.8rem}
+.logo img{width:50px;height:50px;border-radius:50%;border:2px solid gold; box-shadow: 0 0 10px gold;}
 .logo span{
   font-family:'Press Start 2P';
-  font-size:.85rem;color:#ffd700;
-  text-shadow:0 0 8px gold,0 0 20px gold;
+  font-size:1.1rem; /* Título más grande */
+  color:#ffd700;
+  text-shadow:0 0 12px gold;
 }
 
-/* MENU */
-.menu-btn{width:26px;display:flex;flex-direction:column;gap:5px;cursor:pointer}
-.menu-btn span{height:3px;background:gold;border-radius:3px}
-.menu-popup{
-  position:absolute;top:60px;right:0;
-  background:#111;border:2px solid gold;border-radius:14px;
-  padding:1rem;display:none;flex-direction:column;
-  min-width:260px;gap:.6rem;
+.header-right { display: flex; align-items: center; gap: 20px; }
+
+/* --- ANIMACIÓN 3 PUNTOS A X --- */
+.menu-btn{width:30px; display:flex; flex-direction:column; gap:6px; cursor:pointer; z-index: 2001;}
+.menu-btn span{height:3px; background:gold; border-radius:3px; transition: 0.4s; width: 100%;}
+
+.menu-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.menu-btn.open span:nth-child(2) { opacity: 0; }
+.menu-btn.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+/* --- CAMPANITA --- */
+.notif-container { position: relative; cursor: pointer; font-size: 1.8rem; color: gold; transition: 0.3s; }
+.bell-shake { animation: shake 0.5s infinite; color: #ff0000 !important; filter: drop-shadow(0 0 8px red); }
+.notif-dot { position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: red; border-radius: 50%; display: none; border: 2px solid black; }
+
+@keyframes shake {
+    0%, 100% { transform: rotate(0); }
+    25% { transform: rotate(20deg); }
+    75% { transform: rotate(-20deg); }
 }
 
-/* PERFIL */
-.profile-box{
-  background:#222;border:2px solid gold;border-radius:14px;
-  padding:1rem;display:flex;flex-direction:column;
-  align-items:center;gap:.5rem;
-}
-.profile-pic{
-  width:60px;height:60px;border-radius:50%;
-  border:2px solid gold;background:#000;
-}
-.profile-name{font-weight:700}
-
-/* ===== COLORES DE ROLES ===== */
-.role-anon{color:#666}
-.role-sub{color:#ffd700;text-shadow:0 0 10px #ffd700}
-.role-admin{color:#ff9800;text-shadow:0 0 10px #ff9800}
-.role-owner{color:#ff0000;text-shadow:0 0 12px #ff0000}
-
-/* ===== INSIGNIAS ===== */
-.badge{width:26px;height:26px;position:relative}
-
-/* 🕶️ ANÓNIMO (HACKER / MISTERIOSO) */
-.badge-anon{
-  background:#444;
-  border-radius:50% 50% 40% 40%;
-}
-.badge-anon::before{
-  content:"";
-  position:absolute;
-  top:4px;left:5px;
-  width:16px;height:14px;
-  background:#333;
-  border-radius:50% 50% 40% 40%;
-}
-.badge-anon::after{
-  content:"";
-  position:absolute;
-  bottom:3px;left:6px;
-  width:14px;height:6px;
-  background:#222;
-  border-radius:0 0 8px 8px;
+/* --- MENU POPUP --- */
+.menu-popup {
+  position:absolute; top:85px; right:15px; background:#0a0a0a; border:2px solid gold; 
+  border-radius:20px; padding:1.5rem; display:none; flex-direction:column; min-width:300px;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
 }
 
-/* ⭐ SUSCRIPTOR (ESTRELLA PRO) */
-.badge-sub{
-  background:#ffd700;
-  clip-path:polygon(
-    50% 0%, 63% 34%, 98% 35%, 70% 57%,
-    80% 95%, 50% 72%, 20% 95%, 30% 57%,
-    2% 35%, 37% 34%
-  );
-  box-shadow:0 0 12px #ffd700,0 0 24px #ffd700;
+.profile-card {
+    background: #111; border: 2px solid gold; border-radius: 15px;
+    padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid gold; object-fit: cover; background: #000;}
+
+/* --- COLORES E INSIGNIAS DE ROLES --- */
+.role-badge-ui { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.8rem; margin-top: 5px; }
+.role-anonymous { color: #888; text-shadow: 0 0 5px #444; }
+.role-suscriptor { color: gold; text-shadow: 0 0 10px gold; }
+.role-admin { color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
+.role-owner { color: #ff0000; text-shadow: 0 0 12px red; }
+
+/* --- BOTONES --- */
+.nav-item {
+    font-size: 0.9rem; font-weight: 800; color: gold; text-transform: uppercase;
+    cursor: pointer; padding: 12px; border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    display: flex; align-items: center; gap: 10px; transition: 0.3s;
+}
+.nav-item:hover { background: rgba(255, 215, 0, 0.1); padding-left: 15px; }
+
+#adminUtils {
+    margin-top: 10px; border: 2px solid red; border-radius: 12px;
+    padding: 12px; background: #000; box-shadow: 0 0 15px red; text-align: center;
 }
 
-/* 🛡️ ADMIN (ESCUDO PRO) */
-.badge-admin{
-  background:#ff9800;
-  clip-path:polygon(
-    15% 0%,85% 0%,100% 30%,
-    50% 100%,0% 30%
-  );
-  box-shadow:0 0 12px #ff9800,0 0 25px #ff9800;
+/* --- PANEL NOTIFICACIONES FULL --- */
+.notif-panel {
+    position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+    background: rgba(0,0,0,0.98); z-index: 2000; transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+    display: flex; flex-direction: column; align-items: center; padding: 2rem;
 }
-.badge-admin::after{
-  content:"";
-  position:absolute;inset:4px;
-  background:#cc7a00;
-  clip-path:inherit;
+.notif-panel.active { right: 0; }
+.notif-card {
+    border: 2px solid red; background: #000; padding: 20px; border-radius: 15px;
+    width: 100%; max-width: 450px; margin-top: 50px; box-shadow: 0 0 20px rgba(255,0,0,0.3);
 }
-
-/* 👑 DUEÑO (CORONA PRO) */
-.badge-owner{
-  background:#ff0000;
-  clip-path:polygon(
-    0% 100%,10% 40%,30% 65%,50% 30%,
-    70% 65%,90% 40%,100% 100%
-  );
-  box-shadow:0 0 14px #ff0000,0 0 30px #ff0000;
-}
-
-/* BOTONES */
-.profile-buttons{display:flex;width:100%;gap:.4rem}
-.profile-buttons button{
-  flex:1;padding:.4rem;border:none;border-radius:10px;
-  background:gold;color:#000;font-weight:700;cursor:pointer;
-}
-
-/* ADMIN UTILS */
-#adminUtils{
-  display:none;width:100%;
-  border:2px solid red;border-radius:12px;
-  padding:.5rem;background:#111;
-}
-#adminUtils h3{
-  color:red;text-align:center;font-size:.85rem;margin-bottom:.3rem;
-}
-#adminUtils button{
-  width:100%;padding:.4rem;border:none;border-radius:8px;
-  background:red;color:white;font-weight:700;
-}
-
-/* LINKS */
-.menu-texts{
-  display:flex;flex-direction:column;gap:.4rem;
-}
-.menu-texts span{
-  cursor:pointer;color:#ffd700;
-  font-weight:700;text-decoration:underline;
-}
-
-/* MAIN */
-main{padding:140px 2rem}
-.title{text-align:center;font-size:2.2rem;color:#ffd700}
-.desc{text-align:center;color:#aaa;margin-top:.5rem}
 </style>
 </head>
 
@@ -161,98 +104,158 @@ main{padding:140px 2rem}
     <span>DANIBOOM WEB</span>
   </div>
 
-  <div style="position:relative">
-    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
-
-    <div class="menu-popup" id="menuPopup">
-      <div class="profile-box">
-        <div class="profile-pic"></div>
-
-        <p id="profileName" class="profile-name"></p>
-
-        <div style="display:flex;align-items:center;gap:.4rem">
-          <div id="roleBadge" class="badge"></div>
-          <span id="profileRole"></span>
-        </div>
-
-        <div class="profile-buttons" id="profileButtons"></div>
-
-        <div id="adminUtils">
-          <h3>Admin Utils</h3>
-          <button onclick="location.href='notificaciones.html'">Notificaciones</button>
-        </div>
-      </div>
-
-      <div class="menu-texts">
-        <span id="redesLink">Redes</span>
-        <span id="sensLink">Sensibilidades</span>
-        <span id="appsLink">Aplicaciones Pro</span>
-      </div>
+  <div class="header-right">
+    <div id="menuBtn" class="menu-btn">
+        <span></span><span></span><span></span>
     </div>
+    
+    <div id="notifBtn" class="notif-container">
+        <i class="fas fa-bell" id="bellIcon"></i>
+        <span id="notifDot" class="notif-dot"></span>
+    </div>
+  </div>
+
+  <div class="menu-popup" id="menuPopup">
+    <div class="profile-card">
+        <img src="" id="profilePic" class="profile-pic">
+        <h3 id="profileName" style="font-size: 0.9rem;">Cargando...</h3>
+        <div id="roleUI" class="role-badge-ui"></div>
+    </div>
+
+    <div class="menu-links-extra">
+        <div class="nav-item" onclick="location.href='redes.html'"><i class="fas fa-share-alt"></i> Redes</div>
+        
+        <div id="linksPrivados" style="display:none;">
+            <div class="nav-item" onclick="location.href='sensibilidades.html'"><i class="fas fa-crosshairs"></i> Sensibilidades</div>
+            <div class="nav-item" onclick="location.href='apps.html'"><i class="fas fa-mobile-alt"></i> Aplicaciones Pro</div>
+            <div class="nav-item" onclick="location.href='perfil.html'"><i class="fas fa-user-circle"></i> Ver Perfil</div>
+        </div>
+
+        <div id="adminUtils" style="display:none;">
+            <p style="color:red; font-size:0.7rem; margin-bottom:8px; font-weight:bold;">SISTEMA ADMINISTRADOR</p>
+            <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">PANEL DE AVISOS</button>
+        </div>
+    </div>
+
+    <div id="sessionBtnArea"></div>
   </div>
 </header>
 
-<main>
-  <h1 class="title">Bienvenido</h1>
-  <p class="desc">Zona oficial DaniBoom</p>
+<aside class="notif-panel" id="notifPanel">
+    <span id="closeNotif" style="position:absolute; top:25px; right:35px; font-size:3.5rem; color:gold; cursor:pointer;">&times;</span>
+    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; font-size:0.8rem; text-shadow: 0 0 10px gold;">NOTIFICACIONES</h2>
+    
+    <div class="notif-card" id="testNotif">
+        <div style="display:flex; align-items:center; gap:10px; color:red; margin-bottom:12px;">
+            <i class="fab fa-youtube" style="font-size:1.8rem;"></i>
+            <span style="font-weight:800; font-size:0.9rem;">NUEVO VIDEO DISPONIBLE</span>
+        </div>
+        <p style="font-size:0.85rem; color:#ccc; line-height:1.4;">¡Dani Boom acaba de subir video! Entra ahora para ver las nuevas configuraciones.</p>
+        <button onclick="window.open('https://youtube.com', '_blank')" style="width:100%; background:red; color:white; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer; box-shadow: 0 0 10px red;">VER AHORA</button>
+        <p id="timer" style="font-size:0.75rem; color:#666; margin-top:12px; text-align:center;">Se eliminará automáticamente en: <span style="color:red; font-weight:bold;" id="timeCount">5</span>s</p>
+    </div>
+</aside>
+
+<main style="padding-top: 160px; text-align: center; display:flex; flex-direction:column; align-items:center;">
+    <h1 style="color:gold; text-shadow: 0 0 20px gold; font-size: 2.5rem; letter-spacing: 2px;">ZONA PRINCIPAL</h1>
+    <div style="width:100px; height:4px; background:gold; margin-top:10px; border-radius:2px; box-shadow: 0 0 10px gold;"></div>
 </main>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-initializeApp({
-  apiKey:"AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
-  authDomain:"web1-3b83a.firebaseapp.com",
-  projectId:"web1-3b83a"
+const firebaseConfig = {
+  apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
+  authDomain: "web1-3b83a.firebaseapp.com",
+  projectId: "web1-3b83a"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const snap = await getDoc(doc(db, "users", user.uid));
+    let d = snap.data() || {};
+    
+    // Si es anónimo nuevo, crear el contador #000
+    if(!snap.exists() && user.isAnonymous){
+        const all = await getDocs(collection(db, "users"));
+        const num = String(all.size + 1).padStart(3, '0');
+        d = { displayName: `Anónimo #${num}`, membership: 'anonymous', photoURL: 'logo.png' };
+        await setDoc(doc(db, "users", user.uid), d);
+    }
+
+    const role = d.membership || 'anonymous';
+    
+    // --- LÓGICA DE INSIGNIAS ---
+    const roleUI = document.getElementById('roleUI');
+    let badgeHTML = "";
+    if(role === 'owner') badgeHTML = `<i class="fas fa-crown"></i> <span class="role-owner">OWNER</span>`;
+    else if(role === 'admin') badgeHTML = `<i class="fas fa-shield-alt"></i> <span class="role-admin">ADMIN</span>`;
+    else if(role === 'suscriptor') badgeHTML = `<i class="fas fa-star"></i> <span class="role-suscriptor">SUSCRIPTOR</span>`;
+    else badgeHTML = `<i class="fas fa-user-secret"></i> <span class="role-anonymous">ANONYMOUS</span>`;
+    
+    roleUI.innerHTML = badgeHTML;
+    roleUI.className = `role-badge-ui role-${role}`;
+
+    // Datos Perfil
+    document.getElementById('profileName').innerText = d.displayName;
+    document.getElementById('profilePic').src = d.photoURL || "logo.png";
+
+    // Visibilidad por Rol
+    const isAnon = role === 'anonymous';
+    document.getElementById('linksPrivados').style.display = isAnon ? 'none' : 'block';
+    document.getElementById('adminUtils').style.display = (role === 'admin' || role === 'owner') ? 'block' : 'none';
+
+    // Botones sesión
+    document.getElementById('sessionBtnArea').innerHTML = isAnon 
+        ? `<button onclick="location.href='index.html'" style="width:100%; padding:12px; margin-top:15px; background:gold; color:black; font-weight:bold; border:none; border-radius:10px; cursor:pointer;">INICIAR SESIÓN</button>`
+        : `<button id="logoutBtn" style="width:100%; padding:12px; margin-top:15px; background:#222; color:white; font-weight:bold; border:none; border-radius:10px; cursor:pointer;">CERRAR SESIÓN</button>`;
+
+    if(!isAnon) document.getElementById('logoutBtn').onclick = () => signOut(auth).then(()=> location.reload());
+
+  } else { location.href = "index.html"; }
 });
 
-const auth=getAuth();
-const db=getFirestore();
+// --- INTERFAZ ---
+const mBtn = document.getElementById('menuBtn');
+const mPopup = document.getElementById('menuPopup');
 
-menuBtn.onclick=()=>menuPopup.style.display=
-menuPopup.style.display==="flex"?"none":"flex";
+mBtn.onclick = () => {
+    mBtn.classList.toggle('open');
+    mPopup.style.display = mPopup.style.display === 'flex' ? 'none' : 'flex';
+};
 
-onAuthStateChanged(auth, async user=>{
-  if(!user){location.href="index.html";return;}
-  const snap=await getDoc(doc(db,"users",user.uid));
-  if(!snap.exists())return;
+// --- NOTIFICACIONES ---
+document.getElementById('notifBtn').onclick = () => {
+    document.getElementById('notifPanel').classList.add('active');
+    document.getElementById('bellIcon').classList.remove('bell-shake');
+    document.getElementById('notifDot').style.display = 'none';
+    
+    // Iniciar timer de la notificación de prueba
+    let count = 5;
+    const timer = setInterval(() => {
+        count--;
+        document.getElementById('timeCount').innerText = count;
+        if(count <= 0){
+            clearInterval(timer);
+            document.getElementById('testNotif').style.opacity = "0";
+            setTimeout(() => document.getElementById('testNotif').style.display = "none", 500);
+        }
+    }, 1000);
+};
 
-  const d=snap.data();
-  const roles={
-    anonymous:{n:"Anónimo",c:"role-anon",b:"badge-anon"},
-    suscriptor:{n:"Suscriptor",c:"role-sub",b:"badge-sub"},
-    admin:{n:"Admin",c:"role-admin",b:"badge-admin"},
-    owner:{n:"Dueño",c:"role-owner",b:"badge-owner"}
-  };
-  const r=roles[d.membership];
+document.getElementById('closeNotif').onclick = () => document.getElementById('notifPanel').classList.remove('active');
 
-  profileName.textContent=d.displayName;
-  profileRole.textContent=r.n;
-  profileRole.className=r.c;
-  roleBadge.className="badge "+r.b;
-
-  redesLink.style.display="block";
-  sensLink.style.display=d.membership==="anonymous"?"none":"block";
-  appsLink.style.display=d.membership==="anonymous"?"none":"block";
-  adminUtils.style.display=
-    (d.membership==="admin"||d.membership==="owner")?"block":"none";
-
-  profileButtons.innerHTML=
-    d.membership==="anonymous"
-    ?`<button onclick="location.href='index.html'">Iniciar sesión</button>`
-    :`<button onclick="location.href='rede.html'">Perfil</button>
-       <button id="logoutBtn">Salir</button>`;
-
-  if(d.membership!=="anonymous")
-    document.getElementById("logoutBtn").onclick=
-      ()=>signOut(auth).then(()=>location.href="index.html");
-});
-
-redesLink.onclick=()=>location.href="rede.html";
-sensLink.onclick=()=>location.href="sensibilidades.html";
-appsLink.onclick=()=>location.href="aplicaciones.html";
+// Simular alerta nueva al entrar
+setTimeout(() => {
+    document.getElementById('bellIcon').classList.add('bell-shake');
+    document.getElementById('notifDot').style.display = 'block';
+}, 2500);
 </script>
 
 </body>
