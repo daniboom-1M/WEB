@@ -64,10 +64,10 @@ button:hover{transform:scale(1.05);}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-// Config Firebase
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
   authDomain: "web1-3b83a.firebaseapp.com",
@@ -104,7 +104,7 @@ toLoginText.addEventListener("click", ()=>{
   formTitle.textContent="Iniciar Sesión";
 });
 
-// FUNCION CREAR USUARIO EN FIRESTORE
+// CREAR USUARIO EN FIRESTORE
 async function createUserInFirestore(user, role, username){
   const userRef = doc(db,"users",user.uid);
   const docSnap = await getDoc(userRef);
@@ -118,7 +118,7 @@ async function createUserInFirestore(user, role, username){
   }
 }
 
-// FUNCION PARA CONTAR ANONIMOS
+// CONTADOR DE ANÓNIMOS
 async function getNextAnonymousNumber(){
   const usersCol = collection(db,"users");
   const snapshot = await getDocs(usersCol);
@@ -130,15 +130,49 @@ async function getNextAnonymousNumber(){
   return count + 1;
 }
 
-// LOGIN CON CORREO
+// AUTO DETECCIÓN USUARIO
+onAuthStateChanged(auth, async(user)=>{
+  if(user){
+    // Verificar que exista el documento en Firestore
+    const userRef = doc(db,"users",user.uid);
+    const docSnap = await getDoc(userRef);
+    if(!docSnap.exists()){
+      if(user.isAnonymous){
+        const anonNumber = await getNextAnonymousNumber();
+        const anonName = `Anónimo #${String(anonNumber).padStart(3,"0")}`;
+        await createUserInFirestore(user,"anonymous",anonName);
+      } else {
+        if(usernameInput.value.trim()!==""){
+          await createUserInFirestore(user,"suscriptor",usernameInput.value.trim());
+        } else {
+          alert("Debes crear tu nombre de usuario");
+          await signOut(auth);
+          window.location.href="index.html";
+          return;
+        }
+      }
+    }
+    window.location.href="main.html";
+  }
+});
+
+// LOGIN
 loginForm.addEventListener("submit", async(e)=>{
   e.preventDefault();
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
   if(!email){ alert("Debes escribir tu correo"); return; }
   if(!password){ alert("Debes escribir tu contraseña"); return; }
+
   try{
     const cred = await signInWithEmailAndPassword(auth,email,password);
+    const userRef = doc(db,"users",cred.user.uid);
+    const docSnap = await getDoc(userRef);
+    if(!docSnap.exists()){
+      alert("No se encontró tu cuenta en Firestore. Por favor regístrate nuevamente.");
+      await signOut(auth);
+      return;
+    }
     window.location.href="main.html";
   }catch(err){ alert(err.message); }
 });
@@ -162,22 +196,16 @@ registerForm.addEventListener("submit", async(e)=>{
   }catch(err){ alert(err.message); }
 });
 
-// ANONIMO
+// ANÓNIMO
 regAnonymous.addEventListener("click", async()=>{
-  const anonNumber = await getNextAnonymousNumber();
-  const anonName = `Anónimo #${String(anonNumber).padStart(3,"0")}`;
   try{
     const cred = await signInAnonymously(auth);
+    const anonNumber = await getNextAnonymousNumber();
+    const anonName = `Anónimo #${String(anonNumber).padStart(3,"0")}`;
     await createUserInFirestore(cred.user,"anonymous",anonName);
     window.location.href="main.html";
   }catch(err){ alert(err.message); }
 });
-
-// AUTO DETECCIÓN DE USUARIO
-onAuthStateChanged(auth,user=>{
-  if(user) window.location.href="main.html";
-});
-
 </script>
 </body>
 </html>
