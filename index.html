@@ -18,8 +18,8 @@ form{display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem;}
 input{padding:.8rem;border-radius:8px;border:2px solid gold;background:#111;color:#fff;font-size:.8rem;}
 button{padding:.8rem;border:none;border-radius:8px;background:gold;color:#000;font-weight:700;cursor:pointer;font-size:.85rem;transition:.3s;}
 button:hover{transform:scale(1.05);}
-.switch-text{font-size:.65rem;color:#aaa;cursor:pointer;text-align:center;}
-#usernameInput{display:none;}
+.switch-text{font-size:0.65rem;color:#aaa;cursor:pointer;text-align:center;}
+#usernameInput{display:block;} /* Siempre visible */
 #anonymousBtn{margin-top:0.5rem;}
 .divider{display:flex;align-items:center;text-align:center;margin:1rem 0;color:gold;font-size:.75rem;}
 .divider::before,.divider::after{content:"";flex:1;border-bottom:1px solid gold;}
@@ -51,8 +51,6 @@ button:hover{transform:scale(1.05);}
   <form id="registerForm" style="display:none;">
     <input type="email" id="regEmail" placeholder="Correo electrónico" required>
     <input type="password" id="regPassword" placeholder="Contraseña" required>
-
-    <!-- Input para nombre de usuario, aparece tras validar correo/contraseña -->
     <input type="text" id="usernameInput" placeholder="Elige tu nombre de usuario">
 
     <button type="submit" id="createAccountBtn">Crear Cuenta</button>
@@ -164,13 +162,6 @@ registerForm.addEventListener("submit", async e=>{
   if(!email){ errorMsg.textContent="Debes escribir tu correo"; return; }
   if(!password){ errorMsg.textContent="Debes escribir tu contraseña"; return; }
   if(password.length < 6){ errorMsg.textContent="La contraseña debe tener mínimo 6 caracteres"; return; }
-
-  if(usernameInput.style.display === "none"){
-    usernameInput.style.display="block";
-    usernameInput.focus();
-    return;
-  }
-
   if(!username){ errorMsg.textContent="Debes escribir un nombre de usuario"; return; }
 
   try{
@@ -207,4 +198,4 @@ onAuthStateChanged(auth, async user=>{
 });
 </script>
 </body>
-      </html>
+</html>
