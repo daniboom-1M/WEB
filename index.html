@@ -66,10 +66,13 @@ button:hover{transform:scale(1.05);}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { 
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, 
+  GoogleAuthProvider, signInWithRedirect, getRedirectResult, onAuthStateChanged, updateProfile 
+} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-// CONFIG FIREBASE
+// ===== CONFIG FIREBASE =====
 const firebaseConfig = {
   apiKey: "TU_API_KEY",
   authDomain: "TU_AUTH_DOMAIN",
@@ -83,7 +86,7 @@ const auth = getAuth();
 const db = getFirestore();
 const provider = new GoogleAuthProvider();
 
-// ELEMENTOS
+// ===== ELEMENTOS =====
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
 const switchText = document.getElementById("switchForm");
@@ -92,7 +95,7 @@ const usernameSection = document.getElementById("usernameSection");
 const usernameInput = document.getElementById("usernameInput");
 const saveUsernameBtn = document.getElementById("saveUsernameBtn");
 
-// SWITCH FORMS
+// ===== SWITCH FORMS =====
 switchText.addEventListener("click", () => {
   if(loginForm.style.display !== "none"){
     loginForm.style.display = "none";
@@ -107,8 +110,8 @@ switchText.addEventListener("click", () => {
   }
 });
 
-// CREAR DOCUMENTO FIRESTORE SI NO EXISTE
-async function createUserInFirestore(user, membership="member"){
+// ===== CREAR DOCUMENTO FIRESTORE SI NO EXISTE =====
+async function createUserInFirestore(user, membership="member") {
   const userRef = doc(db,"users",user.uid);
   const docSnap = await getDoc(userRef);
 
@@ -124,7 +127,7 @@ async function createUserInFirestore(user, membership="member"){
   return false;
 }
 
-// LOGIN EMAIL
+// ===== LOGIN EMAIL =====
 loginForm.addEventListener("submit", async (e)=>{
   e.preventDefault();
   try{
@@ -134,10 +137,10 @@ loginForm.addEventListener("submit", async (e)=>{
     const isNew = await createUserInFirestore(cred.user);
     if(isNew) usernameSection.style.display = "flex";
     else window.location.href = "main.html";
-  }catch(err){alert(err.message);}
+  } catch(err){alert(err.message);}
 });
 
-// REGISTER EMAIL
+// ===== REGISTER EMAIL =====
 registerForm.addEventListener("submit", async (e)=>{
   e.preventDefault();
   try{
@@ -147,38 +150,37 @@ registerForm.addEventListener("submit", async (e)=>{
     const isNew = await createUserInFirestore(cred.user);
     if(isNew) usernameSection.style.display = "flex";
     else window.location.href = "main.html";
-  }catch(err){alert(err.message);}
+  } catch(err){alert(err.message);}
 });
 
-// GOOGLE LOGIN
-document.getElementById("loginGoogle").addEventListener("click", async ()=>{
-  try{
-    const result = await signInWithPopup(auth, provider);
-    const isNew = await createUserInFirestore(result.user);
-    if(isNew) usernameSection.style.display = "flex";
-    else window.location.href = "main.html";
-  }catch(err){alert(err.message);}
-});
-document.getElementById("regGoogle").addEventListener("click", async ()=>{
-  try{
-    const result = await signInWithPopup(auth, provider);
-    const isNew = await createUserInFirestore(result.user);
-    if(isNew) usernameSection.style.display = "flex";
-    else window.location.href = "main.html";
-  }catch(err){alert(err.message);}
-});
+// ===== GOOGLE LOGIN / REGISTER (REDIRECT) =====
+document.getElementById("loginGoogle").addEventListener("click", ()=>signInWithRedirect(auth, provider));
+document.getElementById("regGoogle").addEventListener("click", ()=>signInWithRedirect(auth, provider));
 
-// ANONYMOUS LOGIN
+// ===== ANONYMOUS LOGIN =====
 document.getElementById("regAnonymous").addEventListener("click", async ()=>{
   try{
     const cred = await signInAnonymously(auth);
     const isNew = await createUserInFirestore(cred.user,"anonymous");
     if(isNew) usernameSection.style.display = "flex";
     else window.location.href = "main.html";
-  }catch(err){alert(err.message);}
+  } catch(err){alert(err.message);}
 });
 
-// GUARDAR NOMBRE DE USUARIO
+// ===== PROCESAR REDIRECT RESULT =====
+getRedirectResult(auth)
+.then(async (result)=>{
+  if(result.user){
+    const isNew = await createUserInFirestore(result.user);
+    if(isNew) usernameSection.style.display = "flex";
+    else window.location.href = "main.html";
+  }
+})
+.catch(err=>{
+  if(err.code!=="auth/cancelled-popup-request") console.error(err);
+});
+
+// ===== GUARDAR NOMBRE DE USUARIO =====
 saveUsernameBtn.addEventListener("click", async ()=>{
   const name = usernameInput.value.trim();
   if(!name){ alert("Escribe un nombre de usuario"); return; }
@@ -187,21 +189,23 @@ saveUsernameBtn.addEventListener("click", async ()=>{
 
   // ACTUALIZAR FIRESTORE
   const userRef = doc(db,"users",user.uid);
-  await setDoc(userRef,{
-    displayName: name
-  }, {merge:true});
+  await setDoc(userRef,{displayName:name},{merge:true});
 
   // ACTUALIZAR AUTH PROFILE
   await updateProfile(user,{displayName:name});
 
-  // REDIRECCIONA A MAIN
+  // REDIRECCIONAR
   window.location.href = "main.html";
 });
 
-// AUTO REDIRECCION SI YA ESTÁ LOGUEADO
+// ===== AUTO DETECCIÓN USUARIO =====
 onAuthStateChanged(auth,(user)=>{
-  if(user) window.location.href = "main.html";
+  if(user) {
+    // Si ya estaba logueado, ir directo a main
+    window.location.href = "main.html";
+  }
 });
+
 </script>
 </body>
 </html>
