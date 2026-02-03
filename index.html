@@ -18,9 +18,15 @@ form{display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem;}
 input{padding:.8rem;border-radius:8px;border:2px solid gold;background:#111;color:#fff;font-size:.8rem;}
 button{padding:.8rem;border:none;border-radius:8px;background:gold;color:#000;font-weight:700;cursor:pointer;font-size:.85rem;transition:.3s;}
 button:hover{transform:scale(1.05);}
-.switch-text{font-size:.7rem;color:#aaa;cursor:pointer;text-align:center;}
-#usernameSection{display:none;flex-direction:column;gap:.5rem;margin-top:1rem;}
-@keyframes fadeIn{0%{opacity:0;transform:translateY(-20px);}100%{opacity:1;transform:translateY(0);}}
+.switch-text{font-size:.65rem;color:#aaa;cursor:pointer;text-align:center;}
+#usernameInput{display:none;}
+#anonymousBtn{margin-top:0.5rem;}
+.divider{display:flex;align-items:center;text-align:center;margin:1rem 0;color:gold;font-size:.75rem;}
+.divider::before,.divider::after{content:"";flex:1;border-bottom:1px solid gold;}
+.divider:not(:empty)::before{margin-right:.5em;}
+.divider:not(:empty)::after{margin-left:.5em;}
+#errorMsg{color:red;font-size:0.7rem;}
+#goToLogin{margin-top:0.5rem;font-size:0.65rem;color:#aaa;cursor:pointer;text-decoration:underline;}
 </style>
 </head>
 <body>
@@ -30,6 +36,8 @@ button:hover{transform:scale(1.05);}
     <img src="logo.png" alt="DaniBoom Logo">
   </div>
   <h1 id="formTitle">Iniciar Sesión</h1>
+
+  <div id="errorMsg"></div>
 
   <!-- LOGIN FORM -->
   <form id="loginForm">
@@ -43,15 +51,18 @@ button:hover{transform:scale(1.05);}
   <form id="registerForm" style="display:none;">
     <input type="email" id="regEmail" placeholder="Correo electrónico" required>
     <input type="password" id="regPassword" placeholder="Contraseña" required>
-    <button type="submit">Crear Cuenta</button>
-  </form>
 
-  <!-- NOMBRE DE USUARIO + ANÓNIMO -->
-  <div id="usernameSection">
+    <!-- Input para nombre de usuario, aparece tras validar correo/contraseña -->
     <input type="text" id="usernameInput" placeholder="Elige tu nombre de usuario">
-    <button id="saveUsernameBtn">Guardar Nombre</button>
-    <button id="anonymousBtn"><i class="fa-solid fa-user-secret"></i> Continuar como Anónimo</button>
-  </div>
+
+    <button type="submit" id="createAccountBtn">Crear Cuenta</button>
+
+    <div class="divider">O</div>
+
+    <button type="button" id="anonymousBtn"><i class="fa-solid fa-user-secret"></i> Continuar como Anónimo</button>
+
+    <div id="goToLogin">¿Ya tienes una cuenta? Iniciar sesión</div>
+  </form>
 </div>
 
 <script type="module">
@@ -60,9 +71,9 @@ import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
   signInAnonymously, onAuthStateChanged, updateProfile
 } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-// ===== CONFIG FIREBASE =====
+// CONFIG FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
   authDomain: "web1-3b83a.firebaseapp.com",
@@ -79,27 +90,37 @@ const db = getFirestore();
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
 const goToRegister = document.getElementById("goToRegister");
-const usernameSection = document.getElementById("usernameSection");
+const goToLogin = document.getElementById("goToLogin");
 const usernameInput = document.getElementById("usernameInput");
-const saveUsernameBtn = document.getElementById("saveUsernameBtn");
 const anonymousBtn = document.getElementById("anonymousBtn");
+const createAccountBtn = document.getElementById("createAccountBtn");
+const errorMsg = document.getElementById("errorMsg");
 
-// ===== SWITCH LOGIN → REGISTER =====
+// SWITCH LOGIN → REGISTER
 goToRegister.addEventListener("click", ()=>{
   loginForm.style.display="none";
   registerForm.style.display="flex";
   document.getElementById("formTitle").textContent="Crear Cuenta";
+  errorMsg.textContent="";
 });
 
-// ===== FUNCIONES FIRESTORE =====
-async function createUserInFirestore(user, membership="member") {
+// SWITCH REGISTER → LOGIN
+goToLogin.addEventListener("click", ()=>{
+  registerForm.style.display="none";
+  loginForm.style.display="flex";
+  document.getElementById("formTitle").textContent="Iniciar Sesión";
+  errorMsg.textContent="";
+});
+
+// CREAR USUARIO FIRESTORE
+async function createUserInFirestore(user, membership="member", displayName="") {
   const userRef = doc(db,"users",user.uid);
   const docSnap = await getDoc(userRef);
   if(!docSnap.exists()){
     await setDoc(userRef,{
-      displayName: user.displayName || "",
+      displayName: displayName,
       membership: membership,
-      photoURL: user.photoURL || "default.png",
+      photoURL: "default.png",
       createdAt: serverTimestamp()
     });
     return true;
@@ -107,69 +128,83 @@ async function createUserInFirestore(user, membership="member") {
   return false;
 }
 
-// ===== LOGIN EMAIL =====
+// CONTADOR ANÓNIMOS
+async function getNextAnonymousNumber(){
+  const usersCol = collection(db,"users");
+  const querySnapshot = await getDocs(usersCol);
+  let count = 0;
+  querySnapshot.forEach(doc=>{
+    const data = doc.data();
+    if(data.membership === "anonymous") count++;
+  });
+  return count + 1;
+}
+
+// LOGIN EMAIL
 loginForm.addEventListener("submit", async e=>{
   e.preventDefault();
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+  if(!email){ errorMsg.textContent="Debes escribir tu correo"; return; }
+  if(!password){ errorMsg.textContent="Debes escribir tu contraseña"; return; }
   try{
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-    const cred = await signInWithEmailAndPassword(auth,email,password);
-    const isNew = await createUserInFirestore(cred.user);
-    if(isNew) usernameSection.style.display="flex";
-    else window.location.href="main.html";
-  } catch(err){ alert(err.message); }
+    await signInWithEmailAndPassword(auth,email,password);
+    window.location.href="main.html";
+  } catch(err){ errorMsg.textContent=err.message; }
 });
 
-// ===== REGISTER EMAIL =====
+// REGISTER EMAIL
 registerForm.addEventListener("submit", async e=>{
   e.preventDefault();
+  errorMsg.textContent="";
+  const email = document.getElementById("regEmail").value.trim();
+  const password = document.getElementById("regPassword").value.trim();
+  const username = usernameInput.value.trim();
+
+  if(!email){ errorMsg.textContent="Debes escribir tu correo"; return; }
+  if(!password){ errorMsg.textContent="Debes escribir tu contraseña"; return; }
+  if(password.length < 6){ errorMsg.textContent="La contraseña debe tener mínimo 6 caracteres"; return; }
+
+  if(usernameInput.style.display === "none"){
+    usernameInput.style.display="block";
+    usernameInput.focus();
+    return;
+  }
+
+  if(!username){ errorMsg.textContent="Debes escribir un nombre de usuario"; return; }
+
   try{
-    const email = document.getElementById("regEmail").value;
-    const password = document.getElementById("regPassword").value;
     const cred = await createUserWithEmailAndPassword(auth,email,password);
-    const isNew = await createUserInFirestore(cred.user);
-    if(isNew) usernameSection.style.display="flex";
-    else window.location.href="main.html";
-  } catch(err){ alert(err.message); }
+    await createUserInFirestore(cred.user,"member",username);
+    await updateProfile(cred.user,{ displayName: username });
+    window.location.href="main.html";
+  } catch(err){ errorMsg.textContent=err.message; }
 });
 
-// ===== GUARDAR NOMBRE DE USUARIO =====
-saveUsernameBtn.addEventListener("click", async ()=>{
-  const name = usernameInput.value.trim();
-  if(!name){ alert("Escribe un nombre de usuario"); return; }
-  const user = auth.currentUser;
-  if(!user){ alert("No hay usuario logueado"); return; }
-
-  await setDoc(doc(db,"users",user.uid),{ displayName:name },{ merge:true });
-  await updateProfile(user,{ displayName:name });
-
-  window.location.href="main.html";
-});
-
-// ===== ANÓNIMO =====
+// ANÓNIMO
 anonymousBtn.addEventListener("click", async ()=>{
   try{
+    const num = await getNextAnonymousNumber();
+    const anonName = `Anónimo #${String(num).padStart(3,'0')}`;
     const cred = await signInAnonymously(auth);
-    const isNew = await createUserInFirestore(cred.user,"anonymous");
-    if(isNew) usernameSection.style.display="flex";
-    else window.location.href="main.html";
+    await createUserInFirestore(cred.user,"anonymous",anonName);
+    window.location.href="main.html";
   } catch(err){ alert(err.message); }
 });
 
-// ===== AUTO DETECCIÓN USUARIO LOGUEADO =====
-onAuthStateChanged(auth,user=>{
+// AUTO DETECCIÓN USUARIO LOGUEADO
+onAuthStateChanged(auth, async user=>{
   if(user){
-    const checkUser = async ()=>{
-      const docSnap = await getDoc(doc(db,"users",user.uid));
-      if(!docSnap.exists() || !docSnap.data().displayName){
-        usernameSection.style.display="flex";
-      } else {
-        window.location.href="main.html";
-      }
+    const docSnap = await getDoc(doc(db,"users",user.uid));
+    if(docSnap.exists() && docSnap.data().displayName){
+      window.location.href="main.html";
+    } else {
+      registerForm.style.display="flex";
+      usernameInput.style.display="block";
+      document.getElementById("formTitle").textContent="Crear Cuenta";
     }
-    checkUser();
   }
 });
 </script>
 </body>
-</html>
+      </html>
