@@ -29,20 +29,24 @@ header .logo span{font-family:'Press Start 2P';font-size:.9rem;color:#ffd700;tex
 .menu-btn.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
 .menu-btn.active span:nth-child(2){opacity:0;}
 .menu-btn.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px);}
-
 .menu-popup{position:absolute;top:60px;right:0;background:#111;border:2px solid gold;border-radius:12px;padding:1rem;display:none;flex-direction:column;gap:1rem;box-shadow:0 0 15px gold;min-width:220px;z-index:2000;}
-.profile-box{display:flex;flex-direction:column;align-items:center;background:#222;border:2px solid gold;border-radius:12px;padding:1rem;gap:0.5rem;width:100%;}
-.profile-box img{width:60px;height:60px;border-radius:50%;border:2px solid gold;}
-.profile-box p{color:gold;font-weight:700;text-align:center;}
-.profile-box span{color:#ccc;font-size:0.8rem;text-align:center;}
-.profile-box .btn-row{display:flex;gap:0.5rem;width:100%;justify-content:center;}
-.profile-box .btn-row button{flex:1;padding:.5rem;font-weight:700;background:gold;color:#000;border:none;border-radius:12px;cursor:pointer;}
-.menu-texts{display:flex;flex-direction:column;gap:0.3rem;text-align:center;margin-top:0.5rem;}
-.menu-texts span{cursor:pointer;color:#ffd700;font-weight:700;text-decoration:underline;}
 
-/* BOTONES Y UTILIDADES */
-#sensibilidadesLink{display:none;}
-#adminUtils{display:none;margin-top:0.5rem;}
+/* CUADRO PERFIL */
+.profile-box{display:flex;flex-direction:column;align-items:center;background:#222;border:2px solid gold;border-radius:12px;padding:1rem;gap:.5rem;width:100%;}
+.profile-box img{width:60px;height:60px;border-radius:50%;border:2px solid gold;}
+.profile-box p{font-weight:700;text-align:center;color:gold;}
+.profile-box span{font-size:0.8rem;text-align:center;}
+.profile-box .btn-row{display:flex;gap:.5rem;width:100%;justify-content:center;}
+.profile-box .btn-row button{flex:1;padding:.5rem;font-weight:700;background:gold;color:#000;border:none;border-radius:12px;cursor:pointer;}
+
+/* ADMIN UTILS */
+#adminUtils{display:none;margin-top:.5rem;border:2px solid red;border-radius:12px;padding:.5rem;flex-direction:column;gap:.5rem;background:#111;}
+#adminUtils h3{color:red;text-align:center;font-weight:700;margin-bottom:.3rem;}
+#adminUtils button{padding:.5rem;background:#ff0000;color:#fff;border:none;border-radius:8px;cursor:pointer;}
+
+/* MENU TEXTO EXTERNO */
+.menu-texts{display:flex;flex-direction:column;gap:.3rem;text-align:center;margin-top:.5rem;}
+.menu-texts span{cursor:pointer;color:#ffd700;font-weight:700;text-decoration:underline;}
 
 /* MAIN */
 main{padding:120px 2rem 3rem;}
@@ -56,11 +60,11 @@ main{padding:120px 2rem 3rem;}
 .section{margin-bottom:2rem;}
 .section h2{color:gold;font-size:1.5rem;margin-bottom:1rem;text-shadow:0 0 6px gold;}
 .notification-card{background:#222;border:2px solid gold;border-radius:12px;padding:1rem;margin-bottom:1rem;position:relative;}
-.notification-card h3{color:gold;margin-bottom:0.5rem;}
-.notification-card p{color:#ccc;margin-bottom:0.5rem;}
+.notification-card h3{color:gold;margin-bottom:.5rem;}
+.notification-card p{color:#ccc;margin-bottom:.5rem;}
 .notification-card a{display:inline-block;padding:.5rem 1rem;background:gold;color:#000;text-decoration:none;border-radius:6px;font-weight:700;}
 .notification-card button.removeBtn{position:absolute;top:5px;right:5px;background:red;color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:12px;}
-.timer-circle{position:absolute;top:5px;left:5px;width:25px;height:25px;border:2px solid gold;border-radius:50%;font-size:0.6rem;display:flex;justify-content:center;align-items:center;color:gold;}
+.timer-circle{position:absolute;top:5px;left:5px;width:25px;height:25px;border:2px solid gold;border-radius:50%;font-size:.6rem;display:flex;justify-content:center;align-items:center;color:gold;}
 
 /* RESPONSIVE */
 @media(max-width:768px){main{padding:150px 1rem 3rem;}.menu-popup{right:10px;top:60px;}}
@@ -89,12 +93,13 @@ main{padding:120px 2rem 3rem;}
           <img id="profilePic" src="default.png" alt="Perfil">
           <p id="profileName">Cargando...</p>
           <span id="profileRole">Cargando rol...</span>
-          <div class="btn-row">
-            <button id="viewProfile" onclick="window.location.href='rede.html'">Ver Perfil</button>
+          <div class="btn-row" id="profileButtons">
+            <button id="viewProfile">Ver Perfil</button>
             <button id="logoutBtn">Cerrar Sesión</button>
           </div>
           <div id="adminUtils">
-            <button onclick="window.location.href='notificaciones.html'">Gestionar Notificaciones</button>
+            <h3>AdminUtils</h3>
+            <button onclick="window.location.href='notificaciones.html'">Notificaciones</button>
           </div>
         </div>
 
@@ -102,6 +107,7 @@ main{padding:120px 2rem 3rem;}
         <div class="menu-texts">
           <span id="redesLink" onclick="window.location.href='rede.html'">Redes</span>
           <span id="sensibilidadesLink" onclick="window.location.href='sensibilidades.html'">Sensibilidades</span>
+          <span id="appsLink" onclick="window.location.href='aplicaciones.html'">Aplicaciones Pro</span>
         </div>
       </div>
     </div>
@@ -122,9 +128,9 @@ main{padding:120px 2rem 3rem;}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, collection, onSnapshot, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-// ===== CONFIG FIREBASE =====
+// CONFIG FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
   authDomain: "web1-3b83a.firebaseapp.com",
@@ -142,6 +148,7 @@ const profilePic = document.getElementById('profilePic');
 const profileName = document.getElementById('profileName');
 const profileRole = document.getElementById('profileRole');
 const logoutBtn = document.getElementById('logoutBtn');
+const profileButtons = document.getElementById('profileButtons');
 const menuBtn = document.getElementById('menuBtn');
 const menuPopup = document.getElementById('menuPopup');
 const adminUtils = document.getElementById('adminUtils');
@@ -163,38 +170,56 @@ menuBtn.addEventListener('click', ()=>{
 // DETECCIÓN USUARIO Y ROLES
 onAuthStateChanged(auth, async user=>{
   if(!user){
-    // NO HAY USUARIO LOGUEADO → REDIRIGE A INDEX
-    window.location.href="index.html";
+    window.location.href="index.html"; // REDIRIGE SI NO HAY SESIÓN
     return;
   }
 
-  // TRAE DATOS DE FIRESTORE
   const userRef = doc(db,"users",user.uid);
   const docSnap = await getDoc(userRef);
   if(docSnap.exists()){
     const data = docSnap.data();
-    profileName.textContent = data.displayName || "Anónimo";
-    profileRole.textContent = "Rol: "+(data.membership || "Invitado");
+
+    // FOTO PERFIL
     profilePic.src = data.photoURL || "default.png";
 
-    // CONTROL DE ROLES
-    const membership = data.membership;
-    if(membership==="anonymous" || membership==="Invitado"){
-      logoutBtn.style.display="none";
+    // NOMBRE
+    profileName.textContent = data.displayName || "Anónimo";
+
+    // ROL + INSIGNIA
+    let roleText="", roleColor="", roleIcon="";
+    switch(data.membership){
+      case "owner":
+        roleText="Dueño"; roleColor="red"; roleIcon="&#x1F451;"; break;
+      case "admin":
+        roleText="Administrador"; roleColor="orange"; roleIcon="&#x1F451;"; break;
+      case "member":
+      case "suscriptor":
+        roleText="Suscriptor"; roleColor="yellow"; roleIcon="&#9733;"; break;
+      case "anonymous":
+      default:
+        roleText="Anónimo"; roleColor="gray"; roleIcon="&#128124;"; break;
+    }
+    profileRole.innerHTML=`Rol: <span style="color:${roleColor}">${roleText} ${roleIcon}</span>`;
+
+    // CONTROL DE BOTONES SEGÚN ROL
+    if(data.membership==="anonymous"){
+      profileButtons.innerHTML=`<button onclick="window.location.href='index.html'">Iniciar Sesión</button>`;
       adminUtils.style.display="none";
       sensibilidadesLink.style.display="none";
     } else {
-      logoutBtn.style.display="block";
+      profileButtons.innerHTML=`<button id="viewProfile" onclick="window.location.href='rede.html'">Ver Perfil</button>
+                                <button id="logoutBtn">Cerrar Sesión</button>`;
       sensibilidadesLink.style.display="inline-block";
-      if(membership==="admin" || membership==="owner"){
-        adminUtils.style.display="block";
-      } else {
+
+      if(data.membership==="owner"){
+        adminUtils.style.display="flex";
+      } else{
         adminUtils.style.display="none";
       }
     }
+
   } else {
-    // SI NO EXISTE EN FIRESTORE → REDIRIGE A INDEX
-    window.location.href="index.html";
+    window.location.href="index.html"; // SI NO EXISTE EN FIRESTORE
   }
 });
 
@@ -225,7 +250,7 @@ onSnapshot(notificationsRef,snapshot=>{
       if(remaining<=0){ card.remove(); clearInterval(interval); }
     },1000);
 
-    if(profileRole.textContent.includes("admin")||profileRole.textContent.includes("owner")){
+    if(profileRole.textContent.includes("Administrador")||profileRole.textContent.includes("Dueño")){
       const removeBtn = document.createElement("button");
       removeBtn.className="removeBtn"; removeBtn.textContent="x";
       removeBtn.onclick=async()=>{ await updateDoc(doc(db,"notifications",docSnap.id),{deleted:true}); };
@@ -253,7 +278,9 @@ notificationBtn.addEventListener('click', ()=>{
 closeNotif.addEventListener('click', ()=>{ notificationsPanel.classList.remove('show'); });
 
 // LOGOUT
-logoutBtn.addEventListener('click', async()=>{ await signOut(auth); window.location.href="index.html"; });
+document.addEventListener('click', e=>{
+  if(e.target && e.target.id==='logoutBtn'){ signOut(auth).then(()=>window.location.href="index.html"); }
+});
 </script>
 </body>
 </html>
