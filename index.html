@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DANIBOOM | Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body{margin:0;padding:0;font-family:'Orbitron',sans-serif;background:#0b0b0b;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;}
+.container{background:rgba(0,0,0,.8);padding:2rem;border-radius:14px;border:2px solid gold;width:320px;box-shadow:0 0 20px gold;text-align:center;animation:fadeIn 1s ease forwards;}
+.logo{margin-bottom:1rem;}
+.logo img{width:60px;height:60px;border-radius:50%;border:2px solid gold;}
+h1{color:gold;font-size:1rem;margin-bottom:1rem;text-shadow:0 0 8px gold;}
+form{display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem;}
+input{padding:.8rem;border-radius:8px;border:2px solid gold;background:#111;color:#fff;font-size:.8rem;}
+button{padding:.8rem;border:none;border-radius:8px;background:gold;color:#000;font-weight:700;cursor:pointer;font-size:.85rem;transition:.3s;}
+button:hover{transform:scale(1.05);}
+.divider{display:flex;align-items:center;text-align:center;margin:1rem 0;color:gold;font-size:.7rem;}
+.divider::before,.divider::after{content:"";flex:1;border-bottom:1px solid gold;}
+.divider:not(:empty)::before{margin-right:.5em;}
+.divider:not(:empty)::after{margin-left:.5em;}
+.oauth-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.6rem;border-radius:8px;border:2px solid gold;background:#111;color:gold;font-weight:700;cursor:pointer;transition:.3s;}
+.oauth-btn:hover{background:gold;color:#000;}
+.switch-text{font-size:.7rem;color:#aaa;cursor:pointer;}
+#usernameSection{display:none;flex-direction:column;gap:.5rem;margin-top:1rem;}
+@keyframes fadeIn{0%{opacity:0;transform:translateY(-20px);}100%{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="container" id="loginContainer">
+  <div class="logo">
+    <img src="logo.png" alt="DaniBoom Logo">
+  </div>
+  <h1 id="formTitle">Iniciar Sesión</h1>
+
+  <!-- LOGIN FORM -->
+  <form id="loginForm">
+    <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+    <button type="submit">Iniciar Sesión</button>
+    <div class="divider">O</div>
+    <div class="oauth-btn" id="loginGoogle"><i class="fa-brands fa-google"></i> Iniciar con Google</div>
+  </form>
+
+  <!-- REGISTER FORM -->
+  <form id="registerForm" style="display:none;">
+    <input type="email" id="regEmail" placeholder="Correo electrónico" required>
+    <input type="password" id="regPassword" placeholder="Contraseña" required>
+    <button type="submit">Crear Cuenta</button>
+    <div class="divider">O</div>
+    <div class="oauth-btn" id="regGoogle"><i class="fa-brands fa-google"></i> Registrarse con Google</div>
+    <div class="oauth-btn" id="regAnonymous"><i class="fa-solid fa-user-secret"></i> Continuar como Anónimo</div>
+  </form>
+
+  <div id="usernameSection">
+    <input type="text" id="usernameInput" placeholder="Elige tu nombre de usuario">
+    <button id="saveUsernameBtn">Guardar Nombre</button>
+  </div>
+
+  <p class="switch-text" id="switchForm">¿No tienes cuenta? Crear Cuenta</p>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+// CONFIG FIREBASE
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_AUTH_DOMAIN",
+  projectId: "TU_PROJECT_ID",
+  storageBucket: "TU_STORAGE_BUCKET",
+  messagingSenderId: "TU_MESSAGING_ID",
+  appId: "TU_APP_ID"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+const provider = new GoogleAuthProvider();
+
+// ELEMENTOS
+const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
+const switchText = document.getElementById("switchForm");
+const formTitle = document.getElementById("formTitle");
+const usernameSection = document.getElementById("usernameSection");
+const usernameInput = document.getElementById("usernameInput");
+const saveUsernameBtn = document.getElementById("saveUsernameBtn");
+
+// SWITCH FORMS
+switchText.addEventListener("click", () => {
+  if(loginForm.style.display !== "none"){
+    loginForm.style.display = "none";
+    registerForm.style.display = "flex";
+    switchText.textContent = "¿Ya tienes cuenta? Iniciar Sesión";
+    formTitle.textContent = "Crear Cuenta";
+  } else {
+    loginForm.style.display = "flex";
+    registerForm.style.display = "none";
+    switchText.textContent = "¿No tienes cuenta? Crear Cuenta";
+    formTitle.textContent = "Iniciar Sesión";
+  }
+});
+
+// CREAR DOCUMENTO FIRESTORE SI NO EXISTE
+async function createUserInFirestore(user, membership="member"){
+  const userRef = doc(db,"users",user.uid);
+  const docSnap = await getDoc(userRef);
+
+  if(!docSnap.exists()){
+    await setDoc(userRef,{
+      displayName: user.displayName || "",
+      membership: membership,
+      photoURL: user.photoURL || "default.png",
+      createdAt: serverTimestamp()
+    });
+    return true; // es nuevo usuario
+  }
+  return false;
+}
+
+// LOGIN EMAIL
+loginForm.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  try{
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+    const cred = await signInWithEmailAndPassword(auth,email,password);
+    const isNew = await createUserInFirestore(cred.user);
+    if(isNew) usernameSection.style.display = "flex";
+    else window.location.href = "main.html";
+  }catch(err){alert(err.message);}
+});
+
+// REGISTER EMAIL
+registerForm.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  try{
+    const email = document.getElementById("regEmail").value;
+    const password = document.getElementById("regPassword").value;
+    const cred = await createUserWithEmailAndPassword(auth,email,password);
+    const isNew = await createUserInFirestore(cred.user);
+    if(isNew) usernameSection.style.display = "flex";
+    else window.location.href = "main.html";
+  }catch(err){alert(err.message);}
+});
+
+// GOOGLE LOGIN
+document.getElementById("loginGoogle").addEventListener("click", async ()=>{
+  try{
+    const result = await signInWithPopup(auth, provider);
+    const isNew = await createUserInFirestore(result.user);
+    if(isNew) usernameSection.style.display = "flex";
+    else window.location.href = "main.html";
+  }catch(err){alert(err.message);}
+});
+document.getElementById("regGoogle").addEventListener("click", async ()=>{
+  try{
+    const result = await signInWithPopup(auth, provider);
+    const isNew = await createUserInFirestore(result.user);
+    if(isNew) usernameSection.style.display = "flex";
+    else window.location.href = "main.html";
+  }catch(err){alert(err.message);}
+});
+
+// ANONYMOUS LOGIN
+document.getElementById("regAnonymous").addEventListener("click", async ()=>{
+  try{
+    const cred = await signInAnonymously(auth);
+    const isNew = await createUserInFirestore(cred.user,"anonymous");
+    if(isNew) usernameSection.style.display = "flex";
+    else window.location.href = "main.html";
+  }catch(err){alert(err.message);}
+});
+
+// GUARDAR NOMBRE DE USUARIO
+saveUsernameBtn.addEventListener("click", async ()=>{
+  const name = usernameInput.value.trim();
+  if(!name){ alert("Escribe un nombre de usuario"); return; }
+  const user = auth.currentUser;
+  if(!user){ alert("No hay usuario logueado"); return; }
+
+  // ACTUALIZAR FIRESTORE
+  const userRef = doc(db,"users",user.uid);
+  await setDoc(userRef,{
+    displayName: name
+  }, {merge:true});
+
+  // ACTUALIZAR AUTH PROFILE
+  await updateProfile(user,{displayName:name});
+
+  // REDIRECCIONA A MAIN
+  window.location.href = "main.html";
+});
+
+// AUTO REDIRECCION SI YA ESTÁ LOGUEADO
+onAuthStateChanged(auth,(user)=>{
+  if(user) window.location.href = "main.html";
+});
+</script>
+</body>
+</html>
