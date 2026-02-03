@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DANIBOOM | Login</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 body{margin:0;padding:0;font-family:'Orbitron',sans-serif;background:#0b0b0b;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;}
-.container{background:rgba(0,0,0,.8);padding:2rem;border-radius:14px;border:2px solid gold;width:320px;box-shadow:0 0 20px gold;text-align:center;animation:fadeIn 1s ease forwards;}
+.container{background:rgba(0,0,0,.85);padding:2rem;border-radius:14px;border:2px solid gold;width:350px;box-shadow:0 0 20px gold;text-align:center;animation:fadeIn 1s ease forwards;}
 .logo{margin-bottom:1rem;}
 .logo img{width:60px;height:60px;border-radius:50%;border:2px solid gold;}
 h1{color:gold;font-size:1rem;margin-bottom:1rem;text-shadow:0 0 8px gold;}
@@ -18,60 +17,57 @@ form{display:flex;flex-direction:column;gap:1rem;margin-bottom:1rem;}
 input{padding:.8rem;border-radius:8px;border:2px solid gold;background:#111;color:#fff;font-size:.8rem;}
 button{padding:.8rem;border:none;border-radius:8px;background:gold;color:#000;font-weight:700;cursor:pointer;font-size:.85rem;transition:.3s;}
 button:hover{transform:scale(1.05);}
-.switch-text{font-size:0.65rem;color:#aaa;cursor:pointer;text-align:center;}
-#usernameInput{display:block;} /* Siempre visible */
-#anonymousBtn{margin-top:0.5rem;}
-.divider{display:flex;align-items:center;text-align:center;margin:1rem 0;color:gold;font-size:.75rem;}
+.divider{display:flex;align-items:center;text-align:center;margin:1rem 0;color:gold;font-size:.7rem;}
 .divider::before,.divider::after{content:"";flex:1;border-bottom:1px solid gold;}
 .divider:not(:empty)::before{margin-right:.5em;}
 .divider:not(:empty)::after{margin-left:.5em;}
-#errorMsg{color:red;font-size:0.7rem;}
-#goToLogin{margin-top:0.5rem;font-size:0.65rem;color:#aaa;cursor:pointer;text-decoration:underline;}
+.switch-text{font-size:.7rem;color:#aaa;cursor:pointer;margin-top:0.5rem;}
+.userNameSection{display:flex;flex-direction:column;gap:.5rem;}
+.userNameSection input{border:2px solid gold;background:#111;color:#fff;}
+.userNameSection label{font-size:.75rem;color:#aaa;text-align:left;}
+.userNameSection span{color:red;font-size:.75rem;}
 </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="loginContainer">
   <div class="logo">
     <img src="logo.png" alt="DaniBoom Logo">
   </div>
   <h1 id="formTitle">Iniciar Sesión</h1>
-
-  <div id="errorMsg"></div>
 
   <!-- LOGIN FORM -->
   <form id="loginForm">
     <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
     <input type="password" id="loginPassword" placeholder="Contraseña" required>
     <button type="submit">Iniciar Sesión</button>
-    <div class="switch-text" id="goToRegister">¿No tienes cuenta? Crear Cuenta</div>
+    <p class="switch-text" id="switchForm">¿No tienes cuenta? Crear Cuenta</p>
   </form>
 
   <!-- REGISTER FORM -->
   <form id="registerForm" style="display:none;">
     <input type="email" id="regEmail" placeholder="Correo electrónico" required>
     <input type="password" id="regPassword" placeholder="Contraseña" required>
-    <input type="text" id="usernameInput" placeholder="Elige tu nombre de usuario">
+    
+    <div class="userNameSection">
+      <label for="usernameInput">Nombre de usuario (obligatorio)</label>
+      <input type="text" id="usernameInput" placeholder="Escribe tu nombre de usuario" required>
+      <span id="usernameError" style="display:none;">Debes escribir un nombre de usuario</span>
+    </div>
 
-    <button type="submit" id="createAccountBtn">Crear Cuenta</button>
-
+    <button type="submit">Crear Cuenta</button>
     <div class="divider">O</div>
-
-    <button type="button" id="anonymousBtn"><i class="fa-solid fa-user-secret"></i> Continuar como Anónimo</button>
-
-    <div id="goToLogin">¿Ya tienes una cuenta? Iniciar sesión</div>
+    <button type="button" id="regAnonymous"><i class="fa-solid fa-user-secret"></i> Continuar como Anónimo</button>
+    <p class="switch-text" id="toLoginText" style="font-size:.7rem;margin-top:0.5rem;">¿Ya tienes una cuenta? Iniciar sesión</p>
   </form>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { 
-  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  signInAnonymously, onAuthStateChanged, updateProfile
-} from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-// CONFIG FIREBASE
+// Config Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
   authDomain: "web1-3b83a.firebaseapp.com",
@@ -80,6 +76,7 @@ const firebaseConfig = {
   messagingSenderId: "519590670968",
   appId: "1:519590670968:web:cb291125919a12e9e7b38d"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
@@ -87,115 +84,100 @@ const db = getFirestore();
 // ELEMENTOS
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
-const goToRegister = document.getElementById("goToRegister");
-const goToLogin = document.getElementById("goToLogin");
+const switchText = document.getElementById("switchForm");
+const toLoginText = document.getElementById("toLoginText");
+const formTitle = document.getElementById("formTitle");
 const usernameInput = document.getElementById("usernameInput");
-const anonymousBtn = document.getElementById("anonymousBtn");
-const createAccountBtn = document.getElementById("createAccountBtn");
-const errorMsg = document.getElementById("errorMsg");
+const usernameError = document.getElementById("usernameError");
+const regAnonymous = document.getElementById("regAnonymous");
 
-// SWITCH LOGIN → REGISTER
-goToRegister.addEventListener("click", ()=>{
+// SWITCH FORMS
+switchText.addEventListener("click", ()=>{
   loginForm.style.display="none";
   registerForm.style.display="flex";
-  document.getElementById("formTitle").textContent="Crear Cuenta";
-  errorMsg.textContent="";
+  formTitle.textContent="Crear Cuenta";
 });
 
-// SWITCH REGISTER → LOGIN
-goToLogin.addEventListener("click", ()=>{
+toLoginText.addEventListener("click", ()=>{
   registerForm.style.display="none";
   loginForm.style.display="flex";
-  document.getElementById("formTitle").textContent="Iniciar Sesión";
-  errorMsg.textContent="";
+  formTitle.textContent="Iniciar Sesión";
 });
 
-// CREAR USUARIO FIRESTORE
-async function createUserInFirestore(user, membership="member", displayName="") {
+// FUNCION CREAR USUARIO EN FIRESTORE
+async function createUserInFirestore(user, role, username){
   const userRef = doc(db,"users",user.uid);
   const docSnap = await getDoc(userRef);
   if(!docSnap.exists()){
     await setDoc(userRef,{
-      displayName: displayName,
-      membership: membership,
+      displayName: username,
+      membership: role,
       photoURL: "default.png",
       createdAt: serverTimestamp()
     });
-    return true;
   }
-  return false;
 }
 
-// CONTADOR ANÓNIMOS
+// FUNCION PARA CONTAR ANONIMOS
 async function getNextAnonymousNumber(){
   const usersCol = collection(db,"users");
-  const querySnapshot = await getDocs(usersCol);
+  const snapshot = await getDocs(usersCol);
   let count = 0;
-  querySnapshot.forEach(doc=>{
+  snapshot.forEach(doc => {
     const data = doc.data();
-    if(data.membership === "anonymous") count++;
+    if(data.membership==="anonymous") count++;
   });
   return count + 1;
 }
 
-// LOGIN EMAIL
-loginForm.addEventListener("submit", async e=>{
+// LOGIN CON CORREO
+loginForm.addEventListener("submit", async(e)=>{
   e.preventDefault();
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
-  if(!email){ errorMsg.textContent="Debes escribir tu correo"; return; }
-  if(!password){ errorMsg.textContent="Debes escribir tu contraseña"; return; }
+  if(!email){ alert("Debes escribir tu correo"); return; }
+  if(!password){ alert("Debes escribir tu contraseña"); return; }
   try{
-    await signInWithEmailAndPassword(auth,email,password);
+    const cred = await signInWithEmailAndPassword(auth,email,password);
     window.location.href="main.html";
-  } catch(err){ errorMsg.textContent=err.message; }
+  }catch(err){ alert(err.message); }
 });
 
-// REGISTER EMAIL
-registerForm.addEventListener("submit", async e=>{
+// CREAR CUENTA CORREO
+registerForm.addEventListener("submit", async(e)=>{
   e.preventDefault();
-  errorMsg.textContent="";
   const email = document.getElementById("regEmail").value.trim();
   const password = document.getElementById("regPassword").value.trim();
   const username = usernameInput.value.trim();
 
-  if(!email){ errorMsg.textContent="Debes escribir tu correo"; return; }
-  if(!password){ errorMsg.textContent="Debes escribir tu contraseña"; return; }
-  if(password.length < 6){ errorMsg.textContent="La contraseña debe tener mínimo 6 caracteres"; return; }
-  if(!username){ errorMsg.textContent="Debes escribir un nombre de usuario"; return; }
+  if(!email){ alert("Debes escribir tu correo"); return; }
+  if(!password || password.length<6){ alert("Contraseña mínima 6 caracteres"); return; }
+  if(!username){ usernameError.style.display="block"; return; }
+  usernameError.style.display="none";
 
   try{
     const cred = await createUserWithEmailAndPassword(auth,email,password);
-    await createUserInFirestore(cred.user,"member",username);
-    await updateProfile(cred.user,{ displayName: username });
+    await createUserInFirestore(cred.user,"suscriptor",username);
     window.location.href="main.html";
-  } catch(err){ errorMsg.textContent=err.message; }
+  }catch(err){ alert(err.message); }
 });
 
-// ANÓNIMO
-anonymousBtn.addEventListener("click", async ()=>{
+// ANONIMO
+regAnonymous.addEventListener("click", async()=>{
+  const anonNumber = await getNextAnonymousNumber();
+  const anonName = `Anónimo #${String(anonNumber).padStart(3,"0")}`;
   try{
-    const num = await getNextAnonymousNumber();
-    const anonName = `Anónimo #${String(num).padStart(3,'0')}`;
     const cred = await signInAnonymously(auth);
     await createUserInFirestore(cred.user,"anonymous",anonName);
     window.location.href="main.html";
-  } catch(err){ alert(err.message); }
+  }catch(err){ alert(err.message); }
 });
 
-// AUTO DETECCIÓN USUARIO LOGUEADO
-onAuthStateChanged(auth, async user=>{
-  if(user){
-    const docSnap = await getDoc(doc(db,"users",user.uid));
-    if(docSnap.exists() && docSnap.data().displayName){
-      window.location.href="main.html";
-    } else {
-      registerForm.style.display="flex";
-      usernameInput.style.display="block";
-      document.getElementById("formTitle").textContent="Crear Cuenta";
-    }
-  }
+// AUTO DETECCIÓN DE USUARIO
+onAuthStateChanged(auth,user=>{
+  if(user) window.location.href="main.html";
 });
+
 </script>
 </body>
 </html>
