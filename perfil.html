@@ -3,68 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANIBOOM | Neon Hierarchy OS</title>
+    <title>DANIBOOM | Neon Command v11.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --neon-red: #ff0000; --neon-orange: #ff8c00; --neon-gold: #ffd700; --neon-blue: #00f2ff;
-            --glass: rgba(255, 255, 255, 0.03); --blur: blur(20px);
+            --neon-gold: #ffd700; --neon-blue: #00f2ff; --neon-red: #ff0000; --neon-green: #39ff14; --neon-orange: #ff8c00;
+            --glass: rgba(255, 255, 255, 0.03); --blur: blur(25px);
+            --shadow-gold: 0 0 15px #ffd700;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
         body { background: #000; color: #fff; overflow-x: hidden; }
 
-        /* --- ESTILOS DE TEXTO E INSIGNIAS --- */
-        .fx-owner { color: var(--neon-red) !important; text-shadow: 0 0 15px var(--neon-red), 0 0 30px var(--neon-red); animation: pulse 1.5s infinite alternate; }
-        .fx-admin { color: var(--neon-orange) !important; text-shadow: 0 0 15px var(--neon-orange); }
-        .fx-suscriptor { color: var(--neon-gold) !important; text-shadow: 0 0 15px var(--neon-gold); }
+        /* --- EFECTOS DE ROL NEÓN --- */
+        .effect-owner { color: var(--neon-red) !important; text-shadow: 0 0 20px var(--neon-red), 0 0 40px var(--neon-red); animation: pulse-red 1.5s infinite alternate; }
+        .effect-admin { color: var(--neon-orange) !important; text-shadow: 0 0 15px var(--neon-orange); }
+        .effect-suscriptor { color: var(--neon-gold) !important; text-shadow: 0 0 15px var(--neon-gold); }
 
-        @keyframes pulse { from { opacity: 0.7; transform: scale(1); } to { opacity: 1; transform: scale(1.05); } }
+        @keyframes pulse-red { from { filter: brightness(1); transform: scale(1); } to { filter: brightness(1.5); transform: scale(1.02); } }
 
-        /* CONTENEDORES */
-        header { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 2px solid #222; }
-        .container { max-width: 1200px; margin: 20px auto; padding: 15px; display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
-        .glass-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; padding: 25px; backdrop-filter: var(--blur); text-align: center; }
-
-        .role-badge { 
-            display: inline-flex; align-items: center; gap: 10px; margin-top: 15px;
-            padding: 7px 20px; border-radius: 8px; border: 2px solid currentColor;
-            font-family: 'Orbitron'; font-size: 0.75rem; font-weight: bold; background: rgba(0,0,0,0.4);
+        header {
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--neon-gold); 
+            backdrop-filter: var(--blur); position: sticky; top: 0; z-index: 2000; box-shadow: var(--shadow-gold);
         }
 
-        .p-img { width: 120px; height: 120px; border-radius: 50%; border: 3px solid transparent; transition: 0.5s; margin-bottom: 10px; }
-        
-        #xp-bar { height: 8px; border-radius: 4px; transition: 1s ease-in-out; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 15px; display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
+        .glass-card { background: var(--glass); border: 1px solid rgba(255, 215, 0, 0.2); border-radius: 15px; padding: 20px; backdrop-filter: var(--blur); position: relative; }
+
+        .role-badge { 
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 10px;
+            padding: 6px 18px; border-radius: 5px; border: 2px solid currentColor;
+            font-family: 'Orbitron'; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .p-avatar { width: 110px; height: 110px; border-radius: 50%; border: 3px solid transparent; transition: 0.5s; }
+
+        /* MISIONES Y REPORTES */
+        .report-item, .block-item { 
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,215,0,0.1); 
+            padding: 15px; border-radius: 12px; margin-bottom: 12px; 
+            display: flex; align-items: center; gap: 15px; transition: 0.3s;
+        }
+
+        .btn-neon {
+            padding: 8px 15px; border-radius: 8px; border: 1px solid var(--neon-gold);
+            background: transparent; color: var(--neon-gold); font-family: 'Orbitron'; font-size: 0.65rem;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-neon:hover { background: var(--neon-gold); color: #000; }
+        .btn-red { border-color: var(--neon-red); color: var(--neon-red); }
+
+        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <header>
-    <div onclick="toggleNav()" style="cursor:pointer; color:white;"><i class="fas fa-bars fa-lg"></i></div>
-    <div style="font-family:'Orbitron'; color:white; letter-spacing:2px;">DANIBOOM_CORE</div>
-    <div style="cursor:pointer; color:white;"><i class="fas fa-bell fa-lg"></i></div>
+    <div onclick="toggleNav()" style="color:var(--neon-gold); cursor:pointer; font-size:1.5rem;"><i class="fas fa-bars"></i></div>
+    <div style="font-family:'Orbitron'; color:var(--neon-gold); text-shadow: var(--shadow-gold);">DANIBOOM_OS</div>
+    <div id="bellBtn" onclick="toggleNotifs()" style="color:var(--neon-gold); cursor:pointer; font-size:1.5rem;"><i class="fas fa-bell"></i></div>
 </header>
 
 <div class="container" id="appInterface" style="visibility: hidden;">
-    <aside class="glass-card">
-        <img src="logo.png" id="user-img" class="p-img">
-        <h2 id="user-name" style="font-family:'Orbitron'; font-size: 1.3rem;">CARGANDO...</h2>
+    <aside class="glass-card" style="text-align:center;">
+        <img src="logo.png" id="p-avatar" class="p-avatar" style="box-shadow: var(--shadow-gold);">
+        <h2 id="p-name" style="font-family:'Orbitron'; margin-top:15px; font-size:1.2rem;">PILOTO</h2>
         
-        <div id="user-badge" class="role-badge">
-            <i id="user-icon" class="fas"></i>
-            <span id="user-role-text">ANALIZANDO...</span>
+        <div id="p-role-badge" class="role-badge">
+            <i id="p-role-icon" class="fas"></i>
+            <span id="p-role-text">---</span>
         </div>
 
-        <div style="margin-top:20px; font-family:'Orbitron'; font-size:0.7rem; color:var(--neon-blue);">NIVEL DE ACCESO</div>
-        <div style="width:100%; height:8px; background:#111; border-radius:4px; margin-top:5px; overflow:hidden;">
-            <div id="xp-bar"></div>
+        <div id="lvl-display" style="color:var(--neon-blue); margin:15px 0 10px 0; font-family: 'Orbitron'; font-size: 0.8rem;">LVL 01</div>
+        <div style="width:100%; height:8px; background:#111; border:1px solid var(--neon-gold); border-radius:4px; overflow:hidden;">
+            <div id="xp-fill" style="height:100%; background:var(--neon-gold); width:0%; transition:1s;"></div>
         </div>
     </aside>
 
     <main>
-        <section class="glass-card" style="text-align: left;">
-            <h3 id="status-title" style="font-family:'Orbitron'; margin-bottom:10px;">> ESCANEANDO ADN...</h3>
-            <p id="status-desc" style="color:#777;">Sincronizando con base de datos de Firestore en tiempo real.</p>
+        <section id="sec-profile" class="glass-card">
+            <h3 id="welcome-msg" style="font-family:'Orbitron'; color:var(--neon-gold);">INFO DE NÚCLEO</h3>
+            <p id="core-desc" style="color:#888; margin-top:10px;">Validando credenciales de acceso...</p>
+        </section>
+
+        <section id="sec-reports" class="glass-card" style="display:none;">
+            <h3 style="font-family:'Orbitron'; color:var(--neon-gold); margin-bottom:20px;">ESTADO DE REPORTES</h3>
+            <div id="reports-container"></div>
+        </section>
+
+        <section id="sec-blacklist" class="glass-card" style="display:none;">
+            <h3 style="font-family:'Orbitron'; color:var(--neon-red); margin-bottom:20px;">USUARIOS BLOQUEADOS</h3>
+            <div id="blacklist-container"></div>
+        </section>
+
+        <section id="sec-missions" class="glass-card" style="display:none;">
+            <h3 style="font-family:'Orbitron'; color:var(--neon-gold); margin-bottom:20px;">MISIONES</h3>
+            <div class="report-item">
+                <div style="flex-grow:1;">
+                    <strong style="color:var(--neon-blue);">RECOLECTAR DATOS</strong>
+                    <p style="font-size:0.8rem;">Gana +20 XP</p>
+                </div>
+                <button class="btn-neon" id="btn-m1" onclick="handleMission(20, 'm1')">RECLAMAR</button>
+            </div>
         </section>
     </main>
 </div>
@@ -72,7 +114,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getFirestore, doc, onSnapshot, updateDoc, collection, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = { apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4", authDomain: "web1-3b83a.firebaseapp.com", projectId: "web1-3b83a" };
     const app = initializeApp(firebaseConfig);
@@ -81,82 +123,112 @@
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // Escaneo en tiempo real de la colección "users"
             onSnapshot(doc(db, "users", user.uid), (snap) => {
-                const data = snap.data();
+                const uData = snap.data() || {};
                 
-                // --- PROTOCOLO DE SEGURIDAD ---
-                if (!data || !data.role) {
+                // --- PROTOCOLO DE DETECCIÓN DE RANGOS ---
+                const role = uData.role ? uData.role.toLowerCase() : null;
+
+                if (!role) {
                     location.href = "index.html"; 
-                    return;
+                } else if (role === 'anonymous') {
+                    location.href = "main.html"; // Redirección para anonymous
+                } else {
+                    document.getElementById('appInterface').style.visibility = 'visible';
+                    renderUI(uData, role);
+                    checkMissions(uData);
                 }
-
-                const currentRole = data.role.toLowerCase();
-
-                if (currentRole === 'anonimo') {
-                    location.href = "main.html";
-                    return;
-                }
-
-                // Si es un rango válido, mostramos la interfaz
-                document.getElementById('appInterface').style.visibility = 'visible';
-                applyHierarchy(data, currentRole);
             });
+            listenReports(user.uid);
+            listenBlacklist(user.uid);
         } else { location.href = "index.html"; }
     });
 
-    function applyHierarchy(data, role) {
-        const nameEl = document.getElementById('user-name');
-        const badgeEl = document.getElementById('user-badge');
-        const iconEl = document.getElementById('user-icon');
-        const textEl = document.getElementById('user-role-text');
-        const imgEl = document.getElementById('user-img');
-        const xpEl = document.getElementById('xp-bar');
+    function renderUI(uData, role) {
+        const nameEl = document.getElementById('p-name');
+        const badgeEl = document.getElementById('p-role-badge');
+        const iconEl = document.getElementById('p-role-icon');
+        const textEl = document.getElementById('p-role-text');
+        const avatar = document.getElementById('p-avatar');
+        const xpFill = document.getElementById('xp-fill');
 
-        nameEl.innerText = (data.displayName || "PILOTO").toUpperCase();
-        
-        // Reset de clases
+        nameEl.innerText = (uData.displayName || "PILOTO").toUpperCase();
+        document.getElementById('lvl-display').innerText = "LVL " + (uData.level || 1);
+        xpFill.style.width = (uData.xp || 0) + "%";
+        textEl.innerText = role;
+
+        // Limpiar clases previas
         nameEl.className = "";
         badgeEl.className = "role-badge";
         iconEl.className = "fas";
 
-        // LÓGICA DE DETECCIÓN DE OWNER / ADMIN / SUSCRIPTOR
-        if (role === 'owner' || role === 'dueño') {
-            const fx = "fx-owner";
+        if (role === 'owner') {
+            const fx = 'effect-owner';
             nameEl.classList.add(fx);
             badgeEl.classList.add(fx);
-            iconEl.classList.add('fa-crown'); // CORONA ROJA
-            textEl.innerText = "OWNER";
-            imgEl.style.borderColor = 'var(--neon-red)';
-            imgEl.style.boxShadow = '0 0 15px var(--neon-red)';
-            xpEl.style.background = 'var(--neon-red)';
-            document.getElementById('status-title').innerText = "> BIENVENIDO, CREADOR";
-        } 
-        else if (role === 'admin') {
-            const fx = "fx-admin";
+            iconEl.classList.add('fa-crown');
+            avatar.style.borderColor = 'var(--neon-red)';
+            xpFill.style.background = 'var(--neon-red)';
+            document.getElementById('core-desc').innerText = "Acceso total concedido, Creador.";
+        } else if (role === 'admin') {
+            const fx = 'effect-admin';
             nameEl.classList.add(fx);
             badgeEl.classList.add(fx);
-            iconEl.classList.add('fa-shield-halved'); // ESCUDO NARANJA
-            textEl.innerText = "ADMIN";
-            imgEl.style.borderColor = 'var(--neon-orange)';
-            xpEl.style.background = 'var(--neon-orange)';
-            document.getElementById('status-title').innerText = "> MODO ADMINISTRADOR ACTIVO";
-        } 
-        else if (role === 'suscriptor') {
-            const fx = "fx-suscriptor";
+            iconEl.classList.add('fa-shield-halved');
+            avatar.style.borderColor = 'var(--neon-orange)';
+            xpFill.style.background = 'var(--neon-orange)';
+            document.getElementById('core-desc').innerText = "Panel administrativo activo.";
+        } else if (role === 'suscriptor') {
+            const fx = 'effect-suscriptor';
             nameEl.classList.add(fx);
             badgeEl.classList.add(fx);
-            iconEl.classList.add('fa-star'); // ESTRELLA AMARILLA
-            textEl.innerText = "SUSCRIPTOR";
-            imgEl.style.borderColor = 'var(--neon-gold)';
-            xpEl.style.background = 'var(--neon-gold)';
-            document.getElementById('status-title').innerText = "> NIVEL SUSCRIPTOR";
+            iconEl.classList.add('fa-star');
+            avatar.style.borderColor = 'var(--neon-gold)';
+            xpFill.style.background = 'var(--neon-gold)';
+            document.getElementById('core-desc').innerText = "Privilegios de suscriptor activados.";
         }
-
-        xpEl.style.width = (data.xp || 0) + "%";
     }
 
-    window.toggleNav = () => { /* tu logica de nav */ };
+    // --- FUNCIONES DE SOPORTE (Reportes, Blacklist, Misiones) ---
+    function listenReports(uid) {
+        const q = query(collection(db, "reports"), where("userId", "==", uid));
+        onSnapshot(q, (snap) => {
+            const container = document.getElementById('reports-container');
+            container.innerHTML = snap.empty ? "<p style='color:#444;'>Sin reportes.</p>" : "";
+            snap.forEach(d => {
+                const r = d.data();
+                container.innerHTML += `<div class="report-item"><strong>${r.type}</strong> - ${r.status}</div>`;
+            });
+        });
+    }
+
+    function listenBlacklist(uid) {
+        const q = query(collection(db, "blacklist"), where("blockedBy", "==", uid));
+        onSnapshot(q, (snap) => {
+            const container = document.getElementById('blacklist-container');
+            container.innerHTML = snap.empty ? "<p style='color:#444;'>Lista vacía.</p>" : "";
+            snap.forEach(d => {
+                const b = d.data();
+                container.innerHTML += `<div class="block-item">${b.userName}</div>`;
+            });
+        });
+    }
+
+    function checkMissions(uData) {
+        const now = Date.now();
+        const btn = document.getElementById('btn-m1');
+        if(uData.lastM1 && (now - uData.lastM1 < 86400000)) {
+            btn.disabled = true; btn.innerText = "ESPERA 24H";
+        } else { btn.disabled = false; btn.innerText = "RECLAMAR"; }
+    }
+
+    window.handleMission = async (amt, mId) => {
+        // Lógica de actualización de XP (usa auth.currentUser.uid y uData)
+        alert("Procesando XP...");
+    };
+
+    window.toggleNav = () => { const nav = document.getElementById('sideNav'); nav.style.left = nav.style.left === '0px' ? '-100%' : '0px'; };
+    window.showSection = (id) => { document.querySelectorAll('main > section').forEach(s => s.style.display = 'none'); document.getElementById('sec-' + id).style.display = 'block'; toggleNav(); };
     window.logout = () => signOut(auth).then(() => location.href = "index.html");
 
 </script>
