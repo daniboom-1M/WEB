@@ -3,47 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANIBOOM | Ultimate Apex Hub</title>
+    <title>DANIBOOM | Profile Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --neon: #ffd700; --cyan: #00f2ff; --crimson: #ff003c; --emerald: #00ff88;
-            --panel: rgba(5, 5, 5, 0.95); --border: rgba(255, 215, 0, 0.2);
+            --neon: #ffd700; --cyan: #00f2ff; --crimson: #ff003c; --whatsapp: #25D366;
+            --panel: rgba(10, 10, 10, 0.98); --border: rgba(255, 215, 0, 0.2);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
         body { background: #000; color: #fff; overflow: hidden; height: 100vh; }
 
-        /* EFECTO CARGA (ROMPECABEZAS) */
+        /* LOADER / PANTALLA NEGRA FIX */
         #loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: grid; grid-template-columns: repeat(5,1fr); grid-template-rows: repeat(5,1fr); pointer-events: none; }
         .tile { background: #080808; border: 0.1px solid #111; transition: 0.8s cubic-bezier(0.7, 0, 0.3, 1); }
         .loaded .tile { transform: scale(0) rotate(90deg); opacity: 0; }
 
-        /* ESTRUCTURA */
+        /* APP ESTRUCTURA */
         .app-container { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; }
         header { padding: 15px; border-bottom: 2px solid var(--neon); background: #000; display: flex; justify-content: space-between; align-items: center; }
-        main { overflow-y: auto; padding: 20px; padding-bottom: 90px; }
+        main { overflow-y: auto; padding: 15px; padding-bottom: 80px; }
 
-        /* NAVEGACIÓN */
+        /* NAV BAR */
         .nav-dock { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--panel); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); backdrop-filter: blur(15px); z-index: 999; }
-        .nav-item { color: #444; font-size: 1.3rem; cursor: pointer; transition: 0.3s; }
+        .nav-item { color: #555; font-size: 1.4rem; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; }
         .nav-item.active { color: var(--neon); transform: translateY(-5px); text-shadow: 0 0 10px var(--neon); }
+        .nav-item span { font-size: 0.6rem; margin-top: 4px; font-weight: bold; }
 
         /* CARDS */
-        .card-apex { background: rgba(15,15,15,0.8); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
-        .xp-track { width: 100%; height: 8px; background: #111; border-radius: 10px; overflow: hidden; margin: 10px 0; }
-        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--neon), #fff); width: 0%; transition: 0.5s; }
+        .card-apex { background: linear-gradient(145deg, #111, #050505); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .xp-track { width: 100%; height: 10px; background: #222; border-radius: 10px; overflow: hidden; margin: 12px 0; border: 1px solid #333; }
+        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--neon), #fff); width: 0%; transition: 0.5s ease-out; box-shadow: 0 0 15px var(--neon); }
 
-        /* CHAT FULLSCREEN */
-        .chat-panel { position: fixed; inset: 0; background: #000; z-index: 2000; display: none; flex-direction: column; }
+        /* WHATSAPP STYLE CHAT */
+        .chat-panel { position: fixed; inset: 0; background: #0b141a; z-index: 2000; display: none; flex-direction: column; }
         .chat-active { display: flex; }
-        .chat-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .bubble { padding: 10px 15px; border-radius: 15px; max-width: 80%; }
-        .b-sent { align-self: flex-end; background: var(--neon); color: #000; }
-        .b-rec { align-self: flex-start; background: #222; }
+        .chat-header { background: #202c33; padding: 10px 15px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #333; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 8px; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-opacity: 0.05; }
+        .bubble { padding: 8px 12px; border-radius: 8px; max-width: 85%; font-size: 0.95rem; position: relative; color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+        .b-sent { align-self: flex-end; background: #005c4b; border-top-right-radius: 0; }
+        .b-rec { align-self: flex-start; background: #202c33; border-top-left-radius: 0; }
+        .chat-input-area { background: #202c33; padding: 10px; display: flex; gap: 10px; align-items: center; }
+        .chat-input-area input { flex: 1; background: #2a3942; border: none; padding: 12px 15px; border-radius: 25px; color: #fff; outline: none; }
 
-        .user-row { display: flex; align-items: center; gap: 15px; padding: 15px; background: #111; border-radius: 15px; margin-bottom: 10px; cursor: pointer; border: 1px solid #222; }
-        input { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 10px; margin: 10px 0; }
+        /* CONTACT LIST */
+        .contact-row { display: flex; align-items: center; gap: 15px; padding: 15px; border-bottom: 1px solid #111; cursor: pointer; transition: 0.2s; }
+        .contact-row:hover { background: #111; }
+        .avatar { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--neon); object-fit: cover; }
+
+        .btn-action { width: 100%; padding: 12px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -52,66 +60,76 @@
 
 <div class="app-container">
     <header>
-        <div style="font-family:'Orbitron'; color:var(--neon); font-weight:900;">DANIBOOM_OS</div>
-        <div id="p-lvl-top" style="font-size:0.7rem; border:1px solid var(--neon); padding:2px 8px; border-radius:5px;">LVL 0</div>
+        <div style="font-family:'Orbitron'; color:var(--neon); font-weight:900; letter-spacing:2px;">DANIBOOM_OS</div>
+        <div id="p-lvl-top" style="font-size:0.7rem; border:1px solid var(--neon); padding:3px 10px; border-radius:8px; background: rgba(255, 215, 0, 0.1);">LVL 0</div>
     </header>
 
     <main>
         <section id="v-home">
             <div class="card-apex" style="text-align:center;">
-                <img src="logo.png" id="p-img" style="width:100px; height:100px; border-radius:20px; border:2px solid var(--neon);">
-                <h2 id="p-name" style="margin:10px 0;">Cargando...</h2>
+                <div style="position:relative; width:110px; margin:0 auto;">
+                    <img src="logo.png" id="p-img" style="width:110px; height:110px; border-radius:50%; border:3px solid var(--neon); padding:3px;">
+                </div>
+                <h2 id="p-name" style="margin:15px 0; font-family:'Orbitron';">Sincronizando...</h2>
                 <div class="xp-track"><div id="p-xp-fill" class="xp-fill"></div></div>
-                <p id="p-xp-text" style="font-size:0.7rem; color:var(--neon);">0 / 100 XP</p>
+                <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--neon); font-weight:bold;">
+                    <span>XP PROGRESO</span>
+                    <span id="p-xp-text">0 / 100</span>
+                </div>
+            </div>
+            
+            <div class="card-apex">
+                <h4 style="color:var(--cyan); margin-bottom:10px;"><i class="fas fa-info-circle"></i> ESTADO DEL SISTEMA</h4>
+                <p style="font-size:0.8rem; color:#888;">El sistema de XP se activa automáticamente cuando permaneces en la página.</p>
             </div>
         </section>
 
         <section id="v-social" style="display:none;">
-            <input type="text" placeholder="Buscar jugadores..." id="user-search">
-            <div id="user-list"></div>
-        </section>
-
-        <section id="v-admin" style="display:none;">
-            <h3 style="color:var(--crimson);">REPORTES Y BLOQUEOS</h3>
-            <div class="card-apex" style="margin-top:15px; border-color:var(--crimson);">
-                <p style="font-size:0.8rem;">No hay reportes activos.</p>
+            <h3 style="margin-bottom:15px; padding-left:10px;">Contactos Disponibles</h3>
+            <div id="user-list">
+                <p style="text-align:center; color:#444; margin-top:20px;">Buscando jugadores...</p>
             </div>
         </section>
 
         <section id="v-config" style="display:none;">
             <div class="card-apex">
-                <input type="text" id="edit-name-inp" placeholder="Nuevo nombre">
-                <button onclick="saveName()" style="width:100%; padding:10px; background:var(--neon); border:none; font-weight:bold;">GUARDAR</button>
-                <button onclick="recovery()" style="width:100%; padding:10px; background:transparent; border:1px solid var(--cyan); color:var(--cyan); margin-top:10px;">RECUPERAR CUENTA</button>
+                <label style="font-size:0.7rem; color:var(--neon);">NOMBRE DE USUARIO</label>
+                <input type="text" id="edit-name-inp" style="width:100%; padding:12px; background:#000; border:1px solid #333; color:#fff; border-radius:10px; margin:10px 0;">
+                <button onclick="saveName()" class="btn-action" style="background:var(--neon); color:#000;">ACTUALIZAR PERFIL</button>
+                <button onclick="logout()" class="btn-action" style="background:var(--crimson); color:#fff; margin-top:20px;">CERRAR SESIÓN</button>
             </div>
         </section>
     </main>
 
     <nav class="nav-dock">
-        <div class="nav-item active" onclick="nav('home', this)"><i class="fas fa-user"></i></div>
-        <div class="nav-item" onclick="nav('social', this)"><i class="fas fa-users"></i></div>
-        <div class="nav-item" onclick="nav('admin', this)"><i class="fas fa-shield-alt"></i></div>
-        <div class="nav-item" onclick="nav('config', this)"><i class="fas fa-cog"></i></div>
+        <div class="nav-item active" onclick="nav('home', this)"><i class="fas fa-id-card"></i><span>PERFIL</span></div>
+        <div class="nav-item" onclick="nav('social', this)"><i class="fas fa-comment-alt"></i><span>CHATS</span></div>
+        <div class="nav-item" onclick="nav('config', this)"><i class="fas fa-user-cog"></i><span>AJUSTES</span></div>
     </nav>
 </div>
 
 <div class="chat-panel" id="chat-window">
-    <div style="padding:15px; border-bottom:1px solid #222; display:flex; align-items:center; gap:10px;">
-        <i class="fas fa-arrow-left" onclick="closeChat()" style="color:var(--neon);"></i>
-        <img src="logo.png" id="c-target-img" style="width:30px; border-radius:50%;">
-        <span id="c-target-name">Chat</span>
+    <div class="chat-header">
+        <i class="fas fa-arrow-left" onclick="closeChat()" style="cursor:pointer; font-size:1.2rem;"></i>
+        <img src="logo.png" id="c-target-img" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+        <div style="flex:1">
+            <div id="c-target-name" style="font-weight:bold; font-size:1rem;">Usuario</div>
+            <div style="font-size:0.6rem; color:var(--whatsapp);">en línea</div>
+        </div>
+        <i class="fas fa-ellipsis-v"></i>
     </div>
     <div class="chat-body" id="chat-msgs"></div>
-    <div style="padding:10px; display:flex; gap:10px;">
-        <input type="text" id="m-inp" placeholder="Mensaje..." style="margin:0;">
-        <button onclick="send()" style="background:var(--neon); border:none; padding:10px 20px; border-radius:10px;"><i class="fas fa-paper-plane"></i></button>
+    <div class="chat-input-area">
+        <i class="far fa-smile" style="font-size:1.4rem; color:#8696a0;"></i>
+        <input type="text" id="m-inp" placeholder="Escribe un mensaje">
+        <button onclick="send()" style="background:var(--whatsapp); border:none; width:45px; height:45px; border-radius:50%; color:#fff;"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, onSnapshot, updateDoc, collection, query, getDocs, addDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+    import { getFirestore, doc, onSnapshot, updateDoc, setDoc, getDoc, collection, query, getDocs, addDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -130,21 +148,43 @@
     const ld = document.getElementById('loader');
     for(let i=0; i<25; i++) ld.innerHTML += '<div class="tile"></div>';
 
+    // FAILSAFE: Quitar loader si algo falla tras 4 segundos
+    setTimeout(() => document.body.classList.add('loaded'), 4000);
+
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            onSnapshot(doc(db, "users", user.uid), (snap) => {
-                uData = snap.data() || {};
+            const userRef = doc(db, "users", user.uid);
+            
+            // VERIFICAR/CREAR USUARIO AUTOMÁTICAMENTE
+            const snap = await getDoc(userRef);
+            if (!snap.exists()) {
+                await setDoc(userRef, {
+                    displayName: user.displayName || "Nuevo Usuario",
+                    photoURL: user.photoURL || "logo.png",
+                    level: 0,
+                    xp: 0,
+                    membership: "usuario"
+                });
+            }
+
+            // ESCUCHAR DATOS
+            onSnapshot(userRef, (s) => {
+                uData = s.data() || {};
                 render();
-                document.body.classList.add('loaded');
+                document.body.classList.add('loaded'); // Quitar pantalla negra
             });
+
             loadUsers();
             initXP();
-        } else { location.href = "index.html"; }
+        } else {
+            location.href = "index.html";
+        }
     });
 
     function render() {
         document.getElementById('p-name').innerText = uData.displayName || "Gamer";
         document.getElementById('p-img').src = uData.photoURL || "logo.png";
+        document.getElementById('edit-name-inp').value = uData.displayName || "";
         document.getElementById('p-lvl-top').innerText = `LVL ${uData.level || 0}`;
         document.getElementById('p-xp-text').innerText = `${uData.xp || 0} / 100 XP`;
         document.getElementById('p-xp-fill').style.width = `${uData.xp || 0}%`;
@@ -160,12 +200,12 @@
     function initXP() {
         setInterval(() => {
             if(document.visibilityState === 'visible' && auth.currentUser) {
-                let xp = (uData.xp || 0) + 1;
+                let xp = (uData.xp || 0) + 2;
                 let lvl = (uData.level || 0);
                 if(xp >= 100) { xp = 0; lvl++; }
                 updateDoc(doc(db, "users", auth.currentUser.uid), { xp, level: lvl });
             }
-        }, 10000); // Sube XP cada 10 segs activo
+        }, 15000); // Sube XP cada 15 segundos
     }
 
     async function loadUsers() {
@@ -177,9 +217,12 @@
             if(d.id === auth.currentUser.uid) return;
             const data = d.data();
             const row = document.createElement('div');
-            row.className = "user-row";
-            row.innerHTML = `<img src="${data.photoURL || 'logo.png'}" style="width:40px; border-radius:10px;"> 
-                             <div><b>${data.displayName}</b><br><small>LVL ${data.level || 0}</small></div>`;
+            row.className = "contact-row";
+            row.innerHTML = `<img src="${data.photoURL || 'logo.png'}" class="avatar"> 
+                             <div style="flex:1">
+                                <div style="font-weight:bold;">${data.displayName}</div>
+                                <div style="font-size:0.7rem; color:#888;">Nivel: ${data.level || 0}</div>
+                             </div>`;
             row.onclick = () => openChat(d.id, data);
             list.appendChild(row);
         });
@@ -188,30 +231,45 @@
     window.openChat = (id, data) => {
         activeChat = id;
         document.getElementById('c-target-name').innerText = data.displayName;
+        document.getElementById('c-target-img').src = data.photoURL || 'logo.png';
         document.getElementById('chat-window').classList.add('chat-active');
+        
         const chatId = [auth.currentUser.uid, id].sort().join("_");
         onSnapshot(query(collection(db, "chats", chatId, "messages"), orderBy("time", "asc")), (snap) => {
             const box = document.getElementById('chat-msgs');
             box.innerHTML = "";
             snap.forEach(m => {
                 const d = m.data();
-                box.innerHTML += `<div class="bubble ${d.from === auth.currentUser.uid ? 'b-sent':'b-rec'}">${d.text}</div>`;
+                const time = new Date(d.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                box.innerHTML += `<div class="bubble ${d.from === auth.currentUser.uid ? 'b-sent':'b-rec'}">
+                                    ${d.text}
+                                    <div style="font-size:0.6rem; text-align:right; margin-top:4px; opacity:0.6;">${time}</div>
+                                  </div>`;
             });
             box.scrollTop = box.scrollHeight;
         });
     };
 
     window.send = async () => {
-        const txt = document.getElementById('m-inp').value;
-        if(!txt) return;
+        const inp = document.getElementById('m-inp');
+        if(!inp.value || !activeChat) return;
         const chatId = [auth.currentUser.uid, activeChat].sort().join("_");
-        await addDoc(collection(db, "chats", chatId, "messages"), { text: txt, from: auth.currentUser.uid, time: Date.now() });
-        document.getElementById('m-inp').value = "";
+        await addDoc(collection(db, "chats", chatId, "messages"), { 
+            text: inp.value, 
+            from: auth.currentUser.uid, 
+            time: Date.now() 
+        });
+        inp.value = "";
     };
 
     window.closeChat = () => document.getElementById('chat-window').classList.remove('chat-active');
-    window.recovery = () => sendPasswordResetEmail(auth, auth.currentUser.email).then(()=>alert("Email enviado"));
+    window.logout = () => signOut(auth).then(() => location.href = "index.html");
     window.saveName = () => updateDoc(doc(db, "users", auth.currentUser.uid), { displayName: document.getElementById('edit-name-inp').value });
+
+    // Enviar con Enter
+    document.getElementById('m-inp').addEventListener("keypress", (e) => {
+        if (e.key === "Enter") send();
+    });
 </script>
 </body>
 </html>
