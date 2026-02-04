@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DANIBOOM WEB | Principal</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
         body { background: #050505; color: #fff; overflow-x: hidden; }
 
-        /* --- HEADER --- */
+        /* HEADER */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
@@ -21,141 +19,90 @@
         }
         .logo { display: flex; align-items: center; gap: 0.8rem; }
         .logo img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid gold; box-shadow: 0 0 10px gold; }
-        .logo span {
-            font-family: 'Press Start 2P'; font-size: 1.1rem;
-            color: #ffd700; text-shadow: 0 0 12px gold;
-        }
+        .logo span { font-family: 'Press Start 2P'; font-size: 1.1rem; color: #ffd700; text-shadow: 0 0 12px gold; }
 
+        /* HEADER DERECHA */
         .header-right { display: flex; align-items: center; gap: 20px; }
-
-        /* --- ANIMACIÓN 3 PUNTOS A X --- */
         .menu-btn { width: 30px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2001; }
         .menu-btn span { height: 3px; background: gold; border-radius: 3px; transition: 0.4s; width: 100%; }
         .menu-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
         .menu-btn.open span:nth-child(2) { opacity: 0; }
         .menu-btn.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
-        /* --- CAMPANITA --- */
         .notif-container { position: relative; cursor: pointer; font-size: 1.8rem; color: gold; transition: 0.3s; }
         .bell-shake { animation: shake 0.5s infinite; color: #ff0000 !important; filter: drop-shadow(0 0 8px red); }
-        .notif-dot { 
-            position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; 
-            background: red; border-radius: 50%; display: none; border: 2px solid black; 
-        }
+        .notif-dot { position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: red; border-radius: 50%; display: none; border: 2px solid black; }
 
-        @keyframes shake {
-            0%, 100% { transform: rotate(0); }
-            25% { transform: rotate(20deg); }
-            75% { transform: rotate(-20deg); }
-        }
+        @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(20deg); } 75% { transform: rotate(-20deg); } }
 
-        /* --- MENU POPUP --- */
+        /* MENU POPUP */
         .menu-popup {
             position: absolute; top: 85px; right: 15px; background: #0a0a0a; border: 2px solid gold; 
             border-radius: 20px; padding: 1.5rem; display: none; flex-direction: column; min-width: 300px;
             box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
         }
+        .profile-card { background: #111; border: 2px solid gold; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid gold; object-fit: cover; }
 
-        .profile-card {
-            background: #111; border: 2px solid gold; border-radius: 15px;
-            padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;
-        }
-        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid gold; object-fit: cover; background: #000; }
-
-        /* --- ROLES --- */
+        /* ROLES */
         .role-badge-ui { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.8rem; margin-top: 5px; }
         .role-anonymous { color: #888; text-shadow: 0 0 5px #444; }
         .role-suscriptor { color: gold; text-shadow: 0 0 10px gold; }
         .role-admin { color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
         .role-owner { color: #ff0000; text-shadow: 0 0 12px red; }
 
-        /* --- BOTONES --- */
-        .nav-item {
-            font-size: 0.9rem; font-weight: 800; color: gold; text-transform: uppercase;
-            cursor: pointer; padding: 12px; border-bottom: 1px solid rgba(255, 215, 0, 0.1);
-            display: flex; align-items: center; gap: 10px; transition: 0.3s;
-        }
-        .nav-item:hover { background: rgba(255, 215, 0, 0.1); padding-left: 15px; }
+        .nav-item { font-size: 0.9rem; font-weight: 800; color: gold; text-transform: uppercase; cursor: pointer; padding: 12px; border-bottom: 1px solid rgba(255, 215, 0, 0.1); display: flex; align-items: center; gap: 10px; }
+        #adminUtils { margin-top: 10px; border: 2px solid red; border-radius: 12px; padding: 12px; background: #000; box-shadow: 0 0 15px red; text-align: center; }
 
-        #adminUtils {
-            margin-top: 10px; border: 2px solid red; border-radius: 12px;
-            padding: 12px; background: #000; box-shadow: 0 0 15px red; text-align: center;
-        }
-
-        /* --- PANEL NOTIFICACIONES FULL --- */
-        .notif-panel {
-            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
-            background: rgba(0,0,0,0.98); z-index: 2000; transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1);
-            display: flex; flex-direction: column; align-items: center; padding: 2rem;
-        }
+        /* PANEL NOTIF */
+        .notif-panel { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: rgba(0,0,0,0.98); z-index: 2000; transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1); display: flex; flex-direction: column; align-items: center; padding: 2rem; }
         .notif-panel.active { right: 0; }
-        .notif-card {
-            border: 2px solid red; background: #000; padding: 20px; border-radius: 15px;
-            width: 100%; max-width: 450px; margin-top: 20px; box-shadow: 0 0 20px rgba(255,0,0,0.3);
-            transition: opacity 0.5s;
-        }
+        .notif-card { border: 2px solid red; background: #000; padding: 20px; border-radius: 15px; width: 100%; max-width: 450px; margin-top: 20px; box-shadow: 0 0 20px rgba(255,0,0,0.3); transition: opacity 0.5s; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">
-        <img src="logo.png" alt="Logo">
-        <span>DANIBOOM WEB</span>
-    </div>
-
+    <div class="logo"><img src="logo.png"><span>DANIBOOM WEB</span></div>
     <div class="header-right">
-        <div id="menuBtn" class="menu-btn">
-            <span></span><span></span><span></span>
-        </div>
-        
-        <div id="notifBtn" class="notif-container">
-            <i class="fas fa-bell" id="bellIcon"></i>
-            <span id="notifDot" class="notif-dot"></span>
-        </div>
+        <div id="menuBtn" class="menu-btn"><span></span><span></span><span></span></div>
+        <div id="notifBtn" class="notif-container"><i class="fas fa-bell" id="bellIcon"></i><span id="notifDot" class="notif-dot"></span></div>
     </div>
-
     <div class="menu-popup" id="menuPopup">
         <div class="profile-card">
             <img src="" id="profilePic" class="profile-pic">
-            <h3 id="profileName" style="font-size: 0.9rem;">Cargando...</h3>
+            <h3 id="profileName">Cargando...</h3>
             <div id="roleUI" class="role-badge-ui"></div>
         </div>
-
         <div class="menu-links-extra">
             <div class="nav-item" onclick="location.href='redes.html'"><i class="fas fa-share-alt"></i> Redes</div>
-            
             <div id="linksPrivados" style="display:none;">
                 <div class="nav-item" onclick="location.href='sensibilidades.html'"><i class="fas fa-crosshairs"></i> Sensibilidades</div>
                 <div class="nav-item" onclick="location.href='apps.html'"><i class="fas fa-mobile-alt"></i> Aplicaciones Pro</div>
-                <div class="nav-item" onclick="location.href='perfil.html'"><i class="fas fa-user-circle"></i> Ver Perfil</div>
             </div>
-
             <div id="adminUtils" style="display:none;">
-                <p style="color:red; font-size:0.7rem; margin-bottom:8px; font-weight:bold;">SISTEMA ADMINISTRADOR</p>
-                <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">PANEL DE AVISOS</button>
+                <p style="color:red; font-size:0.7rem; margin-bottom:8px; font-weight:bold;">ADMIN PANEL</p>
+                <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;">NOTIFICAR</button>
             </div>
         </div>
-
         <div id="sessionBtnArea"></div>
     </div>
 </header>
 
 <aside class="notif-panel" id="notifPanel">
     <span id="closeNotif" style="position:absolute; top:25px; right:35px; font-size:3.5rem; color:gold; cursor:pointer;">&times;</span>
-    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; font-size:0.8rem; text-shadow: 0 0 10px gold;">NOTIFICACIONES</h2>
-    
-    <div id="notifContainer" style="width:100%; display:flex; flex-direction:column; align-items:center; gap:20px;"></div>
+    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; font-size:0.8rem;">AVISOS RECIENTES</h2>
+    <div id="notifContainer" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
 </aside>
 
 <main style="padding-top: 160px; text-align: center;">
-    <h1 style="color:gold; text-shadow: 0 0 20px gold; font-size: 2.5rem;">ZONA PRINCIPAL</h1>
+    <h1 style="color:gold; text-shadow: 0 0 20px gold; font-size: 2.5rem;">BIENVENIDO</h1>
 </main>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, collection, query, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, query, onSnapshot, getDocs, where } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -167,7 +114,6 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // --- LÓGICA DE USUARIOS ---
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             const snap = await getDoc(doc(db, "users", user.uid));
@@ -181,55 +127,41 @@
             }
 
             const role = d.membership || 'anonymous';
-            const roleUI = document.getElementById('roleUI');
-            
-            // Render de Insignias
             const icons = { owner: 'crown', admin: 'shield-alt', suscriptor: 'star', anonymous: 'user-secret' };
-            roleUI.innerHTML = `<i class="fas fa-${icons[role]}"></i> <span class="role-${role}">${role.toUpperCase()}</span>`;
-            roleUI.className = `role-badge-ui role-${role}`;
-
+            document.getElementById('roleUI').innerHTML = `<i class="fas fa-${icons[role]}"></i> <span class="role-${role}">${role.toUpperCase()}</span>`;
             document.getElementById('profileName').innerText = d.displayName;
             document.getElementById('profilePic').src = d.photoURL || "logo.png";
 
-            // Accesos según rol
-            const isAnon = role === 'anonymous';
-            document.getElementById('linksPrivados').style.display = isAnon ? 'none' : 'block';
+            document.getElementById('linksPrivados').style.display = (role === 'anonymous') ? 'none' : 'block';
             document.getElementById('adminUtils').style.display = (role === 'admin' || role === 'owner') ? 'block' : 'none';
 
-            document.getElementById('sessionBtnArea').innerHTML = isAnon 
+            document.getElementById('sessionBtnArea').innerHTML = (role === 'anonymous') 
                 ? `<button onclick="location.href='index.html'" class="nav-item" style="width:100%; background:gold; color:black; border:none; border-radius:10px; justify-content:center; margin-top:10px;">INICIAR SESIÓN</button>`
                 : `<button id="logoutBtn" class="nav-item" style="width:100%; background:#222; color:white; border:none; border-radius:10px; justify-content:center; margin-top:10px;">CERRAR SESIÓN</button>`;
 
-            if(!isAnon) document.getElementById('logoutBtn').onclick = () => signOut(auth).then(()=> location.reload());
+            if(role !== 'anonymous') document.getElementById('logoutBtn').onclick = () => signOut(auth).then(()=> location.reload());
 
-            // Activar escucha de notificaciones
             escucharNotificaciones();
-        } else {
-            location.href = "index.html";
-        }
+        } else { location.href = "index.html"; }
     });
 
-    // --- NOTIFICACIONES EN TIEMPO REAL ---
     function escucharNotificaciones() {
-        const q = query(collection(db, "notifications"));
+        // Solo escuchamos notificaciones creadas en los últimos 10 segundos para evitar "fantasmas" al recargar
+        const diezSegundosAtras = Date.now() - 10000;
+        const q = query(collection(db, "notifications"), where("createdAt", ">", diezSegundosAtras));
         
         onSnapshot(q, (snapshot) => {
-            const container = document.getElementById('notifContainer');
-            const bell = document.getElementById('bellIcon');
-            const dot = document.getElementById('notifDot');
-            const now = Date.now();
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    const data = change.doc.data();
+                    const diff = (Date.now() - data.createdAt) / 1000;
+                    const remaining = Math.ceil(5 - diff);
 
-            container.innerHTML = ""; // Limpiar panel
-
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                const diff = (now - data.createdAt) / 1000;
-                const remaining = Math.ceil(5 - diff);
-
-                if (remaining > 0) {
-                    bell.classList.add('bell-shake');
-                    dot.style.display = 'block';
-                    renderNotif(docSnap.id, data, remaining);
+                    if (remaining > 0) {
+                        document.getElementById('bellIcon').classList.add('bell-shake');
+                        document.getElementById('notifDot').style.display = 'block';
+                        renderNotif(change.doc.id, data, remaining);
+                    }
                 }
             });
         });
@@ -240,48 +172,23 @@
         const card = document.createElement('div');
         card.className = "notif-card";
         card.id = `card-${id}`;
-        
         card.innerHTML = `
-            <div style="display:flex; align-items:center; gap:10px; color:red; margin-bottom:12px;">
-                <i class="fab fa-youtube" style="font-size:1.8rem;"></i>
-                <span style="font-weight:800; font-size:0.9rem;">${data.title}</span>
-            </div>
+            <div style="display:flex; align-items:center; gap:10px; color:red; margin-bottom:12px;"><i class="fab fa-youtube" style="font-size:1.8rem;"></i><span style="font-weight:800; font-size:0.9rem;">${data.title}</span></div>
             <p style="font-size:0.85rem; color:#ccc;">${data.message}</p>
             <button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:red; color:white; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer;">VER AHORA</button>
-            <p style="font-size:0.75rem; color:#666; margin-top:12px; text-align:center;">Borrado automático en: <span id="timer-${id}" style="color:red; font-weight:bold;">${time}</span>s</p>
+            <p style="font-size:0.75rem; color:#666; margin-top:12px; text-align:center;">Expira en: <span id="timer-${id}" style="color:red;">${time}</span>s</p>
         `;
-        
         container.appendChild(card);
-
         let seg = time;
         const interval = setInterval(() => {
             seg--;
-            const label = document.getElementById(`timer-${id}`);
-            if(label) label.innerText = seg;
-            
-            if(seg <= 0) {
-                clearInterval(interval);
-                card.style.opacity = "0";
-                setTimeout(() => card.remove(), 500);
-            }
+            if(document.getElementById(`timer-${id}`)) document.getElementById(`timer-${id}`).innerText = seg;
+            if(seg <= 0) { clearInterval(interval); card.style.opacity = "0"; setTimeout(() => card.remove(), 500); }
         }, 1000);
     }
 
-    // --- INTERFAZ ---
-    const mBtn = document.getElementById('menuBtn');
-    const mPopup = document.getElementById('menuPopup');
-
-    mBtn.onclick = () => {
-        mBtn.classList.toggle('open');
-        mPopup.style.display = mPopup.style.display === 'flex' ? 'none' : 'flex';
-    };
-
-    document.getElementById('notifBtn').onclick = () => {
-        document.getElementById('notifPanel').classList.add('active');
-        document.getElementById('bellIcon').classList.remove('bell-shake');
-        document.getElementById('notifDot').style.display = 'none';
-    };
-
+    document.getElementById('menuBtn').onclick = function() { this.classList.toggle('open'); document.getElementById('menuPopup').style.display = (document.getElementById('menuPopup').style.display === 'flex') ? 'none' : 'flex'; };
+    document.getElementById('notifBtn').onclick = () => { document.getElementById('notifPanel').classList.add('active'); document.getElementById('bellIcon').classList.remove('bell-shake'); document.getElementById('notifDot').style.display = 'none'; };
     document.getElementById('closeNotif').onclick = () => document.getElementById('notifPanel').classList.remove('active');
 </script>
 </body>
