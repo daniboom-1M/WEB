@@ -50,7 +50,7 @@
         @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
 
         /* --- BOTÓN MENÚ --- */
-        .menu-btn { width: 28px; display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+        .menu-btn { width: 28px; display: flex; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1100; }
         .menu-btn span { height: 3px; background: var(--neon-gold); border-radius: 3px; transition: .4s; box-shadow: 0 0 5px var(--neon-gold); }
         .menu-btn.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-btn.active span:nth-child(2) { opacity: 0; }
@@ -61,7 +61,7 @@
             position: fixed; top: 85px; right: 20px; background: rgba(10, 10, 10, 0.95); 
             border: 2px solid var(--neon-gold); border-radius: 20px; padding: 1.5rem; display: none; 
             flex-direction: column; min-width: 300px; backdrop-filter: blur(15px);
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8); z-index: 1050;
         }
         .profile-card { background: rgba(255,255,255,0.05); border: 1px solid var(--neon-gold); border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px;}
         .profile-pic { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-gold); object-fit: cover; box-shadow: 0 0 10px var(--neon-gold); }
@@ -83,8 +83,8 @@
         .notif-panel.active { right: 0; }
         .notif-card { border: 2px solid; background: #000; padding: 20px; border-radius: 20px; width: 100%; max-width: 450px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        /* --- NUEVOS ESTILOS LANDING DANIBOOM X FF --- */
-        main { padding-top: 120px; }
+        /* --- SECCIONES DINÁMICAS (SCROLL EFFECTS) --- */
+        main { padding-top: 100px; }
         
         .scroll-section {
             min-height: 100vh;
@@ -92,121 +92,80 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             opacity: 0;
             transform: translateY(100px) scale(0.9);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             filter: blur(10px);
         }
 
-        .scroll-section.is-visible {
+        .scroll-section.visible {
             opacity: 1;
             transform: translateY(0) scale(1);
             filter: blur(0px);
         }
 
-        .neon-gun {
-            width: 140px;
-            filter: drop-shadow(0 0 15px var(--neon-gold));
-            animation: weapon-float 3s ease-in-out infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes weapon-float {
-            0%, 100% { transform: translateY(0) rotate(-5deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
-        }
-
+        /* --- ESTILO TÍTULO FREE FIRE ORIGINAL --- */
+        .ff-title-container { text-align: center; margin-bottom: 20px; }
+        .main-title { font-size: 2.2rem; font-weight: 800; color: #fff; text-shadow: 0 0 10px var(--neon-red); margin-bottom: 5px; }
         .ff-logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 10vw, 4.5rem);
+            font-size: 4.5rem;
             font-weight: 900;
-            letter-spacing: 5px;
-            color: #fff;
             font-style: italic;
-            text-transform: uppercase;
-            text-shadow: 4px 4px 0px #000;
-            margin-bottom: 15px;
-        }
-
-        .yellow-knife {
-            color: #ffcc00;
-            filter: drop-shadow(0 0 10px #ffcc00);
+            letter-spacing: -2px;
+            color: #fff;
+            text-shadow: 4px 4px 0px #000, 0 0 20px rgba(255,255,255,0.2);
+            line-height: 1;
             display: inline-block;
         }
-
-        .x-neon {
-            color: var(--neon-red);
-            text-shadow: 0 0 20px var(--neon-red);
-            font-family: 'Press Start 2P';
-            font-size: 0.8em;
+        .ff-i {
+            color: var(--neon-gold);
+            position: relative;
+            display: inline-block;
+            transform: skewX(-15deg);
+            filter: drop-shadow(0 0 15px var(--neon-gold));
+        }
+        .ff-i::after {
+            content: ''; position: absolute; top: -5px; left: 50%; width: 4px; height: 110%;
+            background: var(--neon-gold); transform: rotate(10deg); z-index: -1;
         }
 
-        .neon-badge {
-            font-family: 'Press Start 2P';
-            font-size: 0.65rem;
-            color: var(--neon-blue);
-            text-shadow: 0 0 10px var(--neon-blue);
-            background: rgba(0, 242, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 1px solid var(--neon-blue);
+        /* --- PISTOLA NEÓN --- */
+        .weapon-box { font-size: 5rem; color: var(--neon-gold); filter: drop-shadow(0 0 20px var(--neon-gold)); animation: weaponFloat 3s infinite ease-in-out; margin-bottom: 20px; }
+        @keyframes weaponFloat { 0%, 100% { transform: translateY(0) rotate(-10deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+
+        /* --- VIDEO Y CONTENIDO --- */
+        .video-box { 
+            width: 100%; max-width: 800px; aspect-ratio: 16/9; 
+            border: 4px solid var(--neon-gold); border-radius: 20px; 
+            overflow: hidden; box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            margin: 30px 0;
         }
+        .video-box iframe { width: 100%; height: 100%; }
 
-        .video-container {
-            width: 100%;
-            max-width: 850px;
-            border: 4px solid var(--neon-gold);
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
-            margin: 40px 0;
-        }
-
-        .video-container iframe { width: 100%; aspect-ratio: 16/9; display: block; }
-
-        .speech-bubble {
+        .thanks-card {
             background: rgba(255, 255, 255, 0.05);
-            border-left: 6px solid var(--neon-red);
-            padding: 30px;
-            border-radius: 0 20px 20px 0;
-            max-width: 800px;
-            text-align: left;
+            border-left: 5px solid var(--neon-red);
+            padding: 25px; border-radius: 0 20px 20px 0;
+            max-width: 700px; text-align: left;
         }
+        .thanks-card h2 { color: var(--neon-gold); font-family: 'Press Start 2P'; font-size: 0.8rem; margin-bottom: 15px; }
+        .thanks-card p { line-height: 1.6; font-size: 0.9rem; color: #ccc; }
 
-        .speech-bubble h3 { color: var(--neon-gold); margin-bottom: 10px; font-family: 'Press Start 2P'; font-size: 0.8rem; }
-
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 900px;
-            margin-top: 40px;
+        /* --- SOCIAL GRID --- */
+        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 800px; margin-top: 30px; }
+        .social-btn { 
+            padding: 20px; border-radius: 15px; border: 1px solid rgba(255,215,0,0.3); 
+            background: rgba(0,0,0,0.5); transition: 0.3s; cursor: pointer; text-align: center;
         }
+        .social-btn:hover { border-color: var(--neon-gold); transform: translateY(-10px); background: rgba(255,215,0,0.1); }
+        .social-btn i { font-size: 2rem; margin-bottom: 10px; display: block; }
 
-        .social-card {
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px solid rgba(255,215,0,0.3);
-            background: rgba(0,0,0,0.5);
-            cursor: pointer;
-            transition: 0.3s;
-            text-align: center;
+        @media (max-width: 768px) {
+            .ff-logo-text { font-size: 2.8rem; }
+            .main-title { font-size: 1.5rem; }
+            .weapon-box { font-size: 3.5rem; }
         }
-
-        .social-card:hover { 
-            transform: translateY(-10px); 
-            border-color: var(--neon-gold);
-            background: rgba(255,215,0,0.1);
-        }
-
-        .social-card i { font-size: 2rem; margin-bottom: 10px; }
-        .fa-youtube { color: #ff0000; }
-        .fa-tiktok { color: #fff; }
-        .fa-facebook { color: #1877f2; }
-        .fa-instagram { color: #e4405f; }
-
     </style>
 </head>
 <body>
@@ -273,39 +232,33 @@
 
 <main>
     <section class="scroll-section">
-        <img src="https://img.icons8.com/neon/96/assault-rifle.png" class="neon-gun" alt="pistola">
-        <div class="ff-logo-text">
-            DANIBOOM <span class="x-neon">X</span> FREE F<span class="yellow-knife">I</span>RE
+        <div class="weapon-box">
+            <i class="fas fa-gun"></i>
         </div>
-        <p class="neon-badge">INFLUENCER OFICIAL</p>
+        <div class="ff-title-container">
+            <h1 class="main-title">DANIBOOM <span style="color:var(--neon-red); font-family:'Press Start 2P'; font-size:0.6em;">X</span></h1>
+            <div class="ff-logo-text">FREE F<span class="ff-i">I</span>RE</div>
+        </div>
+        <p style="color: var(--neon-blue); font-family: 'Press Start 2P'; font-size: 0.6rem; letter-spacing: 2px;">INFLUENCER PROGRAM • 2024</p>
     </section>
 
     <section class="scroll-section">
-        <h2 style="font-family:'Press Start 2P'; color:var(--neon-gold); font-size:1rem; margin-bottom:20px;">MI AGRADECIMIENTO</h2>
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/TU_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+        <div class="thanks-card">
+            <h2>META CUMPLIDA</h2>
+            <p>¡Familia! Gracias a su apoyo incondicional en cada directo y video, hoy somos oficialmente parte del <strong>Programa de Influencers</strong>. Esta web es para ustedes, aquí tendrán las mejores herramientas para dominar el juego.</p>
         </div>
-        <div class="speech-bubble">
-            <h3>¡LO LOGRAMOS EQUIPO!</h3>
-            <p>Gracias a cada uno de ustedes por el apoyo en todas mis plataformas. Por fin soy parte del programa de influencers de Free Fire. En esta web encontrarán todo lo que necesitan para mejorar su nivel: sensibilidades, apps y mucho más.</p>
+        <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/PON_AQUI_EL_ID_DE_TU_VIDEO?autoplay=1&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
     </section>
 
     <section class="scroll-section">
-        <h2 style="font-family:'Press Start 2P'; color:var(--neon-gold); font-size:1rem; margin-bottom:20px;">SÍGUEME EN MIS REDES</h2>
+        <h2 style="color: var(--neon-gold); font-family: 'Press Start 2P'; font-size: 0.9rem; margin-bottom: 20px;">SQUAD DIGITAL</h2>
         <div class="social-grid">
-            <div class="social-card" onclick="window.open('TU_LINK_YOUTUBE')">
-                <i class="fab fa-youtube"></i><br>YOUTUBE
-            </div>
-            <div class="social-card" onclick="window.open('TU_LINK_TIKTOK')">
-                <i class="fab fa-tiktok"></i><br>TIKTOK
-            </div>
-            <div class="social-card" onclick="window.open('TU_LINK_FB')">
-                <i class="fab fa-facebook"></i><br>FACEBOOK
-            </div>
-            <div class="social-card" onclick="window.open('TU_LINK_IG')">
-                <i class="fab fa-instagram"></i><br>INSTAGRAM
-            </div>
+            <div class="social-btn" onclick="window.open('URL_TIKTOK')"><i class="fab fa-tiktok" style="color:#fff;"></i>TIKTOK</div>
+            <div class="social-btn" onclick="window.open('URL_YOUTUBE')"><i class="fab fa-youtube" style="color:#ff0000;"></i>YOUTUBE</div>
+            <div class="social-btn" onclick="window.open('URL_FB')"><i class="fab fa-facebook" style="color:#1877f2;"></i>FACEBOOK</div>
+            <div class="social-btn" onclick="window.open('URL_IG')"><i class="fab fa-instagram" style="color:#e4405f;"></i>INSTAGRAM</div>
         </div>
     </section>
 </main>
@@ -325,20 +278,22 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // --- LÓGICA DE ANIMACIÓN SCROLL ---
-    const observer = new IntersectionObserver((entries) => {
+    // --- MOTOR DE ANIMACIÓN SCROLL (APARECE/DESAPARECE) ---
+    const observerOptions = { threshold: 0.1 };
+    const scrollObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
+                entry.target.classList.add('visible');
             } else {
-                entry.target.classList.remove('is-visible');
+                entry.target.classList.remove('visible');
             }
         });
-    }, { threshold: 0.15 });
+    }, observerOptions);
 
-    document.querySelectorAll('.scroll-section').forEach(s => observer.observe(s));
+    document.querySelectorAll('.scroll-section').forEach(section => {
+        scrollObserver.observe(section);
+    });
 
-    // --- LÓGICA DE ROLES Y UI ---
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             let snap = await getDoc(doc(db, "users", user.uid));
@@ -387,7 +342,6 @@
         } else { location.href = "index.html"; }
     });
 
-    // --- LÓGICA DE NOTIFICACIONES ---
     function escucharNotificaciones() {
         const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
         onSnapshot(q, (snapshot) => {
@@ -437,4 +391,4 @@
             </div>
             <p style="font-size:0.85rem; color:#eee;">${data.message}</p>
             ${btnHTML}
-            <div style="font-size:0.6rem; color:#
+            <div style="font-size:0.6rem; color:#666; margin-top:1 
