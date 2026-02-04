@@ -11,175 +11,102 @@
             --neon-gold: #ffd700;
             --neon-red: #ff0000;
             --neon-blue: #00f2ff;
-            --glass: rgba(0, 0, 0, 0.7);
+            --glass: rgba(0, 0, 0, 0.85);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
         body { 
-            background: radial-gradient(circle at center, #111 0%, #050505 100%); 
+            background: #050505; 
             color: #fff; 
             overflow-x: hidden; 
             min-height: 100vh;
         }
 
-        /* --- HEADER MAESTRO --- */
+        /* --- HEADER --- */
         header {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
+            position: fixed; top: 0; width: 100%; z-index: 2000;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 1rem 2rem; background: var(--glass);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-bottom: 2px solid var(--neon-gold);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            padding: 1rem 1.5rem; background: var(--glass);
+            backdrop-filter: blur(15px); border-bottom: 2px solid var(--neon-gold);
         }
 
-        .logo { display: flex; align-items: center; gap: 1rem; cursor: pointer; }
-        .logo img { 
-            width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--neon-gold); 
-            box-shadow: 0 0 15px var(--neon-gold); transition: 0.3s;
-        }
-        .logo:hover img { transform: scale(1.1); }
-        .logo span { font-family: 'Press Start 2P'; font-size: 0.85rem; color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); }
+        .logo { display: flex; align-items: center; gap: 0.8rem; cursor: pointer; }
+        .logo img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--neon-gold); }
+        .logo span { font-family: 'Press Start 2P'; font-size: 0.7rem; color: var(--neon-gold); }
 
-        .header-right { display: flex; align-items: center; gap: 25px; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
 
-        /* --- CAMPANA --- */
-        .notif-container { position: relative; cursor: pointer; font-size: 1.8rem; color: var(--neon-gold); transition: 0.3s; }
-        .bell-shake { animation: shake 0.5s infinite; color: var(--neon-red) !important; filter: drop-shadow(0 0 15px var(--neon-red)); }
-        .notif-dot { position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: var(--neon-red); border-radius: 50%; display: none; border: 2px solid black; box-shadow: 0 0 10px var(--neon-red); }
+        /* --- BOTONES INTERACTIVOS --- */
+        .notif-container, .menu-btn { cursor: pointer; color: var(--neon-gold); font-size: 1.5rem; z-index: 3000; }
+        .menu-btn { display: flex; flex-direction: column; gap: 5px; width: 25px; }
+        .menu-btn span { height: 3px; width: 100%; background: var(--neon-gold); border-radius: 3px; transition: 0.4s; }
 
-        @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
-
-        /* --- BOTÓN MENÚ --- */
-        .menu-btn { width: 28px; display: flex; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1100; }
-        .menu-btn span { height: 3px; background: var(--neon-gold); border-radius: 3px; transition: .4s; box-shadow: 0 0 5px var(--neon-gold); }
+        /* Animación Botón Menú */
         .menu-btn.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-btn.active span:nth-child(2) { opacity: 0; }
         .menu-btn.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
         /* --- MENÚ POPUP --- */
         .menu-popup {
-            position: fixed; top: 85px; right: 20px; background: rgba(10, 10, 10, 0.95); 
-            border: 2px solid var(--neon-gold); border-radius: 20px; padding: 1.5rem; display: none; 
-            flex-direction: column; min-width: 300px; backdrop-filter: blur(15px);
-            box-shadow: 0 0 40px rgba(0,0,0,0.8); z-index: 1050;
+            position: fixed; top: 80px; right: 10px; background: rgba(10, 10, 10, 0.98); 
+            border: 2px solid var(--neon-gold); border-radius: 20px; padding: 1.5rem; 
+            display: none; flex-direction: column; min-width: 280px; 
+            z-index: 2500; box-shadow: 0 0 30px rgba(0,0,0,1);
         }
-        .profile-card { background: rgba(255,255,255,0.05); border: 1px solid var(--neon-gold); border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px;}
-        .profile-pic { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-gold); object-fit: cover; box-shadow: 0 0 10px var(--neon-gold); }
+        .profile-card { background: rgba(255,255,255,0.05); border: 1px solid var(--neon-gold); border-radius: 15px; padding: 15px; text-align: center; margin-bottom: 10px; }
+        .profile-pic { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--neon-gold); margin-bottom: 10px; }
 
-        .nav-item { 
-            font-size: 0.8rem; font-weight: 800; color: var(--neon-gold); text-transform: uppercase; 
-            cursor: pointer; padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px; transition: 0.3s;
-        }
-        .nav-item:hover { background: rgba(255, 215, 0, 0.1); text-shadow: 0 0 8px var(--neon-gold); }
+        .nav-item { padding: 12px; color: var(--neon-gold); font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 10px; cursor: pointer; border-radius: 8px; }
+        .nav-item:hover { background: rgba(255, 215, 0, 0.1); }
 
-        .admin-box { border: 2px solid var(--neon-red); background: rgba(255,0,0,0.05); padding: 15px; border-radius: 15px; margin-top: 10px; box-shadow: 0 0 15px var(--neon-red); display: none; }
-
-        /* --- NOTIFICACIONES --- */
-        .notif-panel { 
-            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
-            background: rgba(0,0,0,0.98); z-index: 2000; transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1); 
-            display: flex; flex-direction: column; align-items: center; padding: 2rem; overflow-y: auto;
-        }
-        .notif-panel.active { right: 0; }
-        .notif-card { border: 2px solid; background: #000; padding: 20px; border-radius: 20px; width: 100%; max-width: 450px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-        /* --- SECCIONES DINÁMICAS (SCROLL EFFECTS) --- */
-        main { padding-top: 100px; }
+        /* --- SECCIONES (SOLUCIÓN A PANTALLA NEGRA) --- */
+        main { padding-top: 100px; width: 100%; }
         
         .scroll-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            min-height: 80vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             padding: 40px 20px;
-            opacity: 0;
-            transform: translateY(100px) scale(0.9);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: blur(10px);
+            opacity: 1; /* Forzamos visibilidad inicial */
+            transform: translateY(0);
+            transition: 0.8s ease;
         }
 
-        .scroll-section.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0px);
-        }
-
-        /* --- ESTILO TÍTULO FREE FIRE ORIGINAL --- */
-        .ff-title-container { text-align: center; margin-bottom: 20px; }
-        .main-title { font-size: 2.2rem; font-weight: 800; color: #fff; text-shadow: 0 0 10px var(--neon-red); margin-bottom: 5px; }
+        /* Estilo FF */
         .ff-logo-text {
-            font-size: 4.5rem;
-            font-weight: 900;
-            font-style: italic;
-            letter-spacing: -2px;
-            color: #fff;
-            text-shadow: 4px 4px 0px #000, 0 0 20px rgba(255,255,255,0.2);
-            line-height: 1;
-            display: inline-block;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900; font-style: italic; color: #fff;
+            text-shadow: 3px 3px 0px #000; line-height: 1.1; text-align: center;
         }
-        .ff-i {
-            color: var(--neon-gold);
-            position: relative;
-            display: inline-block;
-            transform: skewX(-15deg);
-            filter: drop-shadow(0 0 15px var(--neon-gold));
-        }
-        .ff-i::after {
-            content: ''; position: absolute; top: -5px; left: 50%; width: 4px; height: 110%;
-            background: var(--neon-gold); transform: rotate(10deg); z-index: -1;
-        }
+        .ff-i { color: var(--neon-gold); display: inline-block; transform: skewX(-15deg); filter: drop-shadow(0 0 10px var(--neon-gold)); }
 
-        /* --- PISTOLA NEÓN --- */
-        .weapon-box { font-size: 5rem; color: var(--neon-gold); filter: drop-shadow(0 0 20px var(--neon-gold)); animation: weaponFloat 3s infinite ease-in-out; margin-bottom: 20px; }
-        @keyframes weaponFloat { 0%, 100% { transform: translateY(0) rotate(-10deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+        .weapon-box { font-size: 4rem; color: var(--neon-gold); margin-bottom: 20px; animation: float 3s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* --- VIDEO Y CONTENIDO --- */
         .video-box { 
-            width: 100%; max-width: 800px; aspect-ratio: 16/9; 
-            border: 4px solid var(--neon-gold); border-radius: 20px; 
-            overflow: hidden; box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            margin: 30px 0;
+            width: 100%; max-width: 700px; aspect-ratio: 16/9; 
+            border: 3px solid var(--neon-gold); border-radius: 15px; overflow: hidden; margin: 20px 0;
         }
-        .video-box iframe { width: 100%; height: 100%; }
 
-        .thanks-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 5px solid var(--neon-red);
-            padding: 25px; border-radius: 0 20px 20px 0;
-            max-width: 700px; text-align: left;
+        /* --- PANEL NOTIFICACIONES --- */
+        .notif-panel { 
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
+            background: rgba(0,0,0,0.95); z-index: 4000; transition: 0.5s; 
+            padding: 2rem; display: flex; flex-direction: column; align-items: center;
         }
-        .thanks-card h2 { color: var(--neon-gold); font-family: 'Press Start 2P'; font-size: 0.8rem; margin-bottom: 15px; }
-        .thanks-card p { line-height: 1.6; font-size: 0.9rem; color: #ccc; }
-
-        /* --- SOCIAL GRID --- */
-        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; width: 100%; max-width: 800px; margin-top: 30px; }
-        .social-btn { 
-            padding: 20px; border-radius: 15px; border: 1px solid rgba(255,215,0,0.3); 
-            background: rgba(0,0,0,0.5); transition: 0.3s; cursor: pointer; text-align: center;
-        }
-        .social-btn:hover { border-color: var(--neon-gold); transform: translateY(-10px); background: rgba(255,215,0,0.1); }
-        .social-btn i { font-size: 2rem; margin-bottom: 10px; display: block; }
-
-        @media (max-width: 768px) {
-            .ff-logo-text { font-size: 2.8rem; }
-            .main-title { font-size: 1.5rem; }
-            .weapon-box { font-size: 3.5rem; }
-        }
+        .notif-panel.active { right: 0; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo" onclick="location.reload()">
-        <img src="logo.png">
+        <img src="logo.png" onerror="this.src='https://via.placeholder.com/50'">
         <span>DANIBOOM</span>
     </div>
 
     <div class="header-right">
         <div id="notifBtn" class="notif-container">
             <i class="fas fa-bell" id="bellIcon"></i>
-            <span id="notifDot" class="notif-dot"></span>
         </div>
         <div id="menuBtn" class="menu-btn">
             <span></span><span></span><span></span>
@@ -188,77 +115,39 @@
 
     <div class="menu-popup" id="menuPopup">
         <div class="profile-card">
-            <img src="" id="profilePic" class="profile-pic">
-            <h3 id="profileName">Cargando...</h3>
+            <img src="" id="profilePic" class="profile-pic" onerror="this.src='https://via.placeholder.com/70'">
+            <h3 id="profileName" style="font-size: 0.8rem;">Cargando...</h3>
             <div id="roleUI"></div>
         </div>
-
-        <div id="itemSesion" style="display:none;">
-            <div class="nav-item" onclick="location.href='perfil.html'">
-                <i class="fas fa-user-circle"></i><span>Ver Mi Sesión</span>
+        <div id="menuItems">
+            <div class="nav-item" onclick="location.href='perfil.html'"><i class="fas fa-user"></i> MI SESIÓN</div>
+            <div class="nav-item" onclick="location.href='redes.html'"><i class="fas fa-share-nodes"></i> REDES</div>
+            <div class="nav-item" onclick="location.href='sensibilidades.html'"><i class="fas fa-crosshairs"></i> SENSIBILIDADES</div>
+            <div id="adminUtils" style="display:none; border:1px solid red; margin-top:10px; border-radius:10px; padding:5px;">
+                <div class="nav-item" onclick="location.href='notificaciones.html'" style="color:red;"><i class="fas fa-bullhorn"></i> PANEL AVISO</div>
             </div>
-            <div class="nav-item" onclick="location.href='chat.html'">
-                <i class="fas fa-comments"></i><span>Chat Global</span>
-            </div>
+            <div id="sessionBtnArea"></div>
         </div>
-
-        <div class="nav-item" onclick="location.href='redes.html'">
-            <i class="fas fa-share-nodes"></i><span>Nuestras Redes</span>
-        </div>
-
-        <div id="linksPrivados" style="display:none;">
-            <div class="nav-item" onclick="location.href='sensibilidades.html'">
-                <i class="fas fa-crosshairs"></i><span>Sensibilidades</span>
-            </div>
-            <div class="nav-item" onclick="location.href='apps.html'">
-                <i class="fas fa-bolt"></i><span>Apps Optimizadas</span>
-            </div>
-        </div>
-
-        <div id="adminUtils" class="admin-box">
-            <p style="color:red; font-size:0.55rem; font-family:'Press Start 2P'; text-align:center; margin-bottom:10px;">PANEL CONTROL</p>
-            <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:0.7rem;">LANZAR AVISO</button>
-        </div>
-
-        <div id="sessionBtnArea"></div>
     </div>
 </header>
 
 <aside class="notif-panel" id="notifPanel">
-    <span id="closeNotif" style="position:absolute; top:25px; right:35px; font-size:3rem; color:gold; cursor:pointer;">&times;</span>
-    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; margin-bottom:30px; font-size:0.8rem;">CENTRO DE AVISOS</h2>
-    <div id="notifContainer" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
+    <div style="width:100%; text-align:right;"><i class="fas fa-times" id="closeNotif" style="font-size:2rem; color:gold; cursor:pointer;"></i></div>
+    <h2 style="font-family:'Press Start 2P'; font-size:0.7rem; color:gold; margin: 20px 0;">AVISOS RECIENTES</h2>
+    <div id="notifContainer" style="width:100%; max-width:400px;"></div>
 </aside>
 
 <main>
     <section class="scroll-section">
-        <div class="weapon-box">
-            <i class="fas fa-gun"></i>
-        </div>
-        <div class="ff-title-container">
-            <h1 class="main-title">DANIBOOM <span style="color:var(--neon-red); font-family:'Press Start 2P'; font-size:0.6em;">X</span></h1>
-            <div class="ff-logo-text">FREE F<span class="ff-i">I</span>RE</div>
-        </div>
-        <p style="color: var(--neon-blue); font-family: 'Press Start 2P'; font-size: 0.6rem; letter-spacing: 2px;">INFLUENCER PROGRAM • 2024</p>
+        <div class="weapon-box"><i class="fas fa-gun"></i></div>
+        <div class="ff-logo-text">DANIBOOM <br> FREE F<span class="ff-i">I</span>RE</div>
+        <p style="color:var(--neon-blue); font-family:'Press Start 2P'; font-size:0.5rem; margin-top:15px;">PROGRAMA DE INFLUENCERS</p>
     </section>
 
     <section class="scroll-section">
-        <div class="thanks-card">
-            <h2>META CUMPLIDA</h2>
-            <p>¡Familia! Gracias a su apoyo incondicional en cada directo y video, hoy somos oficialmente parte del <strong>Programa de Influencers</strong>. Esta web es para ustedes, aquí tendrán las mejores herramientas para dominar el juego.</p>
-        </div>
+        <h2 style="font-family:'Press Start 2P'; font-size:0.7rem; color:var(--neon-gold);">VIDEO ESPECIAL</h2>
         <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/PON_AQUI_EL_ID_DE_TU_VIDEO?autoplay=1&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-    </section>
-
-    <section class="scroll-section">
-        <h2 style="color: var(--neon-gold); font-family: 'Press Start 2P'; font-size: 0.9rem; margin-bottom: 20px;">SQUAD DIGITAL</h2>
-        <div class="social-grid">
-            <div class="social-btn" onclick="window.open('URL_TIKTOK')"><i class="fab fa-tiktok" style="color:#fff;"></i>TIKTOK</div>
-            <div class="social-btn" onclick="window.open('URL_YOUTUBE')"><i class="fab fa-youtube" style="color:#ff0000;"></i>YOUTUBE</div>
-            <div class="social-btn" onclick="window.open('URL_FB')"><i class="fab fa-facebook" style="color:#1877f2;"></i>FACEBOOK</div>
-            <div class="social-btn" onclick="window.open('URL_IG')"><i class="fab fa-instagram" style="color:#e4405f;"></i>INSTAGRAM</div>
+            <iframe src="https://www.youtube.com/embed/TU_ID_AQUI" frameborder="0" allowfullscreen></iframe>
         </div>
     </section>
 </main>
@@ -266,7 +155,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, collection, query, onSnapshot, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, query, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -278,117 +167,71 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // --- MOTOR DE ANIMACIÓN SCROLL (APARECE/DESAPARECE) ---
-    const observerOptions = { threshold: 0.1 };
-    const scrollObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            } else {
-                entry.target.classList.remove('visible');
-            }
-        });
-    }, observerOptions);
+    // --- ARREGLO DE CLICS (MENÚ Y NOTIFICACIONES) ---
+    const menuBtn = document.getElementById('menuBtn');
+    const menuPopup = document.getElementById('menuPopup');
+    const notifBtn = document.getElementById('notifBtn');
+    const notifPanel = document.getElementById('notifPanel');
+    const closeNotif = document.getElementById('closeNotif');
 
-    document.querySelectorAll('.scroll-section').forEach(section => {
-        scrollObserver.observe(section);
-    });
+    menuBtn.onclick = (e) => {
+        e.stopPropagation();
+        menuBtn.classList.toggle('active');
+        menuPopup.style.display = menuPopup.style.display === 'flex' ? 'none' : 'flex';
+        notifPanel.classList.remove('active'); // Cerrar notif si abres menú
+    };
 
+    notifBtn.onclick = () => {
+        notifPanel.classList.add('active');
+        menuPopup.style.display = 'none';
+        menuBtn.classList.remove('active');
+    };
+
+    closeNotif.onclick = () => notifPanel.classList.remove('active');
+
+    // Cerrar menú al tocar fuera
+    document.onclick = (e) => {
+        if (!menuPopup.contains(e.target) && e.target !== menuBtn) {
+            menuPopup.style.display = 'none';
+            menuBtn.classList.remove('active');
+        }
+    };
+
+    // --- FIREBASE LOGIC ---
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            let snap = await getDoc(doc(db, "users", user.uid));
-            let d = snap.data() || {};
-            
-            if(!snap.exists() && user.isAnonymous){
-                const all = await getDocs(collection(db, "users"));
-                const num = String(all.size + 1).padStart(3, '0');
-                d = { displayName: `Anónimo #${num}`, membership: 'anonymous', photoURL: 'logo.png' };
-                await setDoc(doc(db, "users", user.uid), d);
-            }
-
-            const role = d.membership || 'anonymous';
-            const roleConfig = {
-                owner: { icon: 'crown', color: '#ff0000', label: 'OWNER' },
-                admin: { icon: 'shield-alt', color: '#00f2ff', label: 'ADMIN' },
-                suscriptor: { icon: 'star', color: 'gold', label: 'SUSCRIPTOR' },
-                anonymous: { icon: 'user-secret', color: '#888', label: 'ANÓNIMO' }
-            };
-            const currentRole = roleConfig[role] || roleConfig['anonymous'];
-
-            document.getElementById('roleUI').innerHTML = `
-                <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px; font-weight: 800; font-size: 0.75rem; color: ${currentRole.color}; text-shadow: 0 0 10px ${currentRole.color}55;">
-                    <i class="fas fa-${currentRole.icon}"></i><span>${currentRole.label}</span>
-                </div>
-            `;
-
+            const snap = await getDoc(doc(db, "users", user.uid));
+            const d = snap.data() || {};
             document.getElementById('profileName').innerText = d.displayName || "Usuario";
             document.getElementById('profilePic').src = d.photoURL || "logo.png";
             
-            const tieneAccesoPrivado = (role === 'suscriptor' || role === 'admin' || role === 'owner');
-
-            document.getElementById('itemSesion').style.display = tieneAccesoPrivado ? 'block' : 'none';
-            document.getElementById('linksPrivados').style.display = tieneAccesoPrivado ? 'block' : 'none';
-            document.getElementById('adminUtils').style.display = (role === 'admin' || role === 'owner') ? 'block' : 'none';
-            
-            document.getElementById('sessionBtnArea').innerHTML = user.isAnonymous
-                ? `<button onclick="location.href='index.html'" style="width:100%; background:gold; color:black; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer; font-weight:bold; font-family:'Orbitron';">REGISTRARSE</button>`
-                : `<button id="logoutBtn" style="width:100%; background:#222; color:white; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer; font-weight:bold; font-family:'Orbitron';">CERRAR SESIÓN</button>`;
-
-            if(!user.isAnonymous) {
-                document.getElementById('logoutBtn').onclick = () => signOut(auth).then(()=> location.reload());
+            if (d.membership === 'admin' || d.membership === 'owner') {
+                document.getElementById('adminUtils').style.display = 'block';
             }
 
-            escucharNotificaciones();
-        } else { location.href = "index.html"; }
+            document.getElementById('sessionBtnArea').innerHTML = `
+                <button onclick="window.location.reload()" id="logoutBtn" style="width:100%; background:#222; color:white; border:none; padding:10px; border-radius:8px; margin-top:10px; cursor:pointer;">CERRAR SESIÓN</button>
+            `;
+            
+            document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.href='index.html');
+        } else {
+            location.href = "index.html";
+        }
     });
 
-    function escucharNotificaciones() {
-        const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
-        onSnapshot(q, (snapshot) => {
-            let lastNotifId = null;
-            const container = document.getElementById('notifContainer');
-            container.innerHTML = ""; 
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                const id = doc.id;
-                const timeLeft = data.duration - ((Date.now() - data.createdAt) / 1000);
-                if (timeLeft > 0) {
-                    if (!lastNotifId) lastNotifId = id;
-                    renderNotif(id, data, timeLeft);
-                }
-            });
-            const readId = localStorage.getItem('lastReadNotif');
-            if (lastNotifId && lastNotifId !== readId) {
-                document.getElementById('bellIcon').classList.add('bell-shake');
-                document.getElementById('notifDot').style.display = 'block';
-            }
-        });
-    }
-
-    function renderNotif(id, data, seconds) {
+    // --- NOTIFICACIONES REAL-TIME ---
+    const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
         const container = document.getElementById('notifContainer');
-        const card = document.createElement('div');
-        card.className = "notif-card";
-        card.id = `card-${id}`;
-        
-        const configs = {
-            'youtube': { icon: 'fab fa-youtube', color: '#ff0000' },
-            'tiktok': { icon: 'fab fa-tiktok', color: '#ffffff' },
-            'aviso': { icon: 'fas fa-exclamation-triangle', color: '#ffff00' }
-        };
-
-        const theme = configs[data.iconType] || { icon: 'fas fa-bell', color: '#ffd700' };
-        card.style.borderColor = theme.color;
-        card.style.boxShadow = `0 0 20px ${theme.color}44`;
-
-        const btnHTML = (data.link && data.link !== "#") 
-            ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:#000; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:10px; cursor:pointer;">VER AHORA</button>`
-            : '';
-
-        card.innerHTML = `
-            <div style="display:flex; align-items:center; gap:12px; color:${theme.color}; margin-bottom:12px;">
-                <i class="${theme.icon}" style="font-size:1.6rem;"></i><span style="font-weight:800;">${data.title}</span>
-            </div>
-            <p style="font-size:0.85rem; color:#eee;">${data.message}</p>
-            ${btnHTML}
-            <div style="font-size:0.6rem; color:#666; margin-top:1 
+        container.innerHTML = "";
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const div = document.createElement('div');
+            div.style.cssText = "background:#111; border:1px solid gold; padding:15px; margin-bottom:10px; border-radius:10px;";
+            div.innerHTML = `<h4 style="color:gold; font-size:0.8rem;">${data.title}</h4><p style="font-size:0.7rem;">${data.message}</p>`;
+            container.appendChild(div);
+        });
+    });
+</script>
+</body>
+</html>
