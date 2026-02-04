@@ -53,7 +53,7 @@
         .nav-item:hover { background: rgba(255, 215, 0, 0.1); }
         .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
 
-        /* PANEL NOTIFICAIONES */
+        /* PANEL NOTIFICACIONES */
         .notif-panel { 
             position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
             background: rgba(0,0,0,0.98); z-index: 2000; 
@@ -81,6 +81,10 @@
             <img src="" id="profilePic" class="profile-pic">
             <h3 id="profileName">Cargando...</h3>
             <div id="roleUI"></div>
+        </div>
+
+        <div id="itemSesion" style="display:none;" class="nav-item" onclick="location.href='perfil.html'">
+            <i class="fas fa-user-circle"></i><span>Ver Sesión</span>
         </div>
 
         <div class="nav-item" onclick="location.href='redes.html'">
@@ -146,7 +150,7 @@
             const roleConfig = {
                 owner: { icon: 'crown', color: '#ff0000', label: 'OWNER' },
                 admin: { icon: 'shield-alt', color: '#00f2ff', label: 'ADMIN' },
-                suscriptor: { icon: 'star', color: 'gold', label: 'VIP' },
+                suscriptor: { icon: 'star', color: 'gold', label: 'SUSCRIPTOR' },
                 anonymous: { icon: 'user-secret', color: '#888', label: 'ANÓNIMO' }
             };
             const currentRole = roleConfig[role] || roleConfig['anonymous'];
@@ -161,8 +165,11 @@
             document.getElementById('profileName').innerText = d.displayName || "Usuario";
             document.getElementById('profilePic').src = d.photoURL || "logo.png";
             
-            // CONTROL DE VISIBILIDAD DE SECCIONES
-            document.getElementById('linksPrivados').style.display = (role === 'anonymous') ? 'none' : 'block';
+            // --- LÓGICA DE VISIBILIDAD DE SECCIONES ---
+            const tieneAccesoPrivado = (role === 'suscriptor' || role === 'admin' || role === 'owner');
+
+            document.getElementById('itemSesion').style.display = tieneAccesoPrivado ? 'flex' : 'none';
+            document.getElementById('linksPrivados').style.display = tieneAccesoPrivado ? 'block' : 'none';
             document.getElementById('adminUtils').style.display = (role === 'admin' || role === 'owner') ? 'block' : 'none';
             
             document.getElementById('sessionBtnArea').innerHTML = user.isAnonymous
@@ -209,25 +216,22 @@
         card.className = "notif-card";
         card.id = `card-${id}`;
         
-        // CONFIGURACIÓN DE ICONOS Y COLORES NEON DINÁMICOS
         const configs = {
             'youtube': { icon: 'fab fa-youtube', color: '#ff0000' },
             'tiktok': { icon: 'fab fa-tiktok', color: '#ffffff' },
             'facebook': { icon: 'fab fa-facebook', color: '#1877f2' },
             'instagram': { icon: 'fab fa-instagram', color: '#e4405f' },
             'whatsapp': { icon: 'fab fa-whatsapp', color: '#25d366' },
-            'whatsapp-canal': { icon: 'fas fa-bullhorn', color: '#00ffcc' }, // Verde Aqua Neon
-            'mantenimiento': { icon: 'fas fa-tools', color: '#ff8800' },   // Naranja Neon
-            'aviso': { icon: 'fas fa-exclamation-triangle', color: '#ffff00' }, // Amarillo Neon
-            'actualizacion': { icon: 'fas fa-cog', color: '#0088ff' },      // Azul Neon
+            'whatsapp-canal': { icon: 'fas fa-bullhorn', color: '#00ffcc' },
+            'mantenimiento': { icon: 'fas fa-tools', color: '#ff8800' },
+            'aviso': { icon: 'fas fa-exclamation-triangle', color: '#ffff00' },
+            'actualizacion': { icon: 'fas fa-cog', color: '#0088ff' },
             'cog': { icon: 'fas fa-cog', color: '#ffd700' }
         };
 
         const theme = configs[data.iconType] || configs['cog'];
-        
-        // Aplicar Estilo Neon Dinámico
         card.style.borderColor = theme.color;
-        card.style.boxShadow = `0 0 20px ${theme.color}66`; // Borde Neon
+        card.style.boxShadow = `0 0 20px ${theme.color}66`;
 
         const btnHTML = (data.link && data.link !== "#") 
             ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:${theme.color==='#ffffff'||theme.color==='#ffff00'?'#000':'#fff'}; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer; box-shadow: 0 0 10px ${theme.color}aa;">IR AL ENLACE</button>`
