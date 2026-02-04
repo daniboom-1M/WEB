@@ -71,14 +71,17 @@
             margin-top: 25px; font-size: 0.9rem; letter-spacing: 1px;
         }
 
-        /* --- NUEVOS ESTILOS PARA GESTIÓN --- */
+        /* --- GESTIÓN --- */
         #managePanel { display: none; background: #0a0a0a; border: 1px solid red; border-radius: 15px; padding: 15px; margin-top: 15px; max-height: 300px; overflow-y: auto; }
         .notif-item-admin { background: #111; border: 1px solid #333; padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .notif-item-admin h4 { font-size: 0.6rem; color: red; }
         .notif-item-admin p { font-size: 0.5rem; color: #888; }
         .admin-btns { display: flex; gap: 5px; }
         .admin-btns button { padding: 5px 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.6rem; color: white; }
+        
+        /* MODAL CON SCROLL */
         #editModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; display: none; align-items: center; justify-content: center; }
+        .modal-container { width: 95%; max-width: 500px; max-height: 90vh; overflow-y: auto; background: #0f0f0f; border: 2px solid red; border-radius: 20px; padding: 1.5rem; }
     </style>
 </head>
 <body>
@@ -147,7 +150,13 @@
 
     <label>⏳ TIEMPO DE DURACIÓN</label>
     <select id="notif-duration" style="border: 1px solid red; background: #000;">
-        <option value="86400">1 DÍA</option>
+        <option value="5">5 SEGUNDOS</option>
+        <option value="10">10 SEGUNDOS</option>
+        <option value="15">15 SEGUNDOS</option>
+        <option value="20">20 SEGUNDOS</option>
+        <option value="30">30 SEGUNDOS</option>
+        <option value="40">40 SEGUNDOS</option>
+        <option value="86400" selected>1 DÍA</option>
         <option value="172800">2 DÍAS</option>
         <option value="259200">3 DÍAS</option>
         <option value="345600">4 DÍAS</option>
@@ -158,12 +167,34 @@
 </div>
 
 <div id="editModal">
-    <div class="admin-box" style="margin-bottom: 0;">
+    <div class="modal-container">
+        <h3 style="color: red; font-size: 0.8rem; text-align: center; margin-bottom: 15px;">EDITAR NOTIFICACIÓN</h3>
+        
         <label>EDITAR TÍTULO</label>
         <input type="text" id="editT">
+        
         <label>EDITAR MENSAJE</label>
         <textarea id="editM" rows="3"></textarea>
-        <button class="btn-send" id="saveEditBtn">GUARDAR</button>
+
+        <label>EDITAR LINK URL</label>
+        <input type="url" id="editL">
+
+        <label>EDITAR DURACIÓN</label>
+        <select id="editD" style="border: 1px solid red; background: #000;">
+            <option value="5">5 SEGUNDOS</option>
+            <option value="10">10 SEGUNDOS</option>
+            <option value="15">15 SEGUNDOS</option>
+            <option value="20">20 SEGUNDOS</option>
+            <option value="30">30 SEGUNDOS</option>
+            <option value="40">40 SEGUNDOS</option>
+            <option value="86400">1 DÍA</option>
+            <option value="172800">2 DÍAS</option>
+            <option value="259200">3 DÍAS</option>
+            <option value="345600">4 DÍAS</option>
+            <option value="432000">5 DÍAS</option>
+        </select>
+
+        <button class="btn-send" id="saveEditBtn">GUARDAR CAMBIOS</button>
         <button class="btn-send" style="background:#333; margin-top:10px;" onclick="document.getElementById('editModal').style.display='none'">CANCELAR</button>
     </div>
 </div>
@@ -199,7 +230,6 @@
         selPlatform = name;
     };
 
-    // --- LÓGICA DE GESTIÓN ---
     document.getElementById('toggleManageBtn').onclick = () => {
         const panel = document.getElementById('managePanel');
         panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
@@ -216,22 +246,42 @@
             div.innerHTML = `
                 <div><h4>${d.title}</h4><p>${d.message.substring(0,25)}...</p></div>
                 <div class="admin-btns">
-                    <button style="background:#007bff" onclick="openE('${id}','${d.title}','${d.message}')"><i class="fas fa-edit"></i></button>
+                    <button style="background:#007bff" onclick="openE('${id}','${d.title}','${d.message}','${d.link}','${d.duration}')"><i class="fas fa-edit"></i></button>
                     <button style="background:red" onclick="deleteN('${id}')"><i class="fas fa-trash"></i></button>
                 </div>`;
             list.appendChild(div);
         });
     });
 
-    window.deleteN = async (id) => { if(confirm("¿Eliminar?")) await deleteDoc(doc(db, "notifications", id)); };
-    window.openE = (id, t, m) => { editId = id; document.getElementById('editT').value = t; document.getElementById('editM').value = m; document.getElementById('editModal').style.display='flex'; };
+    window.deleteN = async (id) => { if(confirm("¿Eliminar definitivamente?")) await deleteDoc(doc(db, "notifications", id)); };
+    
+    // Función abrir edición con nuevos parámetros
+    window.openE = (id, t, m, l, d) => { 
+        editId = id; 
+        document.getElementById('editT').value = t; 
+        document.getElementById('editM').value = m; 
+        document.getElementById('editL').value = l || "";
+        document.getElementById('editD').value = d || "86400";
+        document.getElementById('editModal').style.display = 'flex'; 
+    };
     
     document.getElementById('saveEditBtn').onclick = async () => {
-        await updateDoc(doc(db, "notifications", editId), { title: document.getElementById('editT').value.toUpperCase(), message: document.getElementById('editM').value });
-        document.getElementById('editModal').style.display='none';
+        const btn = document.getElementById('saveEditBtn');
+        btn.innerText = "GUARDANDO...";
+        try {
+            await updateDoc(doc(db, "notifications", editId), { 
+                title: document.getElementById('editT').value.toUpperCase(), 
+                message: document.getElementById('editM').value,
+                link: document.getElementById('editL').value,
+                duration: parseInt(document.getElementById('editD').value)
+            });
+            document.getElementById('editModal').style.display = 'none';
+            alert("✅ Notificación actualizada correctamente");
+        } catch (e) {
+            alert("Error al actualizar");
+        }
+        btn.innerText = "GUARDAR CAMBIOS";
     };
-
-    // --- FIN GESTIÓN ---
 
     document.getElementById('sendBtn').onclick = async () => {
         const isVideo = document.getElementById('sec-video').classList.contains('active');
