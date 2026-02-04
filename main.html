@@ -62,7 +62,7 @@
             overflow-y: auto;
         }
         .notif-panel.active { right: 0; }
-        .notif-card { border: 2px solid; background: #000; padding: 20px; border-radius: 15px; width: 100%; max-width: 450px; margin-bottom: 20px; }
+        .notif-card { border: 2px solid; background: #000; padding: 20px; border-radius: 15px; width: 100%; max-width: 450px; margin-bottom: 20px; transition: 0.3s; }
     </style>
 </head>
 <body>
@@ -208,28 +208,40 @@
         const card = document.createElement('div');
         card.className = "notif-card";
         card.id = `card-${id}`;
+        
+        // CONFIGURACIÓN DE ICONOS Y COLORES NEON DINÁMICOS
         const configs = {
             'youtube': { icon: 'fab fa-youtube', color: '#ff0000' },
             'tiktok': { icon: 'fab fa-tiktok', color: '#ffffff' },
             'facebook': { icon: 'fab fa-facebook', color: '#1877f2' },
             'instagram': { icon: 'fab fa-instagram', color: '#e4405f' },
             'whatsapp': { icon: 'fab fa-whatsapp', color: '#25d366' },
+            'whatsapp-canal': { icon: 'fas fa-bullhorn', color: '#00ffcc' }, // Verde Aqua Neon
+            'mantenimiento': { icon: 'fas fa-tools', color: '#ff8800' },   // Naranja Neon
+            'aviso': { icon: 'fas fa-exclamation-triangle', color: '#ffff00' }, // Amarillo Neon
+            'actualizacion': { icon: 'fas fa-cog', color: '#0088ff' },      // Azul Neon
             'cog': { icon: 'fas fa-cog', color: '#ffd700' }
         };
+
         const theme = configs[data.iconType] || configs['cog'];
+        
+        // Aplicar Estilo Neon Dinámico
         card.style.borderColor = theme.color;
-        card.style.boxShadow = `0 0 15px ${theme.color}33`;
+        card.style.boxShadow = `0 0 20px ${theme.color}66`; // Borde Neon
+
         const btnHTML = (data.link && data.link !== "#") 
-            ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:${theme.color==='#ffffff'?'#000':'#fff'}; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer;">IR AL ENLACE</button>`
+            ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:${theme.color==='#ffffff'||theme.color==='#ffff00'?'#000':'#fff'}; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer; box-shadow: 0 0 10px ${theme.color}aa;">IR AL ENLACE</button>`
             : '';
+
         card.innerHTML = `
-            <div style="display:flex; align-items:center; gap:12px; color:${theme.color}; margin-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:12px; color:${theme.color}; margin-bottom:12px; text-shadow: 0 0 10px ${theme.color};">
                 <i class="${theme.icon}" style="font-size:1.6rem;"></i><span style="font-weight:800; font-size:0.85rem;">${data.title}</span>
             </div>
             <p style="font-size:0.85rem; color:#ccc;">${data.message}</p>
             ${btnHTML}
             <div style="font-size:0.65rem; color:#666; margin-top:15px; text-align:center;">EXPIRA EN: <span id="time-${id}" style="color:${theme.color}; font-weight:bold;">...</span></div>
         `;
+        
         container.appendChild(card);
         let remain = Math.floor(seconds);
         const timer = setInterval(() => {
