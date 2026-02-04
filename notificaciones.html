@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANIBOOM | Admin Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+        body { background: #050505; color: #fff; padding-top: 120px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+
+        /* HEADER */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.2rem 1.5rem; background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px); border-bottom: 2px solid red;
+        }
+        .logo { display: flex; align-items: center; gap: 0.8rem; }
+        .logo img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid red; }
+        .logo span { font-family: 'Press Start 2P'; font-size: 0.8rem; color: red; text-shadow: 0 0 10px red; }
+
+        .menu-btn { width: 30px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2001; }
+        .menu-btn span { height: 3px; background: red; border-radius: 3px; transition: 0.4s; width: 100%; }
+        .menu-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        .menu-btn.open span:nth-child(2) { opacity: 0; }
+        .menu-btn.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+        .menu-popup {
+            position: absolute; top: 85px; right: 15px; background: #0a0a0a; border: 2px solid red; 
+            border-radius: 20px; padding: 1.5rem; display: none; flex-direction: column; min-width: 280px;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.4);
+        }
+
+        /* TABS */
+        .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; width: 95%; max-width: 550px; }
+        .tab-btn {
+            flex: 1; padding: 12px; background: #111; border: 1px solid #333; color: #555;
+            cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 0.6rem; transition: 0.3s;
+        }
+        .tab-btn.active { background: red; color: white; border-color: red; box-shadow: 0 0 10px red; }
+
+        /* BOX */
+        .admin-box {
+            width: 95%; max-width: 550px; background: #0f0f0f; border: 1px solid #222;
+            padding: 1.5rem; border-radius: 20px; margin-bottom: 50px;
+        }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* PLATAFORMAS GRID */
+        .platform-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+        .platform-item {
+            background: #1a1a1a; padding: 12px; border-radius: 10px; border: 1px solid #333;
+            cursor: pointer; transition: 0.3s; text-align: center; font-size: 0.6rem;
+        }
+        .platform-item.selected { border-color: red; color: red; background: rgba(255,0,0,0.1); box-shadow: 0 0 10px rgba(255,0,0,0.2); }
+        .platform-item i { font-size: 1.4rem; display: block; margin-bottom: 5px; }
+
+        label { font-size: 0.7rem; color: red; display: block; margin-bottom: 8px; font-weight: bold; margin-top: 15px; }
+        input, textarea, select {
+            width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333;
+            border-radius: 8px; color: #fff; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: red; }
+
+        .btn-send {
+            width: 100%; padding: 18px; background: red; color: white; border: none;
+            border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+            margin-top: 25px; font-size: 0.9rem; letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo"><img src="logo.png"><span>ADMIN CONTROL</span></div>
+    <div id="menuBtn" class="menu-btn"><span></span><span></span><span></span></div>
+    <div class="menu-popup" id="menuPopup">
+        <div style="padding: 10px; color: red; cursor: pointer; font-weight: bold;" onclick="location.href='main.html'"> <i class="fas fa-home"></i> INICIO</div>
+        <div id="logoutBtn" style="padding: 10px; color: #fff; cursor: pointer; border-top: 1px solid #222;"> <i class="fas fa-sign-out-alt"></i> SALIR</div>
+    </div>
+</header>
+
+<div class="admin-tabs">
+    <button class="tab-btn active" onclick="switchTab('video')">SUBIR VIDEO / REDES</button>
+    <button class="tab-btn" onclick="switchTab('sistema')">SISTEMA / UPDATE</button>
+</div>
+
+<div class="admin-box">
+    <div id="sec-video" class="section active">
+        <label>1. PLATAFORMA (OBLIGATORIO)</label>
+        <div class="platform-grid">
+            <div class="platform-item" onclick="selectPlat(this, 'youtube')"><i class="fab fa-youtube" style="color:#ff0000"></i>YouTube</div>
+            <div class="platform-item" onclick="selectPlat(this, 'tiktok')"><i class="fab fa-tiktok"></i>TikTok</div>
+            <div class="platform-item" onclick="selectPlat(this, 'facebook')"><i class="fab fa-facebook" style="color:#1877f2"></i>Facebook</div>
+            <div class="platform-item" onclick="selectPlat(this, 'instagram')"><i class="fab fa-instagram" style="color:#e4405f"></i>Instagram</div>
+            <div class="platform-item" onclick="selectPlat(this, 'whatsapp')"><i class="fab fa-whatsapp" style="color:#25d366"></i>WhatsApp</div>
+            <div class="platform-item" onclick="selectPlat(this, 'whatsapp-canal')"><i class="fas fa-bullhorn" style="color:#00a884"></i>Canal WA</div>
+        </div>
+
+        <label>2. TÍTULO (OBLIGATORIO)</label>
+        <input type="text" id="v-title" placeholder="Ej: ¡NUEVO VIDEO EN TIKTOK!">
+        
+        <label>3. DESCRIPCIÓN (OBLIGATORIO)</label>
+        <textarea id="v-msg" rows="2" placeholder="Ej: No te pierdas la nueva configuración..."></textarea>
+        
+        <label>4. LINK URL (OBLIGATORIO)</label>
+        <input type="url" id="v-link" placeholder="https://...">
+    </div>
+
+    <div id="sec-sistema" class="section">
+        <label>TIPO DE AVISO (OBLIGATORIO)</label>
+        <select id="s-type">
+            <option value="actualizacion">⚙️ NUEVA ACTUALIZACIÓN</option>
+            <option value="mantenimiento">🛠️ MANTENIMIENTO EN CURSO</option>
+            <option value="aviso">⚠️ AVISO IMPORTANTE</option>
+        </select>
+        <label>TÍTULO (OBLIGATORIO)</label>
+        <input type="text" id="s-title" placeholder="Ej: Versión 2.0 Lista">
+        <label>MENSAJE (OBLIGATORIO)</label>
+        <textarea id="s-msg" rows="3" placeholder="Describe el cambio o aviso..."></textarea>
+        <label>LINK URL (OPCIONAL)</label>
+        <input type="url" id="s-link" placeholder="https:// (Opcional)">
+    </div>
+
+    <label>⏳ TIEMPO DE DURACIÓN</label>
+    <select id="notif-duration" style="border: 1px solid red; background: #000;">
+        <option value="86400">1 DÍA</option>
+        <option value="172800">2 DÍAS</option>
+        <option value="259200">3 DÍAS</option>
+        <option value="345600">4 DÍAS</option>
+        <option value="432000">5 DÍAS</option>
+    </select>
+
+    <button class="btn-send" id="sendBtn"> <i class="fas fa-bullhorn"></i> LANZAR NOTIFICACIÓN</button>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
+        authDomain: "web1-3b83a.firebaseapp.com",
+        projectId: "web1-3b83a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore();
+
+    let selPlatform = '';
+
+    window.switchTab = (tab) => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        document.getElementById(`sec-${tab}`).classList.add('active');
+    };
+
+    window.selectPlat = (el, name) => {
+        document.querySelectorAll('.platform-item').forEach(p => p.classList.remove('selected'));
+        el.classList.add('selected');
+        selPlatform = name;
+    };
+
+    document.getElementById('sendBtn').onclick = async () => {
+        const isVideo = document.getElementById('sec-video').classList.contains('active');
+        const duration = parseInt(document.getElementById('notif-duration').value);
+        
+        let title, message, link, icon;
+
+        if(isVideo) {
+            title = document.getElementById('v-title').value;
+            message = document.getElementById('v-msg').value;
+            link = document.getElementById('v-link').value;
+            icon = selPlatform;
+
+            // VALIDACIÓN OBLIGATORIA PARA VIDEO
+            if(!icon || !title || !message || !link) {
+                alert("❌ ERROR: En el apartado de Video, TODOS los campos y la Plataforma son obligatorios.");
+                return;
+            }
+        } else {
+            title = document.getElementById('s-title').value;
+            message = document.getElementById('s-msg').value;
+            link = document.getElementById('s-link').value || "#"; // Opcional
+            icon = 'cog';
+
+            // VALIDACIÓN PARA SISTEMA (Link es opcional)
+            if(!title || !message) {
+                alert("❌ ERROR: Título y Mensaje son obligatorios.");
+                return;
+            }
+        }
+
+        const btn = document.getElementById('sendBtn');
+        btn.disabled = true;
+        btn.innerText = "LANZANDO...";
+
+        try {
+            await addDoc(collection(db, "notifications"), {
+                title: title.toUpperCase(),
+                message: message,
+                link: link,
+                iconType: icon,
+                duration: duration,
+                createdAt: Date.now()
+            });
+            alert("✅ ¡NOTIFICACIÓN ENVIADA CON ÉXITO!");
+            location.reload();
+        } catch (e) {
+            alert("Error al conectar con Firebase");
+            btn.disabled = false;
+        }
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const snap = await getDoc(doc(db, "users", user.uid));
+            if(snap.data()?.membership !== 'owner' && snap.data()?.membership !== 'admin') location.href="main.html";
+        } else { location.href="index.html"; }
+    });
+
+    document.getElementById('menuBtn').onclick = function() {
+        this.classList.toggle('open');
+        const pop = document.getElementById('menuPopup');
+        pop.style.display = pop.style.display === 'flex' ? 'none' : 'flex';
+    };
+    document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.href="index.html");
+</script>
+</body>
+</html>
