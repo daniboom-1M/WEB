@@ -70,6 +70,15 @@
             border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase;
             margin-top: 25px; font-size: 0.9rem; letter-spacing: 1px;
         }
+
+        /* --- NUEVOS ESTILOS PARA GESTIÓN --- */
+        #managePanel { display: none; background: #0a0a0a; border: 1px solid red; border-radius: 15px; padding: 15px; margin-top: 15px; max-height: 300px; overflow-y: auto; }
+        .notif-item-admin { background: #111; border: 1px solid #333; padding: 10px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .notif-item-admin h4 { font-size: 0.6rem; color: red; }
+        .notif-item-admin p { font-size: 0.5rem; color: #888; }
+        .admin-btns { display: flex; gap: 5px; }
+        .admin-btns button { padding: 5px 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.6rem; color: white; }
+        #editModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; display: none; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
@@ -89,6 +98,17 @@
 </div>
 
 <div class="admin-box">
+    <label>GESTIÓN DE ACTIVAS</label>
+    <div class="platform-item" style="width: 100%; margin-bottom: 15px;" id="toggleManageBtn">
+        <i class="fas fa-tasks" style="color:red"></i> GESTIONAR NOTIFICACIONES
+    </div>
+
+    <div id="managePanel">
+        <div id="notifListAdmin"></div>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #222; margin: 20px 0;">
+
     <div id="sec-video" class="section active">
         <label>1. PLATAFORMA (OBLIGATORIO)</label>
         <div class="platform-grid">
@@ -137,10 +157,21 @@
     <button class="btn-send" id="sendBtn"> <i class="fas fa-bullhorn"></i> LANZAR NOTIFICACIÓN</button>
 </div>
 
+<div id="editModal">
+    <div class="admin-box" style="margin-bottom: 0;">
+        <label>EDITAR TÍTULO</label>
+        <input type="text" id="editT">
+        <label>EDITAR MENSAJE</label>
+        <textarea id="editM" rows="3"></textarea>
+        <button class="btn-send" id="saveEditBtn">GUARDAR</button>
+        <button class="btn-send" style="background:#333; margin-top:10px;" onclick="document.getElementById('editModal').style.display='none'">CANCELAR</button>
+    </div>
+</div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDoc, doc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDoc, doc, onSnapshot, deleteDoc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -153,6 +184,7 @@
     const db = getFirestore();
 
     let selPlatform = '';
+    let editId = null;
 
     window.switchTab = (tab) => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -167,10 +199,43 @@
         selPlatform = name;
     };
 
+    // --- LÓGICA DE GESTIÓN ---
+    document.getElementById('toggleManageBtn').onclick = () => {
+        const panel = document.getElementById('managePanel');
+        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+    };
+
+    onSnapshot(query(collection(db, "notifications"), orderBy("createdAt", "desc")), (snap) => {
+        const list = document.getElementById('notifListAdmin');
+        list.innerHTML = "";
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const id = docSnap.id;
+            const div = document.createElement('div');
+            div.className = "notif-item-admin";
+            div.innerHTML = `
+                <div><h4>${d.title}</h4><p>${d.message.substring(0,25)}...</p></div>
+                <div class="admin-btns">
+                    <button style="background:#007bff" onclick="openE('${id}','${d.title}','${d.message}')"><i class="fas fa-edit"></i></button>
+                    <button style="background:red" onclick="deleteN('${id}')"><i class="fas fa-trash"></i></button>
+                </div>`;
+            list.appendChild(div);
+        });
+    });
+
+    window.deleteN = async (id) => { if(confirm("¿Eliminar?")) await deleteDoc(doc(db, "notifications", id)); };
+    window.openE = (id, t, m) => { editId = id; document.getElementById('editT').value = t; document.getElementById('editM').value = m; document.getElementById('editModal').style.display='flex'; };
+    
+    document.getElementById('saveEditBtn').onclick = async () => {
+        await updateDoc(doc(db, "notifications", editId), { title: document.getElementById('editT').value.toUpperCase(), message: document.getElementById('editM').value });
+        document.getElementById('editModal').style.display='none';
+    };
+
+    // --- FIN GESTIÓN ---
+
     document.getElementById('sendBtn').onclick = async () => {
         const isVideo = document.getElementById('sec-video').classList.contains('active');
         const duration = parseInt(document.getElementById('notif-duration').value);
-        
         let title, message, link, icon;
 
         if(isVideo) {
@@ -178,44 +243,24 @@
             message = document.getElementById('v-msg').value;
             link = document.getElementById('v-link').value;
             icon = selPlatform;
-
-            // VALIDACIÓN OBLIGATORIA PARA VIDEO
-            if(!icon || !title || !message || !link) {
-                alert("❌ ERROR: En el apartado de Video, TODOS los campos y la Plataforma son obligatorios.");
-                return;
-            }
+            if(!icon || !title || !message || !link) return alert("❌ Completa todo");
         } else {
             title = document.getElementById('s-title').value;
             message = document.getElementById('s-msg').value;
-            link = document.getElementById('s-link').value || "#"; // Opcional
+            link = document.getElementById('s-link').value || "#";
             icon = 'cog';
-
-            // VALIDACIÓN PARA SISTEMA (Link es opcional)
-            if(!title || !message) {
-                alert("❌ ERROR: Título y Mensaje son obligatorios.");
-                return;
-            }
+            if(!title || !message) return alert("❌ Completa todo");
         }
 
         const btn = document.getElementById('sendBtn');
         btn.disabled = true;
-        btn.innerText = "LANZANDO...";
-
         try {
             await addDoc(collection(db, "notifications"), {
-                title: title.toUpperCase(),
-                message: message,
-                link: link,
-                iconType: icon,
-                duration: duration,
-                createdAt: Date.now()
+                title: title.toUpperCase(), message: message, link: link, iconType: icon, duration: duration, createdAt: Date.now()
             });
-            alert("✅ ¡NOTIFICACIÓN ENVIADA CON ÉXITO!");
+            alert("✅ ¡LANZADA!");
             location.reload();
-        } catch (e) {
-            alert("Error al conectar con Firebase");
-            btn.disabled = false;
-        }
+        } catch (e) { btn.disabled = false; }
     };
 
     onAuthStateChanged(auth, async (user) => {
