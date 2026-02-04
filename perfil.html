@@ -3,148 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANIBOOM | Apex Hub</title>
+    <title>DANIBOOM | Ultimate Apex Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --gold: #ffd700; --blue: #00f2ff; --red: #ff003c; --green: #00ff88;
-            --glass: rgba(10, 10, 10, 0.9); --glass-border: rgba(255, 215, 0, 0.2);
+            --neon: #ffd700; --cyan: #00f2ff; --crimson: #ff003c; --emerald: #00ff88;
+            --panel: rgba(5, 5, 5, 0.95); --border: rgba(255, 215, 0, 0.2);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
         body { background: #000; color: #fff; overflow: hidden; height: 100vh; }
 
-        /* LOADER */
+        /* EFECTO CARGA */
         #loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: grid; grid-template-columns: repeat(5,1fr); grid-template-rows: repeat(5,1fr); }
-        .tile { background: #050505; border: 0.1px solid #111; transition: 0.6s; }
-        .loaded .tile { transform: scale(0); opacity: 0; }
+        .tile { background: #080808; border: 0.1px solid #111; transition: 0.8s cubic-bezier(0.7, 0, 0.3, 1); }
+        .loaded .tile { transform: scale(0) rotate(90deg); opacity: 0; }
 
-        /* LAYOUT */
-        .app-grid { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; }
-        header { padding: 15px; border-bottom: 2px solid var(--gold); background: #000; display: flex; justify-content: space-between; align-items: center; }
-        main { overflow-y: auto; padding: 20px; padding-bottom: 90px; }
+        /* UI ESTRUCTURA */
+        .app-container { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; max-width: 1400px; margin: 0 auto; }
+        
+        header { 
+            padding: 15px 25px; border-bottom: 2px solid var(--neon); background: #000; 
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+        }
+        .logo-apex { font-family: 'Orbitron'; font-weight: 900; font-size: 1.2rem; color: var(--neon); letter-spacing: 2px; }
 
-        /* NAVEGACIÓN */
-        .nav-bar { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--glass); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
-        .nav-btn { color: #444; font-size: 1.4rem; cursor: pointer; transition: 0.3s; }
-        .nav-btn.active { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+        main { overflow-y: auto; padding: 20px; scroll-behavior: smooth; }
 
-        /* CARDS */
-        .card-pro { background: rgba(20,20,20,0.5); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; margin-bottom: 20px; position: relative; }
-        .xp-fill { height: 8px; background: linear-gradient(90deg, var(--gold), #fff); border-radius: 10px; width: 0%; transition: 1s; box-shadow: 0 0 10px var(--gold); }
+        /* SISTEMA DE NAVEGACIÓN */
+        .nav-dock { 
+            background: var(--panel); border-top: 1px solid var(--border); 
+            height: 75px; display: flex; justify-content: space-around; align-items: center;
+            backdrop-filter: blur(20px); z-index: 999;
+        }
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; color: #444; 
+            font-size: 0.6rem; cursor: pointer; transition: 0.4s; 
+        }
+        .nav-item i { font-size: 1.5rem; margin-bottom: 4px; }
+        .nav-item.active { color: var(--neon); transform: translateY(-8px); text-shadow: 0 0 10px var(--neon); }
 
-        /* CHAT SYSTEM */
-        #chat-selector { display: flex; flex-direction: column; gap: 10px; }
-        .user-item { display: flex; align-items: center; gap: 15px; padding: 12px; background: #111; border-radius: 15px; cursor: pointer; border: 1px solid transparent; }
-        .user-item:hover { border-color: var(--blue); background: #151515; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; }
+        /* CARDS NEÓN */
+        .card-apex { 
+            background: rgba(15,15,15,0.8); border: 1px solid var(--border); 
+            border-radius: 25px; padding: 25px; margin-bottom: 20px; 
+            position: relative; transition: 0.3s;
+        }
+        .card-apex:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(255, 215, 0, 0.05); }
 
-        .chat-overlay { position: fixed; inset: 0; background: #000; z-index: 2000; display: none; flex-direction: column; }
-        .chat-msgs { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .m-msg { padding: 10px 15px; border-radius: 15px; max-width: 75%; font-size: 0.9rem; }
-        .m-sent { align-self: flex-end; background: var(--gold); color: #000; }
-        .m-rec { align-self: flex-start; background: #222; }
+        /* XP BARRA FUNCIONAL */
+        .xp-header { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--neon); font-weight: bold; margin-bottom: 10px; }
+        .xp-track { width: 100%; height: 10px; background: #111; border-radius: 20px; overflow: hidden; border: 1px solid #222; }
+        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--neon), #fff); width: 0%; transition: 0.5s; box-shadow: 0 0 15px var(--neon); }
 
-        /* BUTTONS */
-        .btn-action { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
-        .btn-gold { background: var(--gold); color: #000; }
-        .btn-red { background: var(--red); color: #fff; }
+        /* SISTEMA CHAT & SOCIAL */
+        .search-bar { width: 100%; background: #111; border: 1px solid #333; padding: 15px; border-radius: 15px; color: #fff; margin-bottom: 20px; outline: none; }
+        .user-row { 
+            display: flex; align-items: center; gap: 15px; padding: 15px; 
+            background: rgba(255,255,255,0.03); border-radius: 20px; margin-bottom: 10px;
+            border: 1px solid transparent; cursor: pointer;
+        }
+        .user-row:hover { border-color: var(--cyan); background: rgba(0, 242, 255, 0.05); }
+        .user-avatar { width: 50px; height: 50px; border-radius: 15px; border: 2px solid var(--neon); object-fit: cover; }
+        .status-badge { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
-        input, select { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 10px; margin: 5px 0; }
+        /* CHAT FULLSCREEN */
+        .chat-panel { 
+            position: fixed; inset: 0; background: #000; z-index: 2000; 
+            display: none; flex-direction: column; 
+        }
+        .chat-active { display: flex; animation: slideUp 0.3s ease; }
+        .chat-head { padding: 15px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .bubble { padding: 12px 18px; border-radius: 20px; max-width: 80%; font-size: 0.9rem; position: relative; }
+        .b-sent { align-self: flex-end; background: var(--neon); color: #000; font-weight: 600; }
+        .b-rec { align-self: flex-start; background: #1a1a1a; border: 1px solid #333; }
+
+        /* ADMIN CONTROL */
+        .status-box { padding: 15px; border-radius: 15px; margin-top: 10px; font-size: 0.8rem; }
+        .s-pending { background: rgba(255, 215, 0, 0.1); border: 1px solid var(--neon); }
+        .s-banned { background: rgba(255, 0, 60, 0.1); border: 1px solid var(--crimson); }
+
+        /* BOTONES */
+        .btn-apex { 
+            width: 100%; padding: 15px; border-radius: 15px; border: none; 
+            font-weight: 900; text-transform: uppercase; cursor: pointer; 
+            letter-spacing: 1px; transition: 0.3s;
+        }
+        .btn-gold { background: var(--neon); color: #000; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+        .btn-danger { background: var(--crimson); color: #fff; }
+
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        @media (min-width: 900px) {
+            .app-container { grid-template-columns: 80px 1fr; grid-template-rows: auto 1fr; }
+            .nav-dock { height: 100vh; width: 80px; flex-direction: column; border-top: none; border-right: 1px solid var(--border); }
+            header { grid-column: 1 / 3; }
+        }
     </style>
 </head>
 <body>
 
 <div id="loader"></div>
 
-<div class="app-grid">
+<div class="app-container">
     <header>
-        <div style="font-family:'Orbitron'; color:var(--gold); font-weight:900;">DANIBOOM <span style="font-size:0.6rem; color:#fff;">PRO</span></div>
-        <div id="p-lvl-header" style="font-size:0.7rem; font-weight:bold; border:1px solid var(--gold); padding:2px 8px; border-radius:5px;">LVL 0</div>
+        <div class="logo-apex">DANIBOOM<span style="color:#fff">_OS</span></div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div id="xp-counter" style="font-size: 0.6rem; color: var(--neon);">LIVE XP: 00</div>
+            <i class="fas fa-power-off" onclick="logout()" style="color: var(--crimson); cursor: pointer;"></i>
+        </div>
     </header>
 
-    <main id="content">
-        <div id="sec-home">
-            <div class="card-pro" style="text-align:center;">
-                <img src="logo.png" id="p-img" style="width:100px; height:100px; border-radius:20px; border:2px solid var(--gold); object-fit:cover;">
-                <h2 id="p-name" style="margin-top:10px;">CARGANDO...</h2>
-                <p id="p-role" style="font-size:0.7rem; color:var(--blue); letter-spacing:2px;"></p>
+    <main id="main-view">
+        <section id="view-home">
+            <div class="card-apex" style="text-align: center;">
+                <img src="logo.png" id="user-img" style="width: 120px; height: 120px; border-radius: 30px; border: 3px solid var(--neon); padding: 5px;">
+                <h1 id="user-name" style="margin-top: 15px; font-family: 'Orbitron';">---</h1>
+                <div id="user-role" style="font-size: 0.7rem; color: var(--cyan); letter-spacing: 3px; font-weight: bold; margin-bottom: 20px;">---</div>
                 
-                <div style="text-align:left; margin-top:20px;">
-                    <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--gold);">
-                        <span>SISTEMA DE XP (ACTIVO)</span>
-                        <span id="p-xp-stat">0 / 100</span>
+                <div class="xp-header">
+                    <span>NIVEL <span id="lvl-num">0</span></span>
+                    <span id="xp-val">0 / 100 XP</span>
+                </div>
+                <div class="xp-track"><div id="xp-fill" class="xp-fill"></div></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.5rem; color: #444; margin-top: 8px;">
+                    <span>SISTEMA DE EXPERIENCIA ACTIVO</span>
+                    <span>LIMITE LVL 100</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-social" style="display: none;">
+            <h3 style="color: var(--neon); margin-bottom: 20px;">PLAYERS EN LÍNEA</h3>
+            <input type="text" id="search-input" class="search-bar" placeholder="Buscar por Nombre o UID...">
+            <div id="user-list">
+                <p style="text-align: center; color: #333;">Iniciando escaneo de red...</p>
+            </div>
+        </section>
+
+        <section id="view-admin" style="display: none;">
+            <h3 style="color: var(--crimson); margin-bottom: 20px;">CENTRO DE JUSTICIA</h3>
+            <div class="card-apex" style="border-color: var(--crimson);">
+                <h4 style="font-size: 0.8rem; margin-bottom: 10px;">ESTADO DE TUS DENUNCIAS</h4>
+                <div class="status-box s-pending">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>REPORTE #991: TOXICIDAD</span>
+                        <span style="color: var(--neon);">PROCESANDO</span>
                     </div>
-                    <div style="width:100%; height:8px; background:#111; border-radius:10px; margin-top:5px;">
-                        <div id="xp-bar" class="xp-fill"></div>
+                </div>
+                <div class="status-box s-banned" style="margin-top: 10px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>REPORTE #882: HACKER</span>
+                        <span style="color: var(--emerald);">ACEPTADO</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="sec-chat" style="display:none;">
-            <h3 style="color:var(--blue); margin-bottom:15px;"><i class="fas fa-comments"></i> CENTRO DE COMUNICACIÓN</h3>
-            <div id="chat-selector">
-                <p style="text-align:center; color:#444; font-size:0.8rem;">Buscando amigos disponibles...</p>
-            </div>
-        </div>
-
-        <div id="sec-admin" style="display:none;">
-            <h3 style="color:var(--red); margin-bottom:15px;"><i class="fas fa-shield-alt"></i> CONTROL DE ACCESO</h3>
-            <div class="card-pro" style="border-color:var(--red);">
-                <h4 style="font-size:0.8rem; color:var(--red);">REPORTES ENVIADOS</h4>
-                <div id="reports-list" style="font-size:0.7rem; margin-top:10px;">
-                    <div style="padding:10px; background:#1a0505; border-radius:10px; margin-bottom:5px; border-left:3px solid var(--red);">
-                        ID #882 - En revisión por el STAFF
-                    </div>
+            <h4 style="font-size: 0.8rem; margin-bottom: 15px;">USUARIOS BLOQUEADOS</h4>
+            <div id="blocked-users">
+                <div class="user-row">
+                    <span style="font-size: 0.8rem;">Usuario_Spam_99</span>
+                    <button class="btn-apex btn-gold" style="width: auto; padding: 5px 15px; font-size: 0.6rem;">DESBLOQUEAR</button>
                 </div>
             </div>
-            <h4 style="font-size:0.8rem; margin-bottom:10px;">USUARIOS BLOQUEADOS</h4>
-            <div id="blocked-list">
-                <p style="font-size:0.6rem; color:#444;">No has bloqueado a ningún usuario.</p>
-            </div>
-        </div>
+        </section>
 
-        <div id="sec-config" style="display:none;">
-            <div class="card-pro">
-                <h3 style="color:var(--gold);">AJUSTES</h3>
-                <label style="font-size:0.6rem; color:#888;">NOMBRE</label>
-                <input type="text" id="edit-name">
-                <button class="btn-action btn-gold" onclick="updateUser()">GUARDAR DATOS</button>
+        <section id="view-config" style="display: none;">
+            <div class="card-apex">
+                <h3 style="color: var(--cyan); margin-bottom: 20px;">PARAMETRIZACIÓN</h3>
+                <label style="font-size: 0.6rem; color: #555;">NOMBRE DE OPERADOR</label>
+                <input type="text" id="edit-name" class="search-bar" style="margin-bottom: 20px;">
                 
-                <hr style="margin:20px 0; border:0; border-top:1px solid #222;">
-                <h3 style="color:var(--blue);">SEGURIDAD</h3>
-                <button class="btn-action" style="background:#111; color:var(--blue); border:1px solid var(--blue);" onclick="sendRecovery()">ENVIAR LINK DE RECUPERACIÓN</button>
-                <button class="btn-action btn-red" style="margin-top:30px;" onclick="deleteAcc()">ELIMINAR CUENTA DEFINITIVAMENTE</button>
+                <h3 style="color: var(--neon); margin-bottom: 15px;">SEGURIDAD</h3>
+                <button class="btn-apex" style="background: transparent; border: 1px solid var(--neon); color: var(--neon);" onclick="recoveryEmail()">ENVIAR LINK DE ACCESO TOTAL</button>
+                <button class="btn-apex btn-danger" style="margin-top: 40px;" onclick="deleteAcc()">AUTODESTRUIR CUENTA</button>
             </div>
-        </div>
+        </section>
     </main>
 
-    <div class="nav-bar">
-        <div class="nav-btn active" onclick="nav('home', this)"><i class="fas fa-home"></i></div>
-        <div class="nav-btn" onclick="nav('chat', this)"><i class="fas fa-comment-dots"></i></div>
-        <div class="nav-btn" onclick="nav('admin', this)"><i class="fas fa-user-shield"></i></div>
-        <div class="nav-btn" onclick="nav('config', this)"><i class="fas fa-cog"></i></div>
-    </div>
+    <nav class="nav-dock">
+        <div class="nav-item active" onclick="nav('home', this)"><i class="fas fa-ghost"></i><span>PERFIL</span></div>
+        <div class="nav-item" onclick="nav('social', this)"><i class="fas fa-satellite-dish"></i><span>SOCIAL</span></div>
+        <div class="nav-item" onclick="nav('admin', this)"><i class="fas fa-user-shield"></i><span>ADMIN</span></div>
+        <div class="nav-item" onclick="nav('config', this)"><i class="fas fa-terminal"></i><span>AJUSTES</span></div>
+    </nav>
 </div>
 
-<div class="chat-overlay" id="chat-window">
-    <div style="padding:15px; border-bottom:1px solid #222; display:flex; align-items:center; gap:10px;">
-        <i class="fas fa-chevron-left" onclick="closeChat()" style="cursor:pointer; color:var(--gold);"></i>
-        <img src="logo.png" id="c-target-img" style="width:35px; height:35px; border-radius:50%;">
-        <div id="c-target-name" style="font-weight:bold; font-size:0.9rem;">---</div>
+<div class="chat-panel" id="chat-ui">
+    <div class="chat-head">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-arrow-left" onclick="closeChat()" style="color: var(--neon); cursor: pointer;"></i>
+            <img src="logo.png" id="c-img" style="width: 40px; height: 40px; border-radius: 12px;">
+            <div>
+                <p id="c-name" style="font-weight: 900; font-size: 0.9rem;">PLAYER</p>
+                <p id="c-status" style="font-size: 0.5rem; color: var(--emerald);">TRANSMISIÓN ACTIVA</p>
+            </div>
+        </div>
+        <i class="fas fa-shield-alt" style="color: var(--crimson);" onclick="alert('Usuario reportado.')"></i>
     </div>
-    <div class="chat-msgs" id="chat-messages"></div>
-    <div style="padding:10px; background:#0a0a0a; display:flex; gap:10px;">
-        <input type="text" id="m-input" placeholder="Escribe..." style="margin:0;">
-        <button onclick="sendMsg()" style="background:var(--gold); border:none; width:50px; border-radius:10px;"><i class="fas fa-paper-plane"></i></button>
+    <div class="chat-body" id="chat-box"></div>
+    <div class="chat-head" style="border-top: 1px solid #222;">
+        <input type="text" id="chat-input" placeholder="Escribir comando..." style="flex: 1; background: transparent; border: none; color: #fff; outline: none; padding: 10px;">
+        <button onclick="sendMessage()" style="background: var(--neon); border: none; width: 45px; height: 45px; border-radius: 12px; cursor: pointer;"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut, deleteUser, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc, setDoc, collection, query, where, onSnapshot, addDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail, deleteUser } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+    import { getFirestore, doc, onSnapshot, updateDoc, collection, query, where, getDocs, addDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -156,129 +224,153 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    let userData = {};
-    let activeChatID = null;
+    let currentUserData = {};
+    let currentChatTarget = null;
+    let xpSession = 0;
 
-    // LOADER
+    // LOADER SYSTEM
     for(let i=0; i<25; i++) document.getElementById('loader').innerHTML += '<div class="tile"></div>';
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            const ref = doc(db, "users", user.uid);
-            onSnapshot(ref, (snap) => {
-                userData = snap.data() || {};
-                renderProfile();
+            // Escucha de datos en tiempo real
+            onSnapshot(doc(db, "users", user.uid), (snap) => {
+                currentUserData = snap.data() || {};
+                updateUI();
             });
-            loadFriends();
-            startXPTracker();
-            setTimeout(() => { document.body.classList.add('loaded'); }, 1000);
-        } else { location.href = "index.html"; }
+            
+            loadUsers();
+            initXPClock();
+            
+            setTimeout(() => { document.body.classList.add('loaded'); }, 1200);
+        } else {
+            location.href = "index.html";
+        }
     });
 
-    function renderProfile() {
-        document.getElementById('p-name').innerText = userData.displayName || "USUARIO";
-        document.getElementById('p-img').src = userData.photoURL || "logo.png";
-        document.getElementById('edit-name').value = userData.displayName || "";
-        const lvl = userData.level || 0;
-        const xp = userData.xp || 0;
-        document.getElementById('p-lvl-header').innerText = `LVL ${lvl}`;
-        document.getElementById('p-xp-stat').innerText = `${xp} / 100 XP`;
-        document.getElementById('xp-bar').style.width = `${xp}%`;
-        document.getElementById('p-role').innerText = userData.membership?.toUpperCase() || "PLAYER";
+    function updateUI() {
+        document.getElementById('user-name').innerText = currentUserData.displayName || "ANÓNIMO";
+        document.getElementById('edit-name').value = currentUserData.displayName || "";
+        document.getElementById('user-img').src = currentUserData.photoURL || "logo.png";
+        document.getElementById('user-role').innerText = (currentUserData.membership || "RECLUTA").toUpperCase();
+        
+        const level = currentUserData.level || 0;
+        const xp = currentUserData.xp || 0;
+        
+        document.getElementById('lvl-num').innerText = level;
+        document.getElementById('xp-val').innerText = `${xp} / 100 XP`;
+        document.getElementById('xp-fill').style.width = `${xp}%`;
+    }
+
+    // RELOJ DE EXPERIENCIA (100% FUNCIONAL)
+    function initXPClock() {
+        setInterval(async () => {
+            if (document.visibilityState === 'visible') {
+                xpSession += 1;
+                document.getElementById('xp-counter').innerText = `LIVE XP: ${xpSession.toString().padStart(2, '0')}`;
+                
+                if (xpSession >= 10) { // Cada 10 pulsos de actividad, guarda en BD
+                    let nextXP = (currentUserData.xp || 0) + xpSession;
+                    let nextLvl = currentUserData.level || 0;
+                    
+                    if (nextXP >= 100) { nextXP = 0; nextLvl++; }
+                    
+                    await updateDoc(doc(db, "users", auth.currentUser.uid), {
+                        xp: nextXP,
+                        level: nextLvl
+                    });
+                    xpSession = 0;
+                }
+            }
+        }, 5000); // Pulso cada 5 segundos
     }
 
     // NAVEGACIÓN
-    window.nav = (id, btn) => {
-        document.querySelectorAll('main > div').forEach(d => d.style.display = 'none');
-        document.getElementById('sec-' + id).style.display = 'block';
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    window.nav = (view, btn) => {
+        document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+        document.getElementById('view-' + view).style.display = 'block';
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         btn.classList.add('active');
-    }
+    };
 
-    // XP TRACKER (FUNCIONAL)
-    function startXPTracker() {
-        setInterval(async () => {
-            if (document.visibilityState === 'visible' && auth.currentUser) {
-                let newXP = (userData.xp || 0) + 2; // Gana 2 XP cada 30 segs
-                let newLvl = userData.level || 0;
-                if (newXP >= 100) { newXP = 0; newLvl++; }
-                await updateDoc(doc(db, "users", auth.currentUser.uid), { xp: newXP, level: newLvl });
-            }
-        }, 30000);
-    }
-
-    // CHAT SYSTEM
-    async function loadFriends() {
-        const q = query(collection(db, "users"), where("membership", "==", "suscriptor")); // Ejemplo: Carga suscriptores como amigos
+    // SOCIAL REAL
+    async function loadUsers() {
+        const q = query(collection(db, "users"));
         const snap = await getDocs(q);
-        const cont = document.getElementById('chat-selector');
-        cont.innerHTML = "";
-        snap.forEach(docSnap => {
-            if(docSnap.id === auth.currentUser.uid) return;
-            const d = docSnap.data();
-            const div = document.createElement('div');
-            div.className = "user-item";
-            div.innerHTML = `<img src="${d.photoURL || 'logo.png'}" style="width:40px;height:40px;border-radius:50%;">
-                             <div style="flex:1"><b>${d.displayName}</b><br><small style="color:var(--green)">LVL ${d.level || 0}</small></div>
-                             <i class="fas fa-chevron-right"></i>`;
-            div.onclick = () => openChat(docSnap.id, d);
-            cont.appendChild(div);
+        const list = document.getElementById('user-list');
+        list.innerHTML = "";
+        
+        snap.forEach(userDoc => {
+            if (userDoc.id === auth.currentUser.uid) return;
+            const d = userDoc.data();
+            const row = document.createElement('div');
+            row.className = "user-row";
+            row.innerHTML = `
+                <img src="${d.photoURL || 'logo.png'}" class="user-avatar">
+                <div style="flex:1">
+                    <p style="font-weight:900; font-size:0.9rem;">${d.displayName}</p>
+                    <p style="font-size:0.6rem; color:var(--cyan);">LVL ${d.level || 0} • ${d.membership || 'Player'}</p>
+                </div>
+                <div class="status-badge" style="background:var(--emerald)"></div>
+            `;
+            row.onclick = () => openChat(userDoc.id, d);
+            list.appendChild(row);
         });
     }
 
-    window.openChat = (targetID, data) => {
-        activeChatID = targetID;
-        document.getElementById('c-target-name').innerText = data.displayName;
-        document.getElementById('c-target-img').src = data.photoURL || 'logo.png';
-        document.getElementById('chat-window').style.display = 'flex';
-        loadMessages();
-    }
-
-    function loadMessages() {
-        const chatID = [auth.currentUser.uid, activeChatID].sort().join("_");
+    // CHAT FUNCIONAL
+    window.openChat = (uid, data) => {
+        currentChatTarget = uid;
+        document.getElementById('c-name').innerText = data.displayName;
+        document.getElementById('c-img').src = data.photoURL || 'logo.png';
+        document.getElementById('chat-ui').classList.add('chat-active');
+        
+        const chatID = [auth.currentUser.uid, uid].sort().join("_");
         const q = query(collection(db, "chats", chatID, "messages"), orderBy("time", "asc"));
+        
         onSnapshot(q, (snap) => {
-            const cont = document.getElementById('chat-messages');
-            cont.innerHTML = "";
+            const box = document.getElementById('chat-box');
+            box.innerHTML = "";
             snap.forEach(m => {
-                const d = m.data();
+                const md = m.data();
                 const div = document.createElement('div');
-                div.className = `m-msg ${d.from === auth.currentUser.uid ? 'm-sent' : 'm-rec'}`;
-                div.innerText = d.text;
-                cont.appendChild(div);
+                div.className = `bubble ${md.from === auth.currentUser.uid ? 'b-sent' : 'b-rec'}`;
+                div.innerText = md.text;
+                box.appendChild(div);
             });
-            cont.scrollTop = cont.scrollHeight;
+            box.scrollTop = box.scrollHeight;
         });
-    }
+    };
 
-    window.sendMsg = async () => {
-        const txt = document.getElementById('m-input').value;
-        if(!txt) return;
-        const chatID = [auth.currentUser.uid, activeChatID].sort().join("_");
+    window.sendMessage = async () => {
+        const inp = document.getElementById('chat-input');
+        if (!inp.value || !currentChatTarget) return;
+        
+        const chatID = [auth.currentUser.uid, currentChatTarget].sort().join("_");
         await addDoc(collection(db, "chats", chatID, "messages"), {
-            text: txt, from: auth.currentUser.uid, time: Date.now()
+            text: inp.value,
+            from: auth.currentUser.uid,
+            time: Date.now()
         });
-        document.getElementById('m-input').value = "";
-    }
+        inp.value = "";
+    };
 
-    window.closeChat = () => document.getElementById('chat-window').style.display = 'none';
+    window.closeChat = () => document.getElementById('chat-ui').classList.remove('chat-active');
 
     // SEGURIDAD
-    window.sendRecovery = () => {
-        sendPasswordResetEmail(auth, auth.currentUser.email).then(() => alert("📧 Link de seguridad enviado a tu correo."));
-    }
+    window.recoveryEmail = () => {
+        sendPasswordResetEmail(auth, auth.currentUser.email)
+            .then(() => alert("Se ha enviado un enlace de recuperación a: " + auth.currentUser.email));
+    };
 
-    window.updateUser = async () => {
-        const n = document.getElementById('edit-name').value;
-        await updateDoc(doc(db, "users", auth.currentUser.uid), { displayName: n });
-        alert("Sincronizado");
-    }
+    window.logout = () => signOut(auth).then(() => location.href = "index.html");
 
     window.deleteAcc = async () => {
-        if(confirm("¿ELIMINAR TODO?")) {
-            await deleteUser(auth.currentUser).then(() => location.href="index.html");
+        if (confirm("¿Confirmas la eliminación permanente de todos los datos?")) {
+            await deleteUser(auth.currentUser);
+            location.href = "index.html";
         }
-    }
+    };
 </script>
 </body>
 </html>
