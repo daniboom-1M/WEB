@@ -14,92 +14,36 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
         body { background: #000; color: #fff; overflow: hidden; height: 100vh; }
 
-        /* EFECTO CARGA */
-        #loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: grid; grid-template-columns: repeat(5,1fr); grid-template-rows: repeat(5,1fr); }
+        /* EFECTO CARGA (ROMPECABEZAS) */
+        #loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: grid; grid-template-columns: repeat(5,1fr); grid-template-rows: repeat(5,1fr); pointer-events: none; }
         .tile { background: #080808; border: 0.1px solid #111; transition: 0.8s cubic-bezier(0.7, 0, 0.3, 1); }
         .loaded .tile { transform: scale(0) rotate(90deg); opacity: 0; }
 
-        /* UI ESTRUCTURA */
-        .app-container { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; max-width: 1400px; margin: 0 auto; }
-        
-        header { 
-            padding: 15px 25px; border-bottom: 2px solid var(--neon); background: #000; 
-            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
-        }
-        .logo-apex { font-family: 'Orbitron'; font-weight: 900; font-size: 1.2rem; color: var(--neon); letter-spacing: 2px; }
+        /* ESTRUCTURA */
+        .app-container { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; }
+        header { padding: 15px; border-bottom: 2px solid var(--neon); background: #000; display: flex; justify-content: space-between; align-items: center; }
+        main { overflow-y: auto; padding: 20px; padding-bottom: 90px; }
 
-        main { overflow-y: auto; padding: 20px; scroll-behavior: smooth; }
+        /* NAVEGACIÓN */
+        .nav-dock { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--panel); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); backdrop-filter: blur(15px); z-index: 999; }
+        .nav-item { color: #444; font-size: 1.3rem; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--neon); transform: translateY(-5px); text-shadow: 0 0 10px var(--neon); }
 
-        /* SISTEMA DE NAVEGACIÓN */
-        .nav-dock { 
-            background: var(--panel); border-top: 1px solid var(--border); 
-            height: 75px; display: flex; justify-content: space-around; align-items: center;
-            backdrop-filter: blur(20px); z-index: 999;
-        }
-        .nav-item { 
-            display: flex; flex-direction: column; align-items: center; color: #444; 
-            font-size: 0.6rem; cursor: pointer; transition: 0.4s; 
-        }
-        .nav-item i { font-size: 1.5rem; margin-bottom: 4px; }
-        .nav-item.active { color: var(--neon); transform: translateY(-8px); text-shadow: 0 0 10px var(--neon); }
-
-        /* CARDS NEÓN */
-        .card-apex { 
-            background: rgba(15,15,15,0.8); border: 1px solid var(--border); 
-            border-radius: 25px; padding: 25px; margin-bottom: 20px; 
-            position: relative; transition: 0.3s;
-        }
-        .card-apex:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(255, 215, 0, 0.05); }
-
-        /* XP BARRA FUNCIONAL */
-        .xp-header { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--neon); font-weight: bold; margin-bottom: 10px; }
-        .xp-track { width: 100%; height: 10px; background: #111; border-radius: 20px; overflow: hidden; border: 1px solid #222; }
-        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--neon), #fff); width: 0%; transition: 0.5s; box-shadow: 0 0 15px var(--neon); }
-
-        /* SISTEMA CHAT & SOCIAL */
-        .search-bar { width: 100%; background: #111; border: 1px solid #333; padding: 15px; border-radius: 15px; color: #fff; margin-bottom: 20px; outline: none; }
-        .user-row { 
-            display: flex; align-items: center; gap: 15px; padding: 15px; 
-            background: rgba(255,255,255,0.03); border-radius: 20px; margin-bottom: 10px;
-            border: 1px solid transparent; cursor: pointer;
-        }
-        .user-row:hover { border-color: var(--cyan); background: rgba(0, 242, 255, 0.05); }
-        .user-avatar { width: 50px; height: 50px; border-radius: 15px; border: 2px solid var(--neon); object-fit: cover; }
-        .status-badge { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        /* CARDS */
+        .card-apex { background: rgba(15,15,15,0.8); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+        .xp-track { width: 100%; height: 8px; background: #111; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--neon), #fff); width: 0%; transition: 0.5s; }
 
         /* CHAT FULLSCREEN */
-        .chat-panel { 
-            position: fixed; inset: 0; background: #000; z-index: 2000; 
-            display: none; flex-direction: column; 
-        }
-        .chat-active { display: flex; animation: slideUp 0.3s ease; }
-        .chat-head { padding: 15px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
-        .chat-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-        .bubble { padding: 12px 18px; border-radius: 20px; max-width: 80%; font-size: 0.9rem; position: relative; }
-        .b-sent { align-self: flex-end; background: var(--neon); color: #000; font-weight: 600; }
-        .b-rec { align-self: flex-start; background: #1a1a1a; border: 1px solid #333; }
+        .chat-panel { position: fixed; inset: 0; background: #000; z-index: 2000; display: none; flex-direction: column; }
+        .chat-active { display: flex; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .bubble { padding: 10px 15px; border-radius: 15px; max-width: 80%; }
+        .b-sent { align-self: flex-end; background: var(--neon); color: #000; }
+        .b-rec { align-self: flex-start; background: #222; }
 
-        /* ADMIN CONTROL */
-        .status-box { padding: 15px; border-radius: 15px; margin-top: 10px; font-size: 0.8rem; }
-        .s-pending { background: rgba(255, 215, 0, 0.1); border: 1px solid var(--neon); }
-        .s-banned { background: rgba(255, 0, 60, 0.1); border: 1px solid var(--crimson); }
-
-        /* BOTONES */
-        .btn-apex { 
-            width: 100%; padding: 15px; border-radius: 15px; border: none; 
-            font-weight: 900; text-transform: uppercase; cursor: pointer; 
-            letter-spacing: 1px; transition: 0.3s;
-        }
-        .btn-gold { background: var(--neon); color: #000; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-        .btn-danger { background: var(--crimson); color: #fff; }
-
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        @media (min-width: 900px) {
-            .app-container { grid-template-columns: 80px 1fr; grid-template-rows: auto 1fr; }
-            .nav-dock { height: 100vh; width: 80px; flex-direction: column; border-top: none; border-right: 1px solid var(--border); }
-            header { grid-column: 1 / 3; }
-        }
+        .user-row { display: flex; align-items: center; gap: 15px; padding: 15px; background: #111; border-radius: 15px; margin-bottom: 10px; cursor: pointer; border: 1px solid #222; }
+        input { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 10px; margin: 10px 0; }
     </style>
 </head>
 <body>
@@ -108,111 +52,66 @@
 
 <div class="app-container">
     <header>
-        <div class="logo-apex">DANIBOOM<span style="color:#fff">_OS</span></div>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div id="xp-counter" style="font-size: 0.6rem; color: var(--neon);">LIVE XP: 00</div>
-            <i class="fas fa-power-off" onclick="logout()" style="color: var(--crimson); cursor: pointer;"></i>
-        </div>
+        <div style="font-family:'Orbitron'; color:var(--neon); font-weight:900;">DANIBOOM_OS</div>
+        <div id="p-lvl-top" style="font-size:0.7rem; border:1px solid var(--neon); padding:2px 8px; border-radius:5px;">LVL 0</div>
     </header>
 
-    <main id="main-view">
-        <section id="view-home">
-            <div class="card-apex" style="text-align: center;">
-                <img src="logo.png" id="user-img" style="width: 120px; height: 120px; border-radius: 30px; border: 3px solid var(--neon); padding: 5px;">
-                <h1 id="user-name" style="margin-top: 15px; font-family: 'Orbitron';">---</h1>
-                <div id="user-role" style="font-size: 0.7rem; color: var(--cyan); letter-spacing: 3px; font-weight: bold; margin-bottom: 20px;">---</div>
-                
-                <div class="xp-header">
-                    <span>NIVEL <span id="lvl-num">0</span></span>
-                    <span id="xp-val">0 / 100 XP</span>
-                </div>
-                <div class="xp-track"><div id="xp-fill" class="xp-fill"></div></div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.5rem; color: #444; margin-top: 8px;">
-                    <span>SISTEMA DE EXPERIENCIA ACTIVO</span>
-                    <span>LIMITE LVL 100</span>
-                </div>
+    <main>
+        <section id="v-home">
+            <div class="card-apex" style="text-align:center;">
+                <img src="logo.png" id="p-img" style="width:100px; height:100px; border-radius:20px; border:2px solid var(--neon);">
+                <h2 id="p-name" style="margin:10px 0;">Cargando...</h2>
+                <div class="xp-track"><div id="p-xp-fill" class="xp-fill"></div></div>
+                <p id="p-xp-text" style="font-size:0.7rem; color:var(--neon);">0 / 100 XP</p>
             </div>
         </section>
 
-        <section id="view-social" style="display: none;">
-            <h3 style="color: var(--neon); margin-bottom: 20px;">PLAYERS EN LÍNEA</h3>
-            <input type="text" id="search-input" class="search-bar" placeholder="Buscar por Nombre o UID...">
-            <div id="user-list">
-                <p style="text-align: center; color: #333;">Iniciando escaneo de red...</p>
+        <section id="v-social" style="display:none;">
+            <input type="text" placeholder="Buscar jugadores..." id="user-search">
+            <div id="user-list"></div>
+        </section>
+
+        <section id="v-admin" style="display:none;">
+            <h3 style="color:var(--crimson);">REPORTES Y BLOQUEOS</h3>
+            <div class="card-apex" style="margin-top:15px; border-color:var(--crimson);">
+                <p style="font-size:0.8rem;">No hay reportes activos.</p>
             </div>
         </section>
 
-        <section id="view-admin" style="display: none;">
-            <h3 style="color: var(--crimson); margin-bottom: 20px;">CENTRO DE JUSTICIA</h3>
-            <div class="card-apex" style="border-color: var(--crimson);">
-                <h4 style="font-size: 0.8rem; margin-bottom: 10px;">ESTADO DE TUS DENUNCIAS</h4>
-                <div class="status-box s-pending">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>REPORTE #991: TOXICIDAD</span>
-                        <span style="color: var(--neon);">PROCESANDO</span>
-                    </div>
-                </div>
-                <div class="status-box s-banned" style="margin-top: 10px;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>REPORTE #882: HACKER</span>
-                        <span style="color: var(--emerald);">ACEPTADO</span>
-                    </div>
-                </div>
-            </div>
-
-            <h4 style="font-size: 0.8rem; margin-bottom: 15px;">USUARIOS BLOQUEADOS</h4>
-            <div id="blocked-users">
-                <div class="user-row">
-                    <span style="font-size: 0.8rem;">Usuario_Spam_99</span>
-                    <button class="btn-apex btn-gold" style="width: auto; padding: 5px 15px; font-size: 0.6rem;">DESBLOQUEAR</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="view-config" style="display: none;">
+        <section id="v-config" style="display:none;">
             <div class="card-apex">
-                <h3 style="color: var(--cyan); margin-bottom: 20px;">PARAMETRIZACIÓN</h3>
-                <label style="font-size: 0.6rem; color: #555;">NOMBRE DE OPERADOR</label>
-                <input type="text" id="edit-name" class="search-bar" style="margin-bottom: 20px;">
-                
-                <h3 style="color: var(--neon); margin-bottom: 15px;">SEGURIDAD</h3>
-                <button class="btn-apex" style="background: transparent; border: 1px solid var(--neon); color: var(--neon);" onclick="recoveryEmail()">ENVIAR LINK DE ACCESO TOTAL</button>
-                <button class="btn-apex btn-danger" style="margin-top: 40px;" onclick="deleteAcc()">AUTODESTRUIR CUENTA</button>
+                <input type="text" id="edit-name-inp" placeholder="Nuevo nombre">
+                <button onclick="saveName()" style="width:100%; padding:10px; background:var(--neon); border:none; font-weight:bold;">GUARDAR</button>
+                <button onclick="recovery()" style="width:100%; padding:10px; background:transparent; border:1px solid var(--cyan); color:var(--cyan); margin-top:10px;">RECUPERAR CUENTA</button>
             </div>
         </section>
     </main>
 
     <nav class="nav-dock">
-        <div class="nav-item active" onclick="nav('home', this)"><i class="fas fa-ghost"></i><span>PERFIL</span></div>
-        <div class="nav-item" onclick="nav('social', this)"><i class="fas fa-satellite-dish"></i><span>SOCIAL</span></div>
-        <div class="nav-item" onclick="nav('admin', this)"><i class="fas fa-user-shield"></i><span>ADMIN</span></div>
-        <div class="nav-item" onclick="nav('config', this)"><i class="fas fa-terminal"></i><span>AJUSTES</span></div>
+        <div class="nav-item active" onclick="nav('home', this)"><i class="fas fa-user"></i></div>
+        <div class="nav-item" onclick="nav('social', this)"><i class="fas fa-users"></i></div>
+        <div class="nav-item" onclick="nav('admin', this)"><i class="fas fa-shield-alt"></i></div>
+        <div class="nav-item" onclick="nav('config', this)"><i class="fas fa-cog"></i></div>
     </nav>
 </div>
 
-<div class="chat-panel" id="chat-ui">
-    <div class="chat-head">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <i class="fas fa-arrow-left" onclick="closeChat()" style="color: var(--neon); cursor: pointer;"></i>
-            <img src="logo.png" id="c-img" style="width: 40px; height: 40px; border-radius: 12px;">
-            <div>
-                <p id="c-name" style="font-weight: 900; font-size: 0.9rem;">PLAYER</p>
-                <p id="c-status" style="font-size: 0.5rem; color: var(--emerald);">TRANSMISIÓN ACTIVA</p>
-            </div>
-        </div>
-        <i class="fas fa-shield-alt" style="color: var(--crimson);" onclick="alert('Usuario reportado.')"></i>
+<div class="chat-panel" id="chat-window">
+    <div style="padding:15px; border-bottom:1px solid #222; display:flex; align-items:center; gap:10px;">
+        <i class="fas fa-arrow-left" onclick="closeChat()" style="color:var(--neon);"></i>
+        <img src="logo.png" id="c-target-img" style="width:30px; border-radius:50%;">
+        <span id="c-target-name">Chat</span>
     </div>
-    <div class="chat-body" id="chat-box"></div>
-    <div class="chat-head" style="border-top: 1px solid #222;">
-        <input type="text" id="chat-input" placeholder="Escribir comando..." style="flex: 1; background: transparent; border: none; color: #fff; outline: none; padding: 10px;">
-        <button onclick="sendMessage()" style="background: var(--neon); border: none; width: 45px; height: 45px; border-radius: 12px; cursor: pointer;"><i class="fas fa-paper-plane"></i></button>
+    <div class="chat-body" id="chat-msgs"></div>
+    <div style="padding:10px; display:flex; gap:10px;">
+        <input type="text" id="m-inp" placeholder="Mensaje..." style="margin:0;">
+        <button onclick="send()" style="background:var(--neon); border:none; padding:10px 20px; border-radius:10px;"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail, deleteUser } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, onSnapshot, updateDoc, collection, query, where, getDocs, addDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+    import { getFirestore, doc, onSnapshot, updateDoc, collection, query, getDocs, addDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -224,153 +123,95 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    let currentUserData = {};
-    let currentChatTarget = null;
-    let xpSession = 0;
+    let uData = {};
+    let activeChat = null;
 
-    // LOADER SYSTEM
-    for(let i=0; i<25; i++) document.getElementById('loader').innerHTML += '<div class="tile"></div>';
+    // Generar Loader
+    const ld = document.getElementById('loader');
+    for(let i=0; i<25; i++) ld.innerHTML += '<div class="tile"></div>';
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            // Escucha de datos en tiempo real
             onSnapshot(doc(db, "users", user.uid), (snap) => {
-                currentUserData = snap.data() || {};
-                updateUI();
+                uData = snap.data() || {};
+                render();
+                document.body.classList.add('loaded');
             });
-            
             loadUsers();
-            initXPClock();
-            
-            setTimeout(() => { document.body.classList.add('loaded'); }, 1200);
-        } else {
-            location.href = "index.html";
-        }
+            initXP();
+        } else { location.href = "index.html"; }
     });
 
-    function updateUI() {
-        document.getElementById('user-name').innerText = currentUserData.displayName || "ANÓNIMO";
-        document.getElementById('edit-name').value = currentUserData.displayName || "";
-        document.getElementById('user-img').src = currentUserData.photoURL || "logo.png";
-        document.getElementById('user-role').innerText = (currentUserData.membership || "RECLUTA").toUpperCase();
-        
-        const level = currentUserData.level || 0;
-        const xp = currentUserData.xp || 0;
-        
-        document.getElementById('lvl-num').innerText = level;
-        document.getElementById('xp-val').innerText = `${xp} / 100 XP`;
-        document.getElementById('xp-fill').style.width = `${xp}%`;
+    function render() {
+        document.getElementById('p-name').innerText = uData.displayName || "Gamer";
+        document.getElementById('p-img').src = uData.photoURL || "logo.png";
+        document.getElementById('p-lvl-top').innerText = `LVL ${uData.level || 0}`;
+        document.getElementById('p-xp-text').innerText = `${uData.xp || 0} / 100 XP`;
+        document.getElementById('p-xp-fill').style.width = `${uData.xp || 0}%`;
     }
 
-    // RELOJ DE EXPERIENCIA (100% FUNCIONAL)
-    function initXPClock() {
-        setInterval(async () => {
-            if (document.visibilityState === 'visible') {
-                xpSession += 1;
-                document.getElementById('xp-counter').innerText = `LIVE XP: ${xpSession.toString().padStart(2, '0')}`;
-                
-                if (xpSession >= 10) { // Cada 10 pulsos de actividad, guarda en BD
-                    let nextXP = (currentUserData.xp || 0) + xpSession;
-                    let nextLvl = currentUserData.level || 0;
-                    
-                    if (nextXP >= 100) { nextXP = 0; nextLvl++; }
-                    
-                    await updateDoc(doc(db, "users", auth.currentUser.uid), {
-                        xp: nextXP,
-                        level: nextLvl
-                    });
-                    xpSession = 0;
-                }
-            }
-        }, 5000); // Pulso cada 5 segundos
-    }
-
-    // NAVEGACIÓN
-    window.nav = (view, btn) => {
-        document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-        document.getElementById('view-' + view).style.display = 'block';
+    window.nav = (id, el) => {
+        document.querySelectorAll('main > section').forEach(s => s.style.display = 'none');
+        document.getElementById('v-'+id).style.display = 'block';
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        btn.classList.add('active');
+        el.classList.add('active');
     };
 
-    // SOCIAL REAL
+    function initXP() {
+        setInterval(() => {
+            if(document.visibilityState === 'visible' && auth.currentUser) {
+                let xp = (uData.xp || 0) + 1;
+                let lvl = (uData.level || 0);
+                if(xp >= 100) { xp = 0; lvl++; }
+                updateDoc(doc(db, "users", auth.currentUser.uid), { xp, level: lvl });
+            }
+        }, 10000); // Sube XP cada 10 segs activo
+    }
+
     async function loadUsers() {
         const q = query(collection(db, "users"));
         const snap = await getDocs(q);
         const list = document.getElementById('user-list');
         list.innerHTML = "";
-        
-        snap.forEach(userDoc => {
-            if (userDoc.id === auth.currentUser.uid) return;
-            const d = userDoc.data();
+        snap.forEach(d => {
+            if(d.id === auth.currentUser.uid) return;
+            const data = d.data();
             const row = document.createElement('div');
             row.className = "user-row";
-            row.innerHTML = `
-                <img src="${d.photoURL || 'logo.png'}" class="user-avatar">
-                <div style="flex:1">
-                    <p style="font-weight:900; font-size:0.9rem;">${d.displayName}</p>
-                    <p style="font-size:0.6rem; color:var(--cyan);">LVL ${d.level || 0} • ${d.membership || 'Player'}</p>
-                </div>
-                <div class="status-badge" style="background:var(--emerald)"></div>
-            `;
-            row.onclick = () => openChat(userDoc.id, d);
+            row.innerHTML = `<img src="${data.photoURL || 'logo.png'}" style="width:40px; border-radius:10px;"> 
+                             <div><b>${data.displayName}</b><br><small>LVL ${data.level || 0}</small></div>`;
+            row.onclick = () => openChat(d.id, data);
             list.appendChild(row);
         });
     }
 
-    // CHAT FUNCIONAL
-    window.openChat = (uid, data) => {
-        currentChatTarget = uid;
-        document.getElementById('c-name').innerText = data.displayName;
-        document.getElementById('c-img').src = data.photoURL || 'logo.png';
-        document.getElementById('chat-ui').classList.add('chat-active');
-        
-        const chatID = [auth.currentUser.uid, uid].sort().join("_");
-        const q = query(collection(db, "chats", chatID, "messages"), orderBy("time", "asc"));
-        
-        onSnapshot(q, (snap) => {
-            const box = document.getElementById('chat-box');
+    window.openChat = (id, data) => {
+        activeChat = id;
+        document.getElementById('c-target-name').innerText = data.displayName;
+        document.getElementById('chat-window').classList.add('chat-active');
+        const chatId = [auth.currentUser.uid, id].sort().join("_");
+        onSnapshot(query(collection(db, "chats", chatId, "messages"), orderBy("time", "asc")), (snap) => {
+            const box = document.getElementById('chat-msgs');
             box.innerHTML = "";
             snap.forEach(m => {
-                const md = m.data();
-                const div = document.createElement('div');
-                div.className = `bubble ${md.from === auth.currentUser.uid ? 'b-sent' : 'b-rec'}`;
-                div.innerText = md.text;
-                box.appendChild(div);
+                const d = m.data();
+                box.innerHTML += `<div class="bubble ${d.from === auth.currentUser.uid ? 'b-sent':'b-rec'}">${d.text}</div>`;
             });
             box.scrollTop = box.scrollHeight;
         });
     };
 
-    window.sendMessage = async () => {
-        const inp = document.getElementById('chat-input');
-        if (!inp.value || !currentChatTarget) return;
-        
-        const chatID = [auth.currentUser.uid, currentChatTarget].sort().join("_");
-        await addDoc(collection(db, "chats", chatID, "messages"), {
-            text: inp.value,
-            from: auth.currentUser.uid,
-            time: Date.now()
-        });
-        inp.value = "";
+    window.send = async () => {
+        const txt = document.getElementById('m-inp').value;
+        if(!txt) return;
+        const chatId = [auth.currentUser.uid, activeChat].sort().join("_");
+        await addDoc(collection(db, "chats", chatId, "messages"), { text: txt, from: auth.currentUser.uid, time: Date.now() });
+        document.getElementById('m-inp').value = "";
     };
 
-    window.closeChat = () => document.getElementById('chat-ui').classList.remove('chat-active');
-
-    // SEGURIDAD
-    window.recoveryEmail = () => {
-        sendPasswordResetEmail(auth, auth.currentUser.email)
-            .then(() => alert("Se ha enviado un enlace de recuperación a: " + auth.currentUser.email));
-    };
-
-    window.logout = () => signOut(auth).then(() => location.href = "index.html");
-
-    window.deleteAcc = async () => {
-        if (confirm("¿Confirmas la eliminación permanente de todos los datos?")) {
-            await deleteUser(auth.currentUser);
-            location.href = "index.html";
-        }
-    };
+    window.closeChat = () => document.getElementById('chat-window').classList.remove('chat-active');
+    window.recovery = () => sendPasswordResetEmail(auth, auth.currentUser.email).then(()=>alert("Email enviado"));
+    window.saveName = () => updateDoc(doc(db, "users", auth.currentUser.uid), { displayName: document.getElementById('edit-name-inp').value });
 </script>
 </body>
 </html>
