@@ -7,75 +7,105 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
-        body { background: #050505; color: #fff; overflow-x: hidden; }
+        :root {
+            --neon-gold: #ffd700;
+            --neon-red: #ff0000;
+            --neon-blue: #00f2ff;
+            --glass: rgba(0, 0, 0, 0.7);
+        }
 
-        /* HEADER */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+        body { 
+            background: radial-gradient(circle at center, #111 0%, #050505 100%); 
+            color: #fff; 
+            overflow-x: hidden; 
+            min-height: 100vh;
+        }
+
+        /* --- HEADER MAESTRO (CRISTAL + FIJO) --- */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 1.2rem 1.5rem; background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(10px); border-bottom: 2px solid gold;
+            padding: 1rem 2rem; background: var(--glass);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-bottom: 2px solid var(--neon-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
-        .logo { display: flex; align-items: center; gap: 0.8rem; }
-        .logo img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid gold; box-shadow: 0 0 10px gold; }
-        .logo span { font-family: 'Press Start 2P'; font-size: 1rem; color: #ffd700; text-shadow: 0 0 12px gold; }
 
-        .header-right { display: flex; align-items: center; gap: 20px; }
-        
-        .menu-btn { width: 30px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2001; }
-        .menu-btn span { height: 3px; background: gold; border-radius: 3px; transition: 0.4s; width: 100%; }
-        .menu-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-        .menu-btn.open span:nth-child(2) { opacity: 0; }
-        .menu-btn.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+        .logo { display: flex; align-items: center; gap: 1rem; cursor: pointer; }
+        .logo img { 
+            width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--neon-gold); 
+            box-shadow: 0 0 15px var(--neon-gold); transition: 0.3s;
+        }
+        .logo:hover img { transform: scale(1.1); }
+        .logo span { font-family: 'Press Start 2P'; font-size: 0.85rem; color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); }
 
-        .notif-container { position: relative; cursor: pointer; font-size: 1.8rem; color: gold; transition: 0.3s; }
-        .bell-shake { animation: shake 0.5s infinite; color: #ff0000 !important; filter: drop-shadow(0 0 10px red); }
-        .notif-dot { position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: red; border-radius: 50%; display: none; border: 2px solid black; }
+        .header-right { display: flex; align-items: center; gap: 25px; }
+
+        /* --- CAMPANA FUNCIONAL --- */
+        .notif-container { position: relative; cursor: pointer; font-size: 1.8rem; color: var(--neon-gold); transition: 0.3s; }
+        .bell-shake { animation: shake 0.5s infinite; color: var(--neon-red) !important; filter: drop-shadow(0 0 15px var(--neon-red)); }
+        .notif-dot { position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: var(--neon-red); border-radius: 50%; display: none; border: 2px solid black; box-shadow: 0 0 10px var(--neon-red); }
 
         @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
 
-        /* MENU POPUP */
+        /* --- MENÚ 3 PUNTOS --- */
+        .menu-btn { width: 28px; display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+        .menu-btn span { height: 3px; background: var(--neon-gold); border-radius: 3px; transition: .4s; box-shadow: 0 0 5px var(--neon-gold); }
+        .menu-btn.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-btn.active span:nth-child(2) { opacity: 0; }
+        .menu-btn.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* --- POPUP MENÚ --- */
         .menu-popup {
-            position: absolute; top: 85px; right: 15px; background: #0a0a0a; border: 2px solid gold; 
-            border-radius: 20px; padding: 1.5rem; display: none; flex-direction: column; min-width: 300px;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
+            position: fixed; top: 85px; right: 20px; background: rgba(10, 10, 10, 0.95); 
+            border: 2px solid var(--neon-gold); border-radius: 20px; padding: 1.5rem; display: none; 
+            flex-direction: column; min-width: 300px; backdrop-filter: blur(15px);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
-        .profile-card { background: #111; border: 2px solid gold; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px;}
-        .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid gold; object-fit: cover; }
+        .profile-card { background: rgba(255,255,255,0.05); border: 1px solid var(--neon-gold); border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px;}
+        .profile-pic { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-gold); object-fit: cover; box-shadow: 0 0 10px var(--neon-gold); }
 
-        /* ITEMS DEL MENÚ */
         .nav-item { 
-            font-size: 0.8rem; font-weight: 800; color: gold; text-transform: uppercase; 
-            cursor: pointer; padding: 12px; border-bottom: 1px solid rgba(255, 215, 0, 0.1); 
-            display: flex; align-items: center; gap: 12px; transition: 0.3s;
+            font-size: 0.8rem; font-weight: 800; color: var(--neon-gold); text-transform: uppercase; 
+            cursor: pointer; padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px; transition: 0.3s;
         }
-        .nav-item:hover { background: rgba(255, 215, 0, 0.1); }
-        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-item:hover { background: rgba(255, 215, 0, 0.1); text-shadow: 0 0 8px var(--neon-gold); }
 
-        /* PANEL NOTIFICACIONES */
+        /* --- CUADRADO ADMIN --- */
+        .admin-box { border: 2px solid var(--neon-red); background: rgba(255,0,0,0.05); padding: 15px; border-radius: 15px; margin-top: 10px; box-shadow: 0 0 15px var(--neon-red); display: none; }
+
+        /* --- PANEL NOTIFICACIONES --- */
         .notif-panel { 
             position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
-            background: rgba(0,0,0,0.98); z-index: 2000; 
-            transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1); 
-            display: flex; flex-direction: column; align-items: center; padding: 2rem; 
-            overflow-y: auto;
+            background: rgba(0,0,0,0.98); z-index: 2000; transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1); 
+            display: flex; flex-direction: column; align-items: center; padding: 2rem; overflow-y: auto;
         }
         .notif-panel.active { right: 0; }
-        .notif-card { border: 2px solid; background: #000; padding: 20px; border-radius: 15px; width: 100%; max-width: 450px; margin-bottom: 20px; transition: 0.3s; }
+        .notif-card { border: 2px solid; background: #000; padding: 20px; border-radius: 20px; width: 100%; max-width: 450px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        main { padding-top: 180px; text-align: center; }
+        .neon-title { font-size: 2.5rem; color: #fff; text-shadow: 0 0 15px var(--neon-gold); margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo"><img src="logo.png"><span>DANIBOOM</span></div>
+    <div class="logo" onclick="location.reload()">
+        <img src="logo.png">
+        <span>DANIBOOM</span>
+    </div>
+
     <div class="header-right">
-        <div id="menuBtn" class="menu-btn"><span></span><span></span><span></span></div>
         <div id="notifBtn" class="notif-container">
             <i class="fas fa-bell" id="bellIcon"></i>
             <span id="notifDot" class="notif-dot"></span>
         </div>
+        <div id="menuBtn" class="menu-btn">
+            <span></span><span></span><span></span>
+        </div>
     </div>
+
     <div class="menu-popup" id="menuPopup">
         <div class="profile-card">
             <img src="" id="profilePic" class="profile-pic">
@@ -84,7 +114,7 @@
         </div>
 
         <div id="itemSesion" style="display:none;" class="nav-item" onclick="location.href='perfil.html'">
-            <i class="fas fa-user-circle"></i><span>Ver Sesión</span>
+            <i class="fas fa-user-circle"></i><span>Ver Mi Sesión</span>
         </div>
 
         <div class="nav-item" onclick="location.href='redes.html'">
@@ -100,9 +130,9 @@
             </div>
         </div>
 
-        <div id="adminUtils" style="display:none; padding: 10px; border: 1px solid red; border-radius: 10px; margin-top: 10px;">
-            <p style="color:red; font-size:0.6rem; font-weight:bold; margin-bottom:5px; text-align:center;">ADMINISTRACIÓN</p>
-            <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:0.7rem;">LANZAR NOTIFICACIÓN</button>
+        <div id="adminUtils" class="admin-box">
+            <p style="color:red; font-size:0.55rem; font-family:'Press Start 2P'; text-align:center; margin-bottom:10px;">PANEL CONTROL</p>
+            <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:0.7rem;">LANZAR AVISO</button>
         </div>
 
         <div id="sessionBtnArea"></div>
@@ -111,12 +141,13 @@
 
 <aside class="notif-panel" id="notifPanel">
     <span id="closeNotif" style="position:absolute; top:25px; right:35px; font-size:3rem; color:gold; cursor:pointer;">&times;</span>
-    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; margin-bottom:20px; font-size:0.8rem;">AVISOS RECIENTES</h2>
+    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; margin-bottom:30px; font-size:0.8rem;">CENTRO DE AVISOS</h2>
     <div id="notifContainer" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
 </aside>
 
-<main style="padding-top: 160px; text-align: center;">
-    <h1 style="color:gold; text-shadow: 0 0 20px gold;">BIENVENIDO</h1>
+<main>
+    <h1 class="neon-title">BIENVENIDO</h1>
+    <p style="color: gold; font-family: 'Press Start 2P'; font-size: 0.6rem;">ZONA OFICIAL DANIBOOM</p>
 </main>
 
 <script type="module">
@@ -134,6 +165,7 @@
     const auth = getAuth();
     const db = getFirestore();
 
+    // --- LÓGICA DE ROLES Y UI ---
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             let snap = await getDoc(doc(db, "users", user.uid));
@@ -155,7 +187,6 @@
             };
             const currentRole = roleConfig[role] || roleConfig['anonymous'];
 
-            // UI del Rol
             document.getElementById('roleUI').innerHTML = `
                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px; font-weight: 800; font-size: 0.75rem; color: ${currentRole.color}; text-shadow: 0 0 10px ${currentRole.color}55;">
                     <i class="fas fa-${currentRole.icon}"></i><span>${currentRole.label}</span>
@@ -165,7 +196,6 @@
             document.getElementById('profileName').innerText = d.displayName || "Usuario";
             document.getElementById('profilePic').src = d.photoURL || "logo.png";
             
-            // --- LÓGICA DE VISIBILIDAD DE SECCIONES ---
             const tieneAccesoPrivado = (role === 'suscriptor' || role === 'admin' || role === 'owner');
 
             document.getElementById('itemSesion').style.display = tieneAccesoPrivado ? 'flex' : 'none';
@@ -173,7 +203,7 @@
             document.getElementById('adminUtils').style.display = (role === 'admin' || role === 'owner') ? 'block' : 'none';
             
             document.getElementById('sessionBtnArea').innerHTML = user.isAnonymous
-                ? `<button onclick="location.href='index.html'" style="width:100%; background:gold; color:black; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer; font-weight:bold; font-family:'Orbitron';">INGRESAR / REGISTRO</button>`
+                ? `<button onclick="location.href='index.html'" style="width:100%; background:gold; color:black; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer; font-weight:bold; font-family:'Orbitron';">REGISTRARSE</button>`
                 : `<button id="logoutBtn" style="width:100%; background:#222; color:white; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer; font-weight:bold; font-family:'Orbitron';">CERRAR SESIÓN</button>`;
 
             if(!user.isAnonymous) {
@@ -184,6 +214,7 @@
         } else { location.href = "index.html"; }
     });
 
+    // --- LÓGICA DE NOTIFICACIONES ---
     function escucharNotificaciones() {
         const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
         onSnapshot(q, (snapshot) => {
@@ -203,9 +234,6 @@
             if (lastNotifId && lastNotifId !== readId) {
                 document.getElementById('bellIcon').classList.add('bell-shake');
                 document.getElementById('notifDot').style.display = 'block';
-            } else {
-                document.getElementById('bellIcon').classList.remove('bell-shake');
-                document.getElementById('notifDot').style.display = 'none';
             }
         });
     }
@@ -219,31 +247,24 @@
         const configs = {
             'youtube': { icon: 'fab fa-youtube', color: '#ff0000' },
             'tiktok': { icon: 'fab fa-tiktok', color: '#ffffff' },
-            'facebook': { icon: 'fab fa-facebook', color: '#1877f2' },
-            'instagram': { icon: 'fab fa-instagram', color: '#e4405f' },
-            'whatsapp': { icon: 'fab fa-whatsapp', color: '#25d366' },
-            'whatsapp-canal': { icon: 'fas fa-bullhorn', color: '#00ffcc' },
-            'mantenimiento': { icon: 'fas fa-tools', color: '#ff8800' },
-            'aviso': { icon: 'fas fa-exclamation-triangle', color: '#ffff00' },
-            'actualizacion': { icon: 'fas fa-cog', color: '#0088ff' },
-            'cog': { icon: 'fas fa-cog', color: '#ffd700' }
+            'aviso': { icon: 'fas fa-exclamation-triangle', color: '#ffff00' }
         };
 
-        const theme = configs[data.iconType] || configs['cog'];
+        const theme = configs[data.iconType] || { icon: 'fas fa-bell', color: '#ffd700' };
         card.style.borderColor = theme.color;
-        card.style.boxShadow = `0 0 20px ${theme.color}66`;
+        card.style.boxShadow = `0 0 20px ${theme.color}44`;
 
         const btnHTML = (data.link && data.link !== "#") 
-            ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:${theme.color==='#ffffff'||theme.color==='#ffff00'?'#000':'#fff'}; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer; box-shadow: 0 0 10px ${theme.color}aa;">IR AL ENLACE</button>`
+            ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:#000; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:10px; cursor:pointer;">VER AHORA</button>`
             : '';
 
         card.innerHTML = `
-            <div style="display:flex; align-items:center; gap:12px; color:${theme.color}; margin-bottom:12px; text-shadow: 0 0 10px ${theme.color};">
-                <i class="${theme.icon}" style="font-size:1.6rem;"></i><span style="font-weight:800; font-size:0.85rem;">${data.title}</span>
+            <div style="display:flex; align-items:center; gap:12px; color:${theme.color}; margin-bottom:12px;">
+                <i class="${theme.icon}" style="font-size:1.6rem;"></i><span style="font-weight:800;">${data.title}</span>
             </div>
-            <p style="font-size:0.85rem; color:#ccc;">${data.message}</p>
+            <p style="font-size:0.85rem; color:#eee;">${data.message}</p>
             ${btnHTML}
-            <div style="font-size:0.65rem; color:#666; margin-top:15px; text-align:center;">EXPIRA EN: <span id="time-${id}" style="color:${theme.color}; font-weight:bold;">...</span></div>
+            <div style="font-size:0.6rem; color:#666; margin-top:15px; text-align:center;">EXPIRA EN: <span id="time-${id}" style="color:${theme.color}; font-weight:bold;">...</span></div>
         `;
         
         container.appendChild(card);
@@ -252,13 +273,13 @@
             remain--;
             const el = document.getElementById(`time-${id}`);
             if (!el || remain <= 0) { clearInterval(timer); card.remove(); return; }
-            const d = Math.floor(remain / 86400), h = Math.floor((remain % 86400) / 3600), m = Math.floor((remain % 3600) / 60), s = remain % 60;
-            el.innerText = d > 0 ? `${d}d ${h}h` : (h > 0 ? `${h}h ${m}m` : `${m}m ${s}s`);
+            el.innerText = `${Math.floor(remain/60)}m ${remain%60}s`;
         }, 1000);
     }
 
+    // --- INTERFAZ ---
     document.getElementById('menuBtn').onclick = function() {
-        this.classList.toggle('open');
+        this.classList.toggle('active');
         const pop = document.getElementById('menuPopup');
         pop.style.display = (pop.style.display === 'flex') ? 'none' : 'flex';
     };
