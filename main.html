@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANIBOOM WEB | Principal</title>
+    <title>DANIBOOM WEB | Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -19,11 +19,11 @@
         }
         .logo { display: flex; align-items: center; gap: 0.8rem; }
         .logo img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid gold; box-shadow: 0 0 10px gold; }
-        .logo span { font-family: 'Press Start 2P'; font-size: 1.1rem; color: #ffd700; text-shadow: 0 0 12px gold; }
+        .logo span { font-family: 'Press Start 2P'; font-size: 1rem; color: #ffd700; text-shadow: 0 0 12px gold; }
 
         .header-right { display: flex; align-items: center; gap: 20px; }
         
-        /* BOTÓN MENÚ ANIMADO */
+        /* BOTÓN MENÚ 3 PUNTOS */
         .menu-btn { width: 30px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2001; }
         .menu-btn span { height: 3px; background: gold; border-radius: 3px; transition: 0.4s; width: 100%; }
         .menu-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
@@ -46,13 +46,19 @@
         .profile-card { background: #111; border: 2px solid gold; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid gold; object-fit: cover; }
 
-        /* PANEL NOTIFICAIONES */
-        .notif-panel { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: rgba(0,0,0,0.98); z-index: 2000; transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1); display: flex; flex-direction: column; align-items: center; padding: 2rem; }
+        /* PANEL NOTIFICACIONES */
+        .notif-panel { 
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
+            background: rgba(0,0,0,0.98); z-index: 2000; 
+            transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1); 
+            display: flex; flex-direction: column; align-items: center; padding: 2rem; 
+            overflow-y: auto;
+        }
         .notif-panel.active { right: 0; }
         
         .notif-card { 
             border: 2px solid; background: #000; padding: 20px; border-radius: 15px; 
-            width: 100%; max-width: 450px; margin-top: 20px; transition: 0.5s; 
+            width: 100%; max-width: 450px; margin-bottom: 20px; transition: 0.5s; 
         }
     </style>
 </head>
@@ -74,7 +80,7 @@
             <div id="roleUI"></div>
         </div>
         <div id="adminUtils" style="display:none; margin-top: 15px;">
-            <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">PANEL DE CONTROL</button>
+            <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; text-transform:uppercase;">Panel Admin</button>
         </div>
         <div id="sessionBtnArea"></div>
     </div>
@@ -82,18 +88,19 @@
 
 <aside class="notif-panel" id="notifPanel">
     <span id="closeNotif" style="position:absolute; top:25px; right:35px; font-size:3rem; color:gold; cursor:pointer;">&times;</span>
-    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; font-size:0.8rem;">CENTRO DE AVISOS</h2>
+    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; margin-bottom:20px; font-size:0.8rem;">CENTRO DE AVISOS</h2>
     <div id="notifContainer" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
 </aside>
 
 <main style="padding-top: 160px; text-align: center;">
-    <h1 style="color:gold; text-shadow: 0 0 20px gold;">BIENVENIDO A DANIBOOM WEB</h1>
+    <h1 style="color:gold; text-shadow: 0 0 20px gold; font-size: 2rem;">BIENVENIDO</h1>
+    <p style="margin-top: 20px; color: #888;">Explora el contenido exclusivo</p>
 </main>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, collection, query, onSnapshot, getDocs, where } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, query, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -117,9 +124,9 @@
             document.getElementById('adminUtils').style.display = (role === 'admin' || role === 'owner') ? 'block' : 'none';
             
             document.getElementById('sessionBtnArea').innerHTML = `
-                <button id="logoutBtn" style="width:100%; background:#222; color:white; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer;">CERRAR SESIÓN</button>
+                <button id="logoutBtn" style="width:100%; background:#222; color:white; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer; font-weight:bold;">CERRAR SESIÓN</button>
             `;
-            document.getElementById('logoutBtn').onclick = () => signOut(auth);
+            document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.reload());
 
             escucharNotificaciones();
         } else { location.href = "index.html"; }
@@ -127,28 +134,44 @@
 
     // --- LÓGICA DE NOTIFICACIONES ---
     function escucharNotificaciones() {
-        const q = query(collection(db, "notifications"));
+        // Ordenamos por fecha para saber cuál es la última
+        const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
 
         onSnapshot(q, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === "added") {
-                    const data = change.doc.data();
-                    const now = Date.now();
-                    const timePassed = (now - data.createdAt) / 1000;
-                    const timeLeft = data.duration - timePassed;
+            let lastNotifId = null;
+            let container = document.getElementById('notifContainer');
+            container.innerHTML = ""; // Limpiar para evitar duplicados al recargar en vivo
 
-                    if (timeLeft > 0) {
-                        activarCampana();
-                        renderNotif(change.doc.id, data, timeLeft);
-                    }
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const id = doc.id;
+                const now = Date.now();
+                const timeLeft = data.duration - ((now - data.createdAt) / 1000);
+
+                if (timeLeft > 0) {
+                    if (!lastNotifId) lastNotifId = id; // La primera es la más nueva
+                    renderNotif(id, data, timeLeft);
                 }
             });
+
+            // COMPROBAR SI LA ÚLTIMA YA FUE LEÍDA
+            const readId = localStorage.getItem('lastReadNotif');
+            if (lastNotifId && lastNotifId !== readId) {
+                activarCampana();
+            } else {
+                desactivarCampana();
+            }
         });
     }
 
     function activarCampana() {
         document.getElementById('bellIcon').classList.add('bell-shake');
         document.getElementById('notifDot').style.display = 'block';
+    }
+
+    function desactivarCampana() {
+        document.getElementById('bellIcon').classList.remove('bell-shake');
+        document.getElementById('notifDot').style.display = 'none';
     }
 
     function renderNotif(id, data, seconds) {
@@ -169,25 +192,25 @@
 
         const theme = configs[data.iconType] || configs['cog'];
         card.style.borderColor = theme.color;
-        card.style.boxShadow = `0 0 15px ${theme.color}44`;
+        card.style.boxShadow = `0 0 15px ${theme.color}33`;
 
-        // Solo mostrar botón si el link no es "#"
         const btnHTML = (data.link && data.link !== "#") 
-            ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:${theme.color==='#ffffff'?'#000':'#fff'}; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer;">ABRIR ENLACE</button>`
+            ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:${theme.color==='#ffffff'?'#000':'#fff'}; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer; text-transform:uppercase; font-size:0.7rem;">Ir al enlace</button>`
             : '';
 
         card.innerHTML = `
-            <div style="display:flex; align-items:center; gap:10px; color:${theme.color}; margin-bottom:10px;">
-                <i class="${theme.icon}" style="font-size:1.5rem;"></i>
-                <span style="font-weight:bold; font-size:0.8rem;">${data.title}</span>
+            <div style="display:flex; align-items:center; gap:12px; color:${theme.color}; margin-bottom:12px;">
+                <i class="${theme.icon}" style="font-size:1.6rem;"></i>
+                <span style="font-weight:800; font-size:0.85rem; letter-spacing:1px;">${data.title}</span>
             </div>
-            <p style="font-size:0.8rem; color:#bbb;">${data.message}</p>
+            <p style="font-size:0.85rem; color:#ccc; line-height:1.4;">${data.message}</p>
             ${btnHTML}
-            <p style="font-size:0.6rem; color:#555; margin-top:10px; text-align:center;">Expira en: <span id="time-${id}">...</span></p>
+            <div style="font-size:0.65rem; color:#555; margin-top:15px; text-align:center; border-top:1px solid #222; padding-top:10px;">
+                EXPIRA EN: <span id="time-${id}" style="color:${theme.color}; font-weight:bold;">...</span>
+            </div>
         `;
-        container.appendChild(card);
+        container.appendChild(card); // Ya vienen ordenadas por el query
 
-        // Contador Humano (Días/Horas)
         let remain = Math.floor(seconds);
         const timer = setInterval(() => {
             remain--;
@@ -197,15 +220,8 @@
                 card.remove();
                 return;
             }
-            
-            const d = Math.floor(remain / 86400);
-            const h = Math.floor((remain % 86400) / 3600);
-            const m = Math.floor((remain % 3600) / 60);
-            const s = remain % 60;
-
-            if (d > 0) el.innerText = `${d}d ${h}h`;
-            else if (h > 0) el.innerText = `${h}h ${m}m`;
-            else el.innerText = `${m}m ${s}s`;
+            const d = Math.floor(remain / 86400), h = Math.floor((remain % 86400) / 3600), m = Math.floor((remain % 3600) / 60), s = remain % 60;
+            el.innerText = d > 0 ? `${d}d ${h}h` : (h > 0 ? `${h}h ${m}m` : `${m}m ${s}s`);
         }, 1000);
     }
 
@@ -218,11 +234,19 @@
 
     document.getElementById('notifBtn').onclick = () => {
         document.getElementById('notifPanel').classList.add('active');
-        document.getElementById('bellIcon').classList.remove('bell-shake');
-        document.getElementById('notifDot').style.display = 'none';
+        desactivarCampana();
+        
+        // Marcar la más reciente como leída
+        const firstCard = document.querySelector('.notif-card');
+        if (firstCard) {
+            const latestId = firstCard.id.replace('card-', '');
+            localStorage.setItem('lastReadNotif', latestId);
+        }
     };
 
-    document.getElementById('closeNotif').onclick = () => document.getElementById('notifPanel').classList.remove('active');
+    document.getElementById('closeNotif').onclick = () => {
+        document.getElementById('notifPanel').classList.remove('active');
+    };
 </script>
 </body>
 </html>
