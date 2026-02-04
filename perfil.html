@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANIBOOM | Apex Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --gold: #ffd700; --blue: #00f2ff; --red: #ff003c; --green: #00ff88;
+            --glass: rgba(10, 10, 10, 0.9); --glass-border: rgba(255, 215, 0, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+        body { background: #000; color: #fff; overflow: hidden; height: 100vh; }
+
+        /* LOADER */
+        #loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: grid; grid-template-columns: repeat(5,1fr); grid-template-rows: repeat(5,1fr); }
+        .tile { background: #050505; border: 0.1px solid #111; transition: 0.6s; }
+        .loaded .tile { transform: scale(0); opacity: 0; }
+
+        /* LAYOUT */
+        .app-grid { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; }
+        header { padding: 15px; border-bottom: 2px solid var(--gold); background: #000; display: flex; justify-content: space-between; align-items: center; }
+        main { overflow-y: auto; padding: 20px; padding-bottom: 90px; }
+
+        /* NAVEGACIÓN */
+        .nav-bar { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--glass); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
+        .nav-btn { color: #444; font-size: 1.4rem; cursor: pointer; transition: 0.3s; }
+        .nav-btn.active { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+
+        /* CARDS */
+        .card-pro { background: rgba(20,20,20,0.5); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; margin-bottom: 20px; position: relative; }
+        .xp-fill { height: 8px; background: linear-gradient(90deg, var(--gold), #fff); border-radius: 10px; width: 0%; transition: 1s; box-shadow: 0 0 10px var(--gold); }
+
+        /* CHAT SYSTEM */
+        #chat-selector { display: flex; flex-direction: column; gap: 10px; }
+        .user-item { display: flex; align-items: center; gap: 15px; padding: 12px; background: #111; border-radius: 15px; cursor: pointer; border: 1px solid transparent; }
+        .user-item:hover { border-color: var(--blue); background: #151515; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        .chat-overlay { position: fixed; inset: 0; background: #000; z-index: 2000; display: none; flex-direction: column; }
+        .chat-msgs { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .m-msg { padding: 10px 15px; border-radius: 15px; max-width: 75%; font-size: 0.9rem; }
+        .m-sent { align-self: flex-end; background: var(--gold); color: #000; }
+        .m-rec { align-self: flex-start; background: #222; }
+
+        /* BUTTONS */
+        .btn-action { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-red { background: var(--red); color: #fff; }
+
+        input, select { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 10px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+<div id="loader"></div>
+
+<div class="app-grid">
+    <header>
+        <div style="font-family:'Orbitron'; color:var(--gold); font-weight:900;">DANIBOOM <span style="font-size:0.6rem; color:#fff;">PRO</span></div>
+        <div id="p-lvl-header" style="font-size:0.7rem; font-weight:bold; border:1px solid var(--gold); padding:2px 8px; border-radius:5px;">LVL 0</div>
+    </header>
+
+    <main id="content">
+        <div id="sec-home">
+            <div class="card-pro" style="text-align:center;">
+                <img src="logo.png" id="p-img" style="width:100px; height:100px; border-radius:20px; border:2px solid var(--gold); object-fit:cover;">
+                <h2 id="p-name" style="margin-top:10px;">CARGANDO...</h2>
+                <p id="p-role" style="font-size:0.7rem; color:var(--blue); letter-spacing:2px;"></p>
+                
+                <div style="text-align:left; margin-top:20px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--gold);">
+                        <span>SISTEMA DE XP (ACTIVO)</span>
+                        <span id="p-xp-stat">0 / 100</span>
+                    </div>
+                    <div style="width:100%; height:8px; background:#111; border-radius:10px; margin-top:5px;">
+                        <div id="xp-bar" class="xp-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec-chat" style="display:none;">
+            <h3 style="color:var(--blue); margin-bottom:15px;"><i class="fas fa-comments"></i> CENTRO DE COMUNICACIÓN</h3>
+            <div id="chat-selector">
+                <p style="text-align:center; color:#444; font-size:0.8rem;">Buscando amigos disponibles...</p>
+            </div>
+        </div>
+
+        <div id="sec-admin" style="display:none;">
+            <h3 style="color:var(--red); margin-bottom:15px;"><i class="fas fa-shield-alt"></i> CONTROL DE ACCESO</h3>
+            <div class="card-pro" style="border-color:var(--red);">
+                <h4 style="font-size:0.8rem; color:var(--red);">REPORTES ENVIADOS</h4>
+                <div id="reports-list" style="font-size:0.7rem; margin-top:10px;">
+                    <div style="padding:10px; background:#1a0505; border-radius:10px; margin-bottom:5px; border-left:3px solid var(--red);">
+                        ID #882 - En revisión por el STAFF
+                    </div>
+                </div>
+            </div>
+            <h4 style="font-size:0.8rem; margin-bottom:10px;">USUARIOS BLOQUEADOS</h4>
+            <div id="blocked-list">
+                <p style="font-size:0.6rem; color:#444;">No has bloqueado a ningún usuario.</p>
+            </div>
+        </div>
+
+        <div id="sec-config" style="display:none;">
+            <div class="card-pro">
+                <h3 style="color:var(--gold);">AJUSTES</h3>
+                <label style="font-size:0.6rem; color:#888;">NOMBRE</label>
+                <input type="text" id="edit-name">
+                <button class="btn-action btn-gold" onclick="updateUser()">GUARDAR DATOS</button>
+                
+                <hr style="margin:20px 0; border:0; border-top:1px solid #222;">
+                <h3 style="color:var(--blue);">SEGURIDAD</h3>
+                <button class="btn-action" style="background:#111; color:var(--blue); border:1px solid var(--blue);" onclick="sendRecovery()">ENVIAR LINK DE RECUPERACIÓN</button>
+                <button class="btn-action btn-red" style="margin-top:30px;" onclick="deleteAcc()">ELIMINAR CUENTA DEFINITIVAMENTE</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="nav-bar">
+        <div class="nav-btn active" onclick="nav('home', this)"><i class="fas fa-home"></i></div>
+        <div class="nav-btn" onclick="nav('chat', this)"><i class="fas fa-comment-dots"></i></div>
+        <div class="nav-btn" onclick="nav('admin', this)"><i class="fas fa-user-shield"></i></div>
+        <div class="nav-btn" onclick="nav('config', this)"><i class="fas fa-cog"></i></div>
+    </div>
+</div>
+
+<div class="chat-overlay" id="chat-window">
+    <div style="padding:15px; border-bottom:1px solid #222; display:flex; align-items:center; gap:10px;">
+        <i class="fas fa-chevron-left" onclick="closeChat()" style="cursor:pointer; color:var(--gold);"></i>
+        <img src="logo.png" id="c-target-img" style="width:35px; height:35px; border-radius:50%;">
+        <div id="c-target-name" style="font-weight:bold; font-size:0.9rem;">---</div>
+    </div>
+    <div class="chat-msgs" id="chat-messages"></div>
+    <div style="padding:10px; background:#0a0a0a; display:flex; gap:10px;">
+        <input type="text" id="m-input" placeholder="Escribe..." style="margin:0;">
+        <button onclick="sendMsg()" style="background:var(--gold); border:none; width:50px; border-radius:10px;"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut, deleteUser, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, setDoc, collection, query, where, onSnapshot, addDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
+        authDomain: "web1-3b83a.firebaseapp.com",
+        projectId: "web1-3b83a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore();
+
+    let userData = {};
+    let activeChatID = null;
+
+    // LOADER
+    for(let i=0; i<25; i++) document.getElementById('loader').innerHTML += '<div class="tile"></div>';
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const ref = doc(db, "users", user.uid);
+            onSnapshot(ref, (snap) => {
+                userData = snap.data() || {};
+                renderProfile();
+            });
+            loadFriends();
+            startXPTracker();
+            setTimeout(() => { document.body.classList.add('loaded'); }, 1000);
+        } else { location.href = "index.html"; }
+    });
+
+    function renderProfile() {
+        document.getElementById('p-name').innerText = userData.displayName || "USUARIO";
+        document.getElementById('p-img').src = userData.photoURL || "logo.png";
+        document.getElementById('edit-name').value = userData.displayName || "";
+        const lvl = userData.level || 0;
+        const xp = userData.xp || 0;
+        document.getElementById('p-lvl-header').innerText = `LVL ${lvl}`;
+        document.getElementById('p-xp-stat').innerText = `${xp} / 100 XP`;
+        document.getElementById('xp-bar').style.width = `${xp}%`;
+        document.getElementById('p-role').innerText = userData.membership?.toUpperCase() || "PLAYER";
+    }
+
+    // NAVEGACIÓN
+    window.nav = (id, btn) => {
+        document.querySelectorAll('main > div').forEach(d => d.style.display = 'none');
+        document.getElementById('sec-' + id).style.display = 'block';
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    // XP TRACKER (FUNCIONAL)
+    function startXPTracker() {
+        setInterval(async () => {
+            if (document.visibilityState === 'visible' && auth.currentUser) {
+                let newXP = (userData.xp || 0) + 2; // Gana 2 XP cada 30 segs
+                let newLvl = userData.level || 0;
+                if (newXP >= 100) { newXP = 0; newLvl++; }
+                await updateDoc(doc(db, "users", auth.currentUser.uid), { xp: newXP, level: newLvl });
+            }
+        }, 30000);
+    }
+
+    // CHAT SYSTEM
+    async function loadFriends() {
+        const q = query(collection(db, "users"), where("membership", "==", "suscriptor")); // Ejemplo: Carga suscriptores como amigos
+        const snap = await getDocs(q);
+        const cont = document.getElementById('chat-selector');
+        cont.innerHTML = "";
+        snap.forEach(docSnap => {
+            if(docSnap.id === auth.currentUser.uid) return;
+            const d = docSnap.data();
+            const div = document.createElement('div');
+            div.className = "user-item";
+            div.innerHTML = `<img src="${d.photoURL || 'logo.png'}" style="width:40px;height:40px;border-radius:50%;">
+                             <div style="flex:1"><b>${d.displayName}</b><br><small style="color:var(--green)">LVL ${d.level || 0}</small></div>
+                             <i class="fas fa-chevron-right"></i>`;
+            div.onclick = () => openChat(docSnap.id, d);
+            cont.appendChild(div);
+        });
+    }
+
+    window.openChat = (targetID, data) => {
+        activeChatID = targetID;
+        document.getElementById('c-target-name').innerText = data.displayName;
+        document.getElementById('c-target-img').src = data.photoURL || 'logo.png';
+        document.getElementById('chat-window').style.display = 'flex';
+        loadMessages();
+    }
+
+    function loadMessages() {
+        const chatID = [auth.currentUser.uid, activeChatID].sort().join("_");
+        const q = query(collection(db, "chats", chatID, "messages"), orderBy("time", "asc"));
+        onSnapshot(q, (snap) => {
+            const cont = document.getElementById('chat-messages');
+            cont.innerHTML = "";
+            snap.forEach(m => {
+                const d = m.data();
+                const div = document.createElement('div');
+                div.className = `m-msg ${d.from === auth.currentUser.uid ? 'm-sent' : 'm-rec'}`;
+                div.innerText = d.text;
+                cont.appendChild(div);
+            });
+            cont.scrollTop = cont.scrollHeight;
+        });
+    }
+
+    window.sendMsg = async () => {
+        const txt = document.getElementById('m-input').value;
+        if(!txt) return;
+        const chatID = [auth.currentUser.uid, activeChatID].sort().join("_");
+        await addDoc(collection(db, "chats", chatID, "messages"), {
+            text: txt, from: auth.currentUser.uid, time: Date.now()
+        });
+        document.getElementById('m-input').value = "";
+    }
+
+    window.closeChat = () => document.getElementById('chat-window').style.display = 'none';
+
+    // SEGURIDAD
+    window.sendRecovery = () => {
+        sendPasswordResetEmail(auth, auth.currentUser.email).then(() => alert("📧 Link de seguridad enviado a tu correo."));
+    }
+
+    window.updateUser = async () => {
+        const n = document.getElementById('edit-name').value;
+        await updateDoc(doc(db, "users", auth.currentUser.uid), { displayName: n });
+        alert("Sincronizado");
+    }
+
+    window.deleteAcc = async () => {
+        if(confirm("¿ELIMINAR TODO?")) {
+            await deleteUser(auth.currentUser).then(() => location.href="index.html");
+        }
+    }
+</script>
+</body>
+</html>
