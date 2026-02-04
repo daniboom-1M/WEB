@@ -22,7 +22,7 @@
             min-height: 100vh;
         }
 
-        /* --- HEADER MAESTRO (CRISTAL + FIJO) --- */
+        /* --- HEADER MAESTRO --- */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
@@ -42,21 +42,21 @@
 
         .header-right { display: flex; align-items: center; gap: 25px; }
 
-        /* --- CAMPANA FUNCIONAL --- */
+        /* --- CAMPANA --- */
         .notif-container { position: relative; cursor: pointer; font-size: 1.8rem; color: var(--neon-gold); transition: 0.3s; }
         .bell-shake { animation: shake 0.5s infinite; color: var(--neon-red) !important; filter: drop-shadow(0 0 15px var(--neon-red)); }
         .notif-dot { position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: var(--neon-red); border-radius: 50%; display: none; border: 2px solid black; box-shadow: 0 0 10px var(--neon-red); }
 
         @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
 
-        /* --- MENÚ 3 PUNTOS --- */
+        /* --- BOTÓN MENÚ --- */
         .menu-btn { width: 28px; display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
         .menu-btn span { height: 3px; background: var(--neon-gold); border-radius: 3px; transition: .4s; box-shadow: 0 0 5px var(--neon-gold); }
         .menu-btn.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-btn.active span:nth-child(2) { opacity: 0; }
         .menu-btn.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* --- POPUP MENÚ --- */
+        /* --- MENÚ POPUP --- */
         .menu-popup {
             position: fixed; top: 85px; right: 20px; background: rgba(10, 10, 10, 0.95); 
             border: 2px solid var(--neon-gold); border-radius: 20px; padding: 1.5rem; display: none; 
@@ -72,10 +72,9 @@
         }
         .nav-item:hover { background: rgba(255, 215, 0, 0.1); text-shadow: 0 0 8px var(--neon-gold); }
 
-        /* --- CUADRADO ADMIN --- */
         .admin-box { border: 2px solid var(--neon-red); background: rgba(255,0,0,0.05); padding: 15px; border-radius: 15px; margin-top: 10px; box-shadow: 0 0 15px var(--neon-red); display: none; }
 
-        /* --- PANEL NOTIFICACIONES --- */
+        /* --- NOTIFICACIONES --- */
         .notif-panel { 
             position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
             background: rgba(0,0,0,0.98); z-index: 2000; transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1); 
@@ -113,8 +112,13 @@
             <div id="roleUI"></div>
         </div>
 
-        <div id="itemSesion" style="display:none;" class="nav-item" onclick="location.href='perfil.html'">
-            <i class="fas fa-user-circle"></i><span>Ver Mi Sesión</span>
+        <div id="itemSesion" style="display:none;">
+            <div class="nav-item" onclick="location.href='perfil.html'">
+                <i class="fas fa-user-circle"></i><span>Ver Mi Sesión</span>
+            </div>
+            <div class="nav-item" onclick="location.href='chat.html'">
+                <i class="fas fa-comments"></i><span>Chat Global</span>
+            </div>
         </div>
 
         <div class="nav-item" onclick="location.href='redes.html'">
@@ -165,7 +169,6 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // --- LÓGICA DE ROLES Y UI ---
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             let snap = await getDoc(doc(db, "users", user.uid));
@@ -198,7 +201,7 @@
             
             const tieneAccesoPrivado = (role === 'suscriptor' || role === 'admin' || role === 'owner');
 
-            document.getElementById('itemSesion').style.display = tieneAccesoPrivado ? 'flex' : 'none';
+            document.getElementById('itemSesion').style.display = tieneAccesoPrivado ? 'block' : 'none';
             document.getElementById('linksPrivados').style.display = tieneAccesoPrivado ? 'block' : 'none';
             document.getElementById('adminUtils').style.display = (role === 'admin' || role === 'owner') ? 'block' : 'none';
             
@@ -214,7 +217,6 @@
         } else { location.href = "index.html"; }
     });
 
-    // --- LÓGICA DE NOTIFICACIONES ---
     function escucharNotificaciones() {
         const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
         onSnapshot(q, (snapshot) => {
@@ -277,7 +279,6 @@
         }, 1000);
     }
 
-    // --- INTERFAZ ---
     document.getElementById('menuBtn').onclick = function() {
         this.classList.toggle('active');
         const pop = document.getElementById('menuPopup');
