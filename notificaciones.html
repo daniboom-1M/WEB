@@ -255,7 +255,6 @@
 
     window.deleteN = async (id) => { if(confirm("¿Eliminar definitivamente?")) await deleteDoc(doc(db, "notifications", id)); };
     
-    // Función abrir edición con nuevos parámetros
     window.openE = (id, t, m, l, d) => { 
         editId = id; 
         document.getElementById('editT').value = t; 
@@ -292,13 +291,14 @@
             title = document.getElementById('v-title').value;
             message = document.getElementById('v-msg').value;
             link = document.getElementById('v-link').value;
-            icon = selPlatform;
+            icon = selPlatform; // Ej: 'whatsapp-canal'
             if(!icon || !title || !message || !link) return alert("❌ Completa todo");
         } else {
             title = document.getElementById('s-title').value;
             message = document.getElementById('s-msg').value;
             link = document.getElementById('s-link').value || "#";
-            icon = 'cog';
+            // Asignar el iconType según la selección del dropdown de SISTEMA
+            icon = document.getElementById('s-type').value; 
             if(!title || !message) return alert("❌ Completa todo");
         }
 
@@ -306,7 +306,12 @@
         btn.disabled = true;
         try {
             await addDoc(collection(db, "notifications"), {
-                title: title.toUpperCase(), message: message, link: link, iconType: icon, duration: duration, createdAt: Date.now()
+                title: title.toUpperCase(), 
+                message: message, 
+                link: link, 
+                iconType: icon, 
+                duration: duration, 
+                createdAt: Date.now()
             });
             alert("✅ ¡LANZADA!");
             location.reload();
