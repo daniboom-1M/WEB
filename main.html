@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANIBOOM WEB | Home</title>
+    <title>DANIBOOM WEB | Principal</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -23,14 +23,12 @@
 
         .header-right { display: flex; align-items: center; gap: 20px; }
         
-        /* BOTÓN MENÚ 3 PUNTOS */
         .menu-btn { width: 30px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; z-index: 2001; }
         .menu-btn span { height: 3px; background: gold; border-radius: 3px; transition: 0.4s; width: 100%; }
         .menu-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
         .menu-btn.open span:nth-child(2) { opacity: 0; }
         .menu-btn.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
-        /* CAMPANITA */
         .notif-container { position: relative; cursor: pointer; font-size: 1.8rem; color: gold; transition: 0.3s; }
         .bell-shake { animation: shake 0.5s infinite; color: #ff0000 !important; filter: drop-shadow(0 0 10px red); }
         .notif-dot { position: absolute; top: -2px; right: -2px; width: 12px; height: 12px; background: red; border-radius: 50%; display: none; border: 2px solid black; }
@@ -43,10 +41,19 @@
             border-radius: 20px; padding: 1.5rem; display: none; flex-direction: column; min-width: 300px;
             box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
         }
-        .profile-card { background: #111; border: 2px solid gold; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .profile-card { background: #111; border: 2px solid gold; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 10px;}
         .profile-pic { width: 85px; height: 85px; border-radius: 50%; border: 2px solid gold; object-fit: cover; }
 
-        /* PANEL NOTIFICACIONES */
+        /* ITEMS DEL MENÚ */
+        .nav-item { 
+            font-size: 0.8rem; font-weight: 800; color: gold; text-transform: uppercase; 
+            cursor: pointer; padding: 12px; border-bottom: 1px solid rgba(255, 215, 0, 0.1); 
+            display: flex; align-items: center; gap: 12px; transition: 0.3s;
+        }
+        .nav-item:hover { background: rgba(255, 215, 0, 0.1); }
+        .nav-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+
+        /* PANEL NOTIFICAIONES */
         .notif-panel { 
             position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
             background: rgba(0,0,0,0.98); z-index: 2000; 
@@ -55,11 +62,7 @@
             overflow-y: auto;
         }
         .notif-panel.active { right: 0; }
-        
-        .notif-card { 
-            border: 2px solid; background: #000; padding: 20px; border-radius: 15px; 
-            width: 100%; max-width: 450px; margin-bottom: 20px; transition: 0.5s; 
-        }
+        .notif-card { border: 2px solid; background: #000; padding: 20px; border-radius: 15px; width: 100%; max-width: 450px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -79,28 +82,43 @@
             <h3 id="profileName">Cargando...</h3>
             <div id="roleUI"></div>
         </div>
-        <div id="adminUtils" style="display:none; margin-top: 15px;">
-            <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer; text-transform:uppercase;">Panel Admin</button>
+
+        <div class="nav-item" onclick="location.href='redes.html'">
+            <i class="fas fa-share-nodes"></i><span>Nuestras Redes</span>
         </div>
+
+        <div id="linksPrivados" style="display:none;">
+            <div class="nav-item" onclick="location.href='sensibilidades.html'">
+                <i class="fas fa-crosshairs"></i><span>Sensibilidades</span>
+            </div>
+            <div class="nav-item" onclick="location.href='apps.html'">
+                <i class="fas fa-bolt"></i><span>Apps Optimizadas</span>
+            </div>
+        </div>
+
+        <div id="adminUtils" style="display:none; padding: 10px; border: 1px solid red; border-radius: 10px; margin-top: 10px;">
+            <p style="color:red; font-size:0.6rem; font-weight:bold; margin-bottom:5px; text-align:center;">ADMINISTRACIÓN</p>
+            <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:0.7rem;">LANZAR NOTIFICACIÓN</button>
+        </div>
+
         <div id="sessionBtnArea"></div>
     </div>
 </header>
 
 <aside class="notif-panel" id="notifPanel">
     <span id="closeNotif" style="position:absolute; top:25px; right:35px; font-size:3rem; color:gold; cursor:pointer;">&times;</span>
-    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; margin-bottom:20px; font-size:0.8rem;">CENTRO DE AVISOS</h2>
+    <h2 style="color:gold; font-family:'Press Start 2P'; margin-top:60px; margin-bottom:20px; font-size:0.8rem;">AVISOS RECIENTES</h2>
     <div id="notifContainer" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
 </aside>
 
 <main style="padding-top: 160px; text-align: center;">
-    <h1 style="color:gold; text-shadow: 0 0 20px gold; font-size: 2rem;">BIENVENIDO</h1>
-    <p style="margin-top: 20px; color: #888;">Explora el contenido exclusivo</p>
+    <h1 style="color:gold; text-shadow: 0 0 20px gold;">BIENVENIDO</h1>
 </main>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, collection, query, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, query, onSnapshot, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -112,66 +130,77 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // --- MANEJO DE USUARIO ---
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            const snap = await getDoc(doc(db, "users", user.uid));
-            const d = snap.data() || {};
+            let snap = await getDoc(doc(db, "users", user.uid));
+            let d = snap.data() || {};
+            
+            if(!snap.exists() && user.isAnonymous){
+                const all = await getDocs(collection(db, "users"));
+                const num = String(all.size + 1).padStart(3, '0');
+                d = { displayName: `Anónimo #${num}`, membership: 'anonymous', photoURL: 'logo.png' };
+                await setDoc(doc(db, "users", user.uid), d);
+            }
+
             const role = d.membership || 'anonymous';
+            const roleConfig = {
+                owner: { icon: 'crown', color: '#ff0000', label: 'OWNER' },
+                admin: { icon: 'shield-alt', color: '#00f2ff', label: 'ADMIN' },
+                suscriptor: { icon: 'star', color: 'gold', label: 'VIP' },
+                anonymous: { icon: 'user-secret', color: '#888', label: 'ANÓNIMO' }
+            };
+            const currentRole = roleConfig[role] || roleConfig['anonymous'];
+
+            // UI del Rol
+            document.getElementById('roleUI').innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px; font-weight: 800; font-size: 0.75rem; color: ${currentRole.color}; text-shadow: 0 0 10px ${currentRole.color}55;">
+                    <i class="fas fa-${currentRole.icon}"></i><span>${currentRole.label}</span>
+                </div>
+            `;
 
             document.getElementById('profileName').innerText = d.displayName || "Usuario";
             document.getElementById('profilePic').src = d.photoURL || "logo.png";
+            
+            // CONTROL DE VISIBILIDAD DE SECCIONES
+            document.getElementById('linksPrivados').style.display = (role === 'anonymous') ? 'none' : 'block';
             document.getElementById('adminUtils').style.display = (role === 'admin' || role === 'owner') ? 'block' : 'none';
             
-            document.getElementById('sessionBtnArea').innerHTML = `
-                <button id="logoutBtn" style="width:100%; background:#222; color:white; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer; font-weight:bold;">CERRAR SESIÓN</button>
-            `;
-            document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.reload());
+            document.getElementById('sessionBtnArea').innerHTML = user.isAnonymous
+                ? `<button onclick="location.href='index.html'" style="width:100%; background:gold; color:black; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer; font-weight:bold; font-family:'Orbitron';">INGRESAR / REGISTRO</button>`
+                : `<button id="logoutBtn" style="width:100%; background:#222; color:white; border:none; padding:12px; border-radius:10px; margin-top:10px; cursor:pointer; font-weight:bold; font-family:'Orbitron';">CERRAR SESIÓN</button>`;
+
+            if(!user.isAnonymous) {
+                document.getElementById('logoutBtn').onclick = () => signOut(auth).then(()=> location.reload());
+            }
 
             escucharNotificaciones();
         } else { location.href = "index.html"; }
     });
 
-    // --- LÓGICA DE NOTIFICACIONES ---
     function escucharNotificaciones() {
-        // Ordenamos por fecha para saber cuál es la última
         const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
-
         onSnapshot(q, (snapshot) => {
             let lastNotifId = null;
-            let container = document.getElementById('notifContainer');
-            container.innerHTML = ""; // Limpiar para evitar duplicados al recargar en vivo
-
+            const container = document.getElementById('notifContainer');
+            container.innerHTML = ""; 
             snapshot.forEach((doc) => {
                 const data = doc.data();
                 const id = doc.id;
-                const now = Date.now();
-                const timeLeft = data.duration - ((now - data.createdAt) / 1000);
-
+                const timeLeft = data.duration - ((Date.now() - data.createdAt) / 1000);
                 if (timeLeft > 0) {
-                    if (!lastNotifId) lastNotifId = id; // La primera es la más nueva
+                    if (!lastNotifId) lastNotifId = id;
                     renderNotif(id, data, timeLeft);
                 }
             });
-
-            // COMPROBAR SI LA ÚLTIMA YA FUE LEÍDA
             const readId = localStorage.getItem('lastReadNotif');
             if (lastNotifId && lastNotifId !== readId) {
-                activarCampana();
+                document.getElementById('bellIcon').classList.add('bell-shake');
+                document.getElementById('notifDot').style.display = 'block';
             } else {
-                desactivarCampana();
+                document.getElementById('bellIcon').classList.remove('bell-shake');
+                document.getElementById('notifDot').style.display = 'none';
             }
         });
-    }
-
-    function activarCampana() {
-        document.getElementById('bellIcon').classList.add('bell-shake');
-        document.getElementById('notifDot').style.display = 'block';
-    }
-
-    function desactivarCampana() {
-        document.getElementById('bellIcon').classList.remove('bell-shake');
-        document.getElementById('notifDot').style.display = 'none';
     }
 
     function renderNotif(id, data, seconds) {
@@ -179,74 +208,54 @@
         const card = document.createElement('div');
         card.className = "notif-card";
         card.id = `card-${id}`;
-
         const configs = {
             'youtube': { icon: 'fab fa-youtube', color: '#ff0000' },
             'tiktok': { icon: 'fab fa-tiktok', color: '#ffffff' },
             'facebook': { icon: 'fab fa-facebook', color: '#1877f2' },
             'instagram': { icon: 'fab fa-instagram', color: '#e4405f' },
             'whatsapp': { icon: 'fab fa-whatsapp', color: '#25d366' },
-            'whatsapp-canal': { icon: 'fas fa-bullhorn', color: '#00a884' },
             'cog': { icon: 'fas fa-cog', color: '#ffd700' }
         };
-
         const theme = configs[data.iconType] || configs['cog'];
         card.style.borderColor = theme.color;
         card.style.boxShadow = `0 0 15px ${theme.color}33`;
-
         const btnHTML = (data.link && data.link !== "#") 
-            ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:${theme.color==='#ffffff'?'#000':'#fff'}; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer; text-transform:uppercase; font-size:0.7rem;">Ir al enlace</button>`
+            ? `<button onclick="window.open('${data.link}', '_blank')" style="width:100%; background:${theme.color}; color:${theme.color==='#ffffff'?'#000':'#fff'}; border:none; padding:12px; margin-top:15px; font-weight:bold; border-radius:8px; cursor:pointer;">IR AL ENLACE</button>`
             : '';
-
         card.innerHTML = `
             <div style="display:flex; align-items:center; gap:12px; color:${theme.color}; margin-bottom:12px;">
-                <i class="${theme.icon}" style="font-size:1.6rem;"></i>
-                <span style="font-weight:800; font-size:0.85rem; letter-spacing:1px;">${data.title}</span>
+                <i class="${theme.icon}" style="font-size:1.6rem;"></i><span style="font-weight:800; font-size:0.85rem;">${data.title}</span>
             </div>
-            <p style="font-size:0.85rem; color:#ccc; line-height:1.4;">${data.message}</p>
+            <p style="font-size:0.85rem; color:#ccc;">${data.message}</p>
             ${btnHTML}
-            <div style="font-size:0.65rem; color:#555; margin-top:15px; text-align:center; border-top:1px solid #222; padding-top:10px;">
-                EXPIRA EN: <span id="time-${id}" style="color:${theme.color}; font-weight:bold;">...</span>
-            </div>
+            <div style="font-size:0.65rem; color:#666; margin-top:15px; text-align:center;">EXPIRA EN: <span id="time-${id}" style="color:${theme.color}; font-weight:bold;">...</span></div>
         `;
-        container.appendChild(card); // Ya vienen ordenadas por el query
-
+        container.appendChild(card);
         let remain = Math.floor(seconds);
         const timer = setInterval(() => {
             remain--;
             const el = document.getElementById(`time-${id}`);
-            if (!el || remain <= 0) {
-                clearInterval(timer);
-                card.remove();
-                return;
-            }
+            if (!el || remain <= 0) { clearInterval(timer); card.remove(); return; }
             const d = Math.floor(remain / 86400), h = Math.floor((remain % 86400) / 3600), m = Math.floor((remain % 3600) / 60), s = remain % 60;
             el.innerText = d > 0 ? `${d}d ${h}h` : (h > 0 ? `${h}h ${m}m` : `${m}m ${s}s`);
         }, 1000);
     }
 
-    // --- INTERFAZ ---
     document.getElementById('menuBtn').onclick = function() {
         this.classList.toggle('open');
         const pop = document.getElementById('menuPopup');
-        pop.style.display = pop.style.display === 'flex' ? 'none' : 'flex';
+        pop.style.display = (pop.style.display === 'flex') ? 'none' : 'flex';
     };
 
     document.getElementById('notifBtn').onclick = () => {
         document.getElementById('notifPanel').classList.add('active');
-        desactivarCampana();
-        
-        // Marcar la más reciente como leída
+        document.getElementById('bellIcon').classList.remove('bell-shake');
+        document.getElementById('notifDot').style.display = 'none';
         const firstCard = document.querySelector('.notif-card');
-        if (firstCard) {
-            const latestId = firstCard.id.replace('card-', '');
-            localStorage.setItem('lastReadNotif', latestId);
-        }
+        if (firstCard) localStorage.setItem('lastReadNotif', firstCard.id.replace('card-', ''));
     };
 
-    document.getElementById('closeNotif').onclick = () => {
-        document.getElementById('notifPanel').classList.remove('active');
-    };
+    document.getElementById('closeNotif').onclick = () => document.getElementById('notifPanel').classList.remove('active');
 </script>
 </body>
 </html>
