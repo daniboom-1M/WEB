@@ -21,119 +21,88 @@
         header {
             position: fixed; top: 0; width: 100%; z-index: 4000;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 15px; background: rgba(0,0,0,0.98);
+            padding: 12px 15px; background: rgba(0,0,0,0.95);
             border-bottom: 2px solid var(--gold);
         }
 
-        .h-left { display: flex; align-items: center; gap: 10px; }
-        .site-logo { width: 35px; height: 35px; border-radius: 50%; border: 1.5px solid var(--gold); box-shadow: 0 0 10px var(--gold); }
-
-        .neon-title { 
-            font-weight: 900; font-size: 18px; color: #fff; 
-            text-shadow: 0 0 10px #fff; display: flex; align-items: center; gap: 8px;
-        }
+        .h-left { display: flex; align-items: center; gap: 8px; }
+        .neon-title { font-weight: 900; font-size: 16px; text-shadow: 0 0 10px #fff; display: flex; align-items: center; gap: 5px; }
         .neon-title span { color: var(--red-neon); text-shadow: 0 0 10px var(--red-neon); }
-        .ff-logo-header { height: 18px; width: auto; filter: brightness(0) invert(1) drop-shadow(0 0 5px #fff); }
+        .ff-logo-header { height: 16px; filter: brightness(0) invert(1) drop-shadow(0 0 5px #fff); }
 
-        /* CAMPANA */
+        .h-right { display: flex; align-items: center; gap: 15px; }
+
+        /* CAMPANA Y BURGER JUNTOS */
         .bell-container { position: relative; cursor: pointer; }
-        .fa-bell { font-size: 22px; color: var(--gold); filter: drop-shadow(0 0 8px var(--gold)); }
+        .fa-bell { font-size: 20px; color: var(--gold); filter: drop-shadow(0 0 8px var(--gold)); }
         .bell-shake { animation: shake 0.5s infinite; color: var(--red-neon) !important; }
-        .bell-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--red-neon); border-radius: 50%; box-shadow: 0 0 8px var(--red-neon); }
 
-        /* HAMBURGUESA */
-        .burger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
-        .burger span { width: 25px; height: 3px; background: var(--gold); transition: 0.4s; box-shadow: 0 0 5px var(--gold); }
-        .burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+        .burger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
+        .burger span { width: 22px; height: 3px; background: var(--gold); transition: 0.4s; }
+        .burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .burger.open span:nth-child(2) { opacity: 0; }
-        .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+        .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
         /* PANELES */
         .side-panel {
-            position: fixed; top: 0; right: -100%; width: 310px; height: 100vh;
-            background: rgba(5,5,5,0.98); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 3500;
-            padding: 80px 15px 20px; overflow-y: auto;
+            position: fixed; top: 0; right: -100%; width: 300px; height: 100vh;
+            background: rgba(5,5,5,0.98); transition: 0.5s ease; z-index: 3500;
+            padding: 80px 15px 20px; border-left: 2px solid var(--gold);
         }
         .side-panel.active { right: 0; }
-        #menuUser { border-left: 2px solid var(--gold); }
-        #menuNotif { border-left: 2px solid var(--red-neon); }
 
         /* PERFIL NEÓN */
-        .profile-neon-box {
-            border: 2px solid var(--gold); border-radius: 15px; padding: 20px;
-            text-align: center; margin-bottom: 20px;
-            box-shadow: inset 0 0 15px rgba(255,215,0,0.2), 0 0 15px rgba(255,215,0,0.2);
+        .profile-card {
+            border: 2px solid var(--gold); border-radius: 12px; padding: 15px; text-align: center;
+            box-shadow: 0 0 15px rgba(255,215,0,0.3); margin-bottom: 10px;
         }
-        .u-img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; }
+        .u-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 8px; }
         
-        .role-badge { 
-            display: block; margin: -10px auto 20px; padding: 5px 15px; font-size: 10px; 
-            font-weight: 900; border-radius: 5px; width: fit-content; text-transform: uppercase;
-        }
-        .owner { background: var(--red-neon); box-shadow: 0 0 10px var(--red-neon); color: white; }
-        .admin { background: var(--blue-neon); box-shadow: 0 0 10px var(--blue-neon); color: black; }
-        .anon { background: #333; color: #888; }
-
-        /* NOTIFICACIONES DINÁMICAS */
-        .notif-card {
-            background: #111; border-radius: 8px; padding: 12px; margin-bottom: 12px;
-            display: flex; align-items: center; gap: 12px; 
-            position: relative; overflow: hidden;
-            animation: slideIn 0.3s ease-out;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-        }
-        .notif-icon-box { font-size: 22px; width: 30px; display: flex; justify-content: center; }
-        
-        .timer-progress {
-            position: absolute; bottom: 0; left: 0; height: 3px;
-            background: rgba(255,255,255,0.5); width: 100%;
-        }
-
-        /* ADMIN UTILS */
-        .admin-neon-box {
-            border: 2px solid var(--red-neon); border-radius: 12px;
-            padding: 15px; margin-top: 20px; background: rgba(255,0,0,0.05);
-            box-shadow: 0 0 10px var(--red-neon);
-        }
+        .role-tag { font-size: 9px; font-weight: bold; color: var(--gold); letter-spacing: 1px; margin-top: 5px; display: block; }
 
         .menu-item {
             background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;
-            text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+            text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px;
         }
 
-        /* IA FLOTANTE */
-        .ia-container { position: fixed; bottom: 20px; left: 20px; z-index: 5000; display: flex; align-items: center; }
-        .ia-bubble {
-            background: white; color: black; padding: 5px 12px; border-radius: 10px;
-            font-size: 10px; font-weight: bold; margin-left: 10px; position: relative;
-            box-shadow: 0 0 10px white; opacity: 0.9;
-        }
-        .ia-btn {
-            width: 55px; height: 55px; background: linear-gradient(45deg, #00f2ff, #0066ff);
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 25px; cursor: pointer; box-shadow: 0 0 20px var(--blue-neon);
+        /* NOTIFICACIÓN NEÓN */
+        .notif-neon {
+            background: #000; border-radius: 10px; padding: 12px; margin-bottom: 10px;
+            border: 1px solid var(--gold); box-shadow: 0 0 15px var(--gold);
+            display: flex; align-items: center; gap: 10px;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: rotate(0); }
-            25% { transform: rotate(15deg); }
-            75% { transform: rotate(-15deg); }
+        /* --- CHAT BOOMI BOT --- */
+        #chatBot {
+            position: fixed; bottom: 85px; left: 20px; width: 280px; height: 350px;
+            background: #0a0a0a; border: 2px solid var(--blue-neon); border-radius: 15px;
+            display: none; flex-direction: column; z-index: 6000; box-shadow: 0 0 20px var(--blue-neon);
         }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes shrink { from { width: 100%; } to { width: 0%; } }
+        .chat-header { background: var(--blue-neon); color: #000; padding: 10px; font-weight: bold; font-size: 12px; border-radius: 12px 12px 0 0; }
+        #chatMessages { flex: 1; padding: 10px; overflow-y: auto; font-size: 11px; display: flex; flex-direction: column; gap: 8px; }
+        .msg { padding: 8px; border-radius: 8px; max-width: 80%; }
+        .bot-msg { background: #222; align-self: flex-start; border-left: 3px solid var(--blue-neon); }
+        .user-msg { background: var(--blue-neon); color: #000; align-self: flex-end; }
+        .chat-input { display: flex; padding: 10px; border-top: 1px solid #333; }
+        .chat-input input { flex: 1; background: #000; border: 1px solid var(--blue-neon); color: #fff; padding: 5px; border-radius: 5px; outline: none; }
+
+        .ia-btn-box { position: fixed; bottom: 20px; left: 20px; z-index: 5000; cursor: pointer; text-align: center; }
+        .ia-icon { width: 55px; height: 55px; background: var(--blue-neon); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 25px; box-shadow: 0 0 15px var(--blue-neon); }
+        .ia-txt { font-size: 8px; margin-top: 5px; background: #fff; color: #000; padding: 2px 5px; border-radius: 5px; font-weight: bold; }
+
+        @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(10deg); } 75% { transform: rotate(-10deg); } }
     </style>
 </head>
 <body>
 
 <header>
     <div class="h-left">
-        <img src="logo.png" class="site-logo">
+        <img src="logo.png" style="width:30px; border-radius:50%;">
         <div class="neon-title">DANIBOOM <span>X</span> <img src="ff_logo.png" class="ff-logo-header"></div>
     </div>
     <div class="h-right">
         <div class="bell-container" id="bellBtn">
             <i class="fas fa-bell" id="bellIcon"></i>
-            <div class="bell-dot" id="bellDot" style="display:none;"></div>
         </div>
         <div class="burger" id="burgerBtn">
             <span></span><span></span><span></span>
@@ -141,40 +110,41 @@
     </div>
 </header>
 
-<div class="ia-container">
-    <div class="ia-btn" id="iaOpen"><i class="fas fa-robot"></i></div>
-    <div class="ia-bubble">¿Necesitas ayuda?</div>
+<div id="chatBot">
+    <div class="chat-header">BOOMI BOT 🤖</div>
+    <div id="chatMessages">
+        <div class="msg bot-msg">¡Hola! Soy Boomi Bot. ¿Qué duda tienes sobre la página?</div>
+    </div>
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Escribe aquí...">
+    </div>
+</div>
+
+<div class="ia-btn-box" id="iaToggle">
+    <div class="ia-icon"><i class="fas fa-robot"></i></div>
+    <div class="ia-txt">¿NECESITAS AYUDA?</div>
 </div>
 
 <div id="menuNotif" class="side-panel">
-    <h2 style="color:var(--gold); font-size:12px; text-align:center; margin-bottom:20px;">AVISOS RECIENTES</h2>
+    <h3 style="font-size:12px; margin-bottom:20px; color:var(--gold); text-align:center;">NOTIFICACIONES NEÓN</h3>
     <div id="notifList"></div>
-    <button onclick="closePanels()" style="width:100%; padding:10px; background:#222; color:white; border:none; border-radius:5px; margin-top:20px; font-weight:bold;">VOLVER</button>
 </div>
 
 <div id="menuUser" class="side-panel">
-    <div class="profile-neon-box">
-        <img src="default.png" id="u-img" class="u-img" onerror="this.src='default.png'">
-        <p id="u-name" style="margin-top:10px; font-size:14px; font-weight:bold;">CARGANDO...</p>
+    <div class="profile-card">
+        <img src="default.png" id="u-img" class="u-img">
+        <p id="u-name" style="font-size:12px; font-weight:bold;">CARGANDO...</p>
+        <p id="u-lvl" style="font-family:'Press Start 2P'; font-size:7px; color:var(--gold); margin-top:5px;"></p>
+        <span id="u-badge" class="role-tag">INVITADO</span>
     </div>
-    <div id="u-badge" class="role-badge anon">SIN ROL</div>
-
-    <nav id="userNav"></nav>
-
-    <div id="adminPanel" style="display:none;">
-        <div class="admin-neon-box">
-            <p style="color:var(--red-neon); font-size:10px; font-weight:bold; margin-bottom:10px; text-align:center;">ADMIN UTILS</p>
-            <a href="notificaciones.html" class="menu-item"><i class="fas fa-bullhorn" style="color:var(--red-neon)"></i> CREAR NOTIFICACIÓN</a>
-        </div>
-    </div>
-
-    <button id="authBtn" style="width:100%; margin-top:30px; background:none; border:1px solid red; color:red; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">INICIAR SESIÓN</button>
+    <nav id="navItems"></nav>
+    <button id="authBtn" style="width:100%; margin-top:20px; background:var(--red-neon); color:#fff; border:none; padding:10px; border-radius:5px; font-weight:bold; cursor:pointer;">INICIAR SESIÓN</button>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, collection, onSnapshot, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -186,128 +156,106 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // MAPEO DE PLATAFORMAS
-    const PLATFORMS = {
-        youtube: { icon: 'fab fa-youtube', color: '#ff0000' },
-        tiktok: { icon: 'fab fa-tiktok', color: '#ffffff' },
-        instagram: { icon: 'fab fa-instagram', color: '#e1306c' },
-        system: { icon: 'fas fa-cog', color: '#00f2ff' },
-        important: { icon: 'fas fa-exclamation-triangle', color: '#ffd700' }
+    // --- INTERFAZ ---
+    const burger = document.getElementById('burgerBtn');
+    const menuU = document.getElementById('menuUser');
+    const menuN = document.getElementById('menuNotif');
+    const bell = document.getElementById('bellBtn');
+
+    burger.onclick = () => {
+        burger.classList.toggle('open');
+        menuU.classList.toggle('active');
+        menuN.classList.remove('active');
     };
 
-    const bellBtn = document.getElementById('bellBtn');
-    const burgerBtn = document.getElementById('burgerBtn');
-    const menuNotif = document.getElementById('menuNotif');
-    const menuUser = document.getElementById('menuUser');
-
-    bellBtn.onclick = () => {
-        menuNotif.classList.toggle('active');
-        menuUser.classList.remove('active');
-        burgerBtn.classList.remove('open');
+    bell.onclick = () => {
+        menuN.classList.toggle('active');
+        menuU.classList.remove('active');
+        burger.classList.remove('open');
         document.getElementById('bellIcon').classList.remove('bell-shake');
-        document.getElementById('bellDot').style.display = 'none';
     };
 
-    burgerBtn.onclick = () => {
-        burgerBtn.classList.toggle('open');
-        menuUser.classList.toggle('active');
-        menuNotif.classList.remove('active');
-    };
-
-    window.closePanels = () => {
-        menuNotif.classList.remove('active');
-        menuUser.classList.remove('active');
-        burgerBtn.classList.remove('open');
-    }
-
+    // --- DETECCIÓN DE USUARIO Y ROLES ---
     onAuthStateChanged(auth, async (user) => {
-        const nav = document.getElementById('userNav');
-        const badge = document.getElementById('u-badge');
+        const nav = document.getElementById('navItems');
         const authBtn = document.getElementById('authBtn');
 
         if (user) {
             const snap = await getDoc(doc(db, "users", user.uid));
             const data = snap.data() || {};
-            const role = data.membership || 'user';
-
-            document.getElementById('u-name').innerText = data.username || "GAMER";
+            
+            document.getElementById('u-name').innerText = data.username || "Usuario";
+            document.getElementById('u-lvl').innerText = "LVL " + (data.level || "1");
+            document.getElementById('u-badge').innerText = data.membership || "SUSCRIPTOR";
             document.getElementById('u-img').src = data.photoURL || 'default.png';
+            
             authBtn.innerText = "CERRAR SESIÓN";
             authBtn.onclick = () => signOut(auth).then(() => location.reload());
 
-            if(role === 'owner' || role === 'admin') {
-                badge.innerText = role;
-                badge.className = "role-badge " + (role === 'owner' ? 'owner' : 'admin');
-                document.getElementById('adminPanel').style.display = 'block';
-            } else {
-                badge.innerText = "SUSCRIPTOR";
-                badge.className = "role-badge anon";
+            // Roles Dinámicos
+            let items = `<a href="perfil.html" class="menu-item"><i class="fas fa-user"></i> PERFIL</a>
+                         <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
+                         <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
+                         <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSI</a>
+                         <a href="appspro.html" class="menu-item"><i class="fas fa-mobile"></i> APPS PRO</a>
+                         <a href="tienda.html" class="menu-item"><i class="fas fa-shopping-cart"></i> TIENDA</a>`;
+            
+            if(data.membership === 'owner' || data.membership === 'admin') {
+                items += `<hr style="opacity:0.1; margin:10px 0;">
+                          <a href="notificaciones.html" class="menu-item" style="border:1px solid var(--red-neon)"><i class="fas fa-tools"></i> ADMIN NOTIF</a>`;
             }
+            nav.innerHTML = items;
 
-            nav.innerHTML = `
-                <a href="perfil.html" class="menu-item"><i class="fas fa-user"></i> MI PERFIL</a>
-                <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
-                <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
-                <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSI</a>
-                <a href="tienda.html" class="menu-item"><i class="fas fa-shopping-cart"></i> TIENDA</a>
-            `;
         } else {
             document.getElementById('u-name').innerText = "INVITADO";
-            nav.innerHTML = `<a href="login.html" class="menu-item"><i class="fas fa-sign-in-alt"></i> INICIAR SESIÓN</a>`;
-            authBtn.style.display = 'none';
+            document.getElementById('u-lvl').innerText = "";
+            document.getElementById('u-badge').innerText = "SIN SESIÓN";
+            nav.innerHTML = `<a href="perfil.html" class="menu-item"><i class="fas fa-user"></i> PERFIL</a>
+                             <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>`;
+            authBtn.innerText = "INICIAR SESIÓN";
+            authBtn.onclick = () => window.location.href = "index.html";
         }
     });
 
-    // --- NOTIFICACIONES INTELIGENTES ---
+    // --- NOTIFICACIONES REAL-TIME ---
     onSnapshot(query(collection(db, "notifications"), orderBy("createdAt", "desc")), (snap) => {
         const list = document.getElementById('notifList');
-        if(!snap.empty && !menuNotif.classList.contains('active')) {
+        list.innerHTML = "";
+        snap.forEach(doc => {
+            const n = doc.data();
+            const color = n.type === 'youtube' ? '#ff0000' : n.type === 'tiktok' ? '#fff' : '#ffd700';
+            list.innerHTML += `<div class="notif-neon" style="border-color:${color}; box-shadow: 0 0 10px ${color}">
+                                    <i class="fas fa-info-circle" style="color:${color}"></i>
+                                    <div>
+                                        <p style="font-size:10px; font-weight:bold;">${n.title}</p>
+                                        <p style="font-size:9px; color:#aaa;">${n.desc}</p>
+                                    </div>
+                               </div>`;
             document.getElementById('bellIcon').classList.add('bell-shake');
-            document.getElementById('bellDot').style.display = 'block';
-        }
-        
-        snap.forEach(async (change) => {
-            const n = change.data();
-            const id = change.id;
-            const style = PLATFORMS[n.type] || PLATFORMS.system;
-
-            if (!document.getElementById(id)) {
-                const card = document.createElement('div');
-                card.id = id;
-                card.className = "notif-card";
-                card.style.borderLeftColor = style.color;
-                card.innerHTML = `
-                    <div class="notif-icon-box"><i class="${style.icon}" style="color:${style.color}"></i></div>
-                    <div style="flex:1">
-                        <p style="font-size:11px; font-weight:bold; color:${style.color}">${n.title}</p>
-                        <p style="font-size:9px; color:#ccc;">${n.desc}</p>
-                        ${n.link ? `<a href="${n.link}" target="_blank" style="color:white; font-size:8px; text-decoration:underline;">VER LINK</a>` : ''}
-                    </div>
-                    <div class="timer-progress" style="animation: shrink ${n.duration || 10}s linear forwards"></div>
-                `;
-                list.prepend(card);
-
-                // Auto-borrado tras el tiempo marcado
-                setTimeout(async () => {
-                    card.style.opacity = "0";
-                    setTimeout(() => card.remove(), 500);
-                    // Opcional: Borrar de la base de datos si eres Admin
-                    // await deleteDoc(doc(db, "notifications", id)); 
-                }, (n.duration || 10) * 1000);
-            }
         });
     });
 
-    // IA CHATBOT
-    document.getElementById('iaOpen').onclick = () => {
-        const userQ = prompt("Hola, soy la IA de DANIBOOM X. ¿En qué puedo ayudarte?");
-        if(userQ) {
-            const lowQ = userQ.toLowerCase();
-            let resp = "No tengo información exacta sobre eso, intenta preguntar por sensibilidades o apps.";
-            if(lowQ.includes("hola")) resp = "¡Hola! Soy tu asistente de DANIBOOM X.";
-            if(lowQ.includes("sensi")) resp = "Puedes encontrar las mejores sensibilidades en el menú principal.";
-            if(lowQ.includes("app")) resp = "En la sección APPS PRO tenemos herramientas para mejorar tu ping y FPS.";
-            alert("IA responde: " + resp);
+    // --- LÓGICA BOOMI BOT ---
+    const chatBot = document.getElementById('chatBot');
+    document.getElementById('iaToggle').onclick = () => chatBot.style.display = chatBot.style.display === 'flex' ? 'none' : 'flex';
+
+    document.getElementById('userInput').onkeypress = (e) => {
+        if(e.key === 'Enter') {
+            const val = e.target.value.toLowerCase();
+            const msgs = document.getElementById('chatMessages');
+            msgs.innerHTML += `<div class="msg user-msg">${e.target.value}</div>`;
+            
+            let reply = "No entiendo eso. Pregúntame sobre sensis, apps o cómo subir de nivel.";
+            if(val.includes("sensi")) reply = "Las sensibilidades están en el menú lateral, sección SENSI.";
+            if(val.includes("app")) reply = "En APPS PRO tienes herramientas para mejorar el lag y FPS.";
+            if(val.includes("nivel") || val.includes("lvl")) reply = "Sube de nivel participando en el chat y siendo activo en la web.";
+            if(val.includes("hola")) reply = "¡Hola! Soy Boomi Bot, tu guía en DANIBOOM X.";
+
+            setTimeout(() => {
+                msgs.innerHTML += `<div class="msg bot-msg">${reply}</div>`;
+                msgs.scrollTop = msgs.scrollHeight;
+            }, 600);
+            e.target.value = "";
         }
     };
 </script>
