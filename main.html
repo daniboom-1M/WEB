@@ -11,6 +11,7 @@
             --gold: #ffd700;
             --red-neon: #ff0000;
             --blue-neon: #00f2ff;
+            --green-neon: #39ff14; /* Color para Suscriptor */
             --bg: #050505;
         }
 
@@ -57,10 +58,12 @@
         /* TIPOGRAFÍAS Y COLORES POR ROL */
         .name-owner { font-family: 'Permanent Marker', cursive !important; color: var(--red-neon) !important; text-shadow: 0 0 15px var(--red-neon) !important; font-size: 22px; }
         .name-admin { font-family: 'Electrolize', sans-serif !important; color: var(--blue-neon) !important; text-shadow: 0 0 15px var(--blue-neon) !important; font-size: 19px; }
+        .name-sub { font-family: 'Orbitron', sans-serif !important; color: var(--green-neon) !important; text-shadow: 0 0 15px var(--green-neon) !important; font-size: 19px; font-weight: 900; }
         .name-anon { font-family: 'Orbitron', sans-serif !important; color: #fff !important; text-shadow: 0 0 10px #fff !important; font-size: 14px; }
 
         .badge-owner { color: var(--red-neon); text-shadow: 0 0 8px var(--red-neon); font-weight: 900; font-size: 10px; }
         .badge-admin { color: var(--blue-neon); text-shadow: 0 0 8px var(--blue-neon); font-weight: 900; font-size: 10px; }
+        .badge-sub { color: var(--green-neon); text-shadow: 0 0 8px var(--green-neon); font-weight: 900; font-size: 10px; }
         .badge-anon { color: #888; font-weight: 900; font-size: 10px; }
 
         /* NIVEL NEÓN */
@@ -179,6 +182,10 @@
                 nameClass = "name-admin";
                 badgeHTML = `<span class="badge-admin">ADMIN <i class="fas fa-shield-alt"></i></span>`;
                 adminArea.style.display = 'block';
+            } else if(role === 'suscriptor') {
+                nameClass = "name-sub";
+                badgeHTML = `<span class="badge-sub">SUSCRIPTOR <i class="fas fa-star"></i></span>`;
+                adminArea.style.display = 'none';
             } else {
                 badgeHTML = `<span class="badge-anon">ANÓNIMO <i class="fas fa-ghost"></i></span>`;
                 adminArea.style.display = 'none';
@@ -222,6 +229,7 @@
             nav.innerHTML = `<a href="redes.html" class="menu-item"><i class="fas fa-share-alt" style="color:var(--gold)"></i> REDES</a>`;
             authBtn.innerText = "INICIAR SESIÓN";
             authBtn.onclick = () => window.location.href = "index.html";
+            adminArea.style.display = 'none';
         }
     });
 
