@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DANIBOOM X | OFICIAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&family=Permanent+Marker&family=Electrolize&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --gold: #ffd700;
             --red-neon: #ff0000;
             --blue-neon: #00f2ff;
+            --purple-neon: #bc13fe;
             --bg: #050505;
         }
 
@@ -21,124 +22,138 @@
         header {
             position: fixed; top: 0; width: 100%; z-index: 4000;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 15px; background: rgba(0,0,0,0.95);
+            padding: 12px 15px; background: rgba(0,0,0,0.98);
             border-bottom: 2px solid var(--gold);
         }
-
-        .h-left { display: flex; align-items: center; gap: 8px; }
-        .neon-title { font-weight: 900; font-size: 16px; text-shadow: 0 0 10px #fff; display: flex; align-items: center; gap: 5px; }
-        .neon-title span { color: var(--red-neon); text-shadow: 0 0 10px var(--red-neon); }
-        .ff-logo-header { height: 16px; filter: brightness(0) invert(1) drop-shadow(0 0 5px #fff); }
+        .neon-title { font-weight: 900; font-size: 18px; text-shadow: 0 0 10px #fff; display: flex; align-items: center; gap: 8px; }
+        .neon-title span { color: var(--red-neon); text-shadow: 0 0 15px var(--red-neon); }
+        .ff-logo-header { height: 20px; filter: brightness(0) invert(1) drop-shadow(0 0 5px #fff); }
 
         .h-right { display: flex; align-items: center; gap: 15px; }
 
-        /* CAMPANA Y BURGER JUNTOS */
-        .bell-container { position: relative; cursor: pointer; }
-        .fa-bell { font-size: 20px; color: var(--gold); filter: drop-shadow(0 0 8px var(--gold)); }
-        .bell-shake { animation: shake 0.5s infinite; color: var(--red-neon) !important; }
+        /* CAMPANA */
+        .fa-bell { font-size: 22px; color: var(--gold); transition: 0.3s; }
+        .bell-shake { animation: shake 0.5s infinite; color: var(--red-neon) !important; filter: drop-shadow(0 0 10px var(--red-neon)); }
 
-        .burger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
-        .burger span { width: 22px; height: 3px; background: var(--gold); transition: 0.4s; }
+        /* BURGER */
+        .burger { cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+        .burger span { width: 22px; height: 3px; background: var(--gold); transition: 0.3s; }
         .burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .burger.open span:nth-child(2) { opacity: 0; }
         .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
         /* PANELES */
         .side-panel {
-            position: fixed; top: 0; right: -100%; width: 300px; height: 100vh;
-            background: rgba(5,5,5,0.98); transition: 0.5s ease; z-index: 3500;
-            padding: 80px 15px 20px; border-left: 2px solid var(--gold);
+            position: fixed; top: 0; right: -100%; width: 310px; height: 100vh;
+            background: rgba(5,5,5,0.99); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 3500;
+            padding: 80px 15px 20px; overflow-y: auto; border-left: 1px solid rgba(255,215,0,0.3);
         }
         .side-panel.active { right: 0; }
 
-        /* PERFIL NEÓN */
+        /* --- ESTILOS DE ROL Y NOMBRE --- */
         .profile-card {
-            border: 2px solid var(--gold); border-radius: 12px; padding: 15px; text-align: center;
-            box-shadow: 0 0 15px rgba(255,215,0,0.3); margin-bottom: 10px;
+            border: 2px solid var(--gold); border-radius: 15px; padding: 20px; text-align: center;
+            box-shadow: inset 0 0 15px rgba(255,215,0,0.1), 0 0 20px rgba(0,0,0,1); margin-bottom: 15px;
         }
-        .u-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 8px; }
+        .u-img { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 15px var(--gold); }
         
-        .role-tag { font-size: 9px; font-weight: bold; color: var(--gold); letter-spacing: 1px; margin-top: 5px; display: block; }
+        /* Tipografías por Rol */
+        .name-owner { font-family: 'Permanent Marker', cursive; color: var(--red-neon); text-shadow: 0 0 10px var(--red-neon); font-size: 20px; }
+        .name-admin { font-family: 'Electrolize', sans-serif; color: var(--blue-neon); text-shadow: 0 0 10px var(--blue-neon); font-size: 18px; }
+        .name-anon { font-family: 'Orbitron', sans-serif; color: #888; font-size: 14px; }
+
+        .role-badge { font-size: 10px; font-weight: bold; margin-top: 10px; display: block; text-transform: uppercase; }
+        .badge-owner { color: var(--red-neon); text-shadow: 0 0 8px var(--red-neon); }
+        .badge-admin { color: var(--blue-neon); text-shadow: 0 0 8px var(--blue-neon); }
+
+        /* NIVEL NEÓN */
+        .lvl-tag { 
+            font-family: 'Press Start 2P', cursive; font-size: 8px; margin-top: 10px; display: inline-block;
+            padding: 5px 10px; border-radius: 5px; background: rgba(0,0,0,0.5);
+            color: var(--gold); border: 1px solid var(--gold); box-shadow: 0 0 10px var(--gold);
+        }
+
+        /* ADMIN UTILS */
+        .admin-utils-container {
+            border: 2px solid var(--red-neon); border-radius: 12px; padding: 15px; margin-top: 20px;
+            background: rgba(255, 0, 0, 0.05); box-shadow: 0 0 15px var(--red-neon);
+        }
+        .admin-title { color: var(--red-neon); font-size: 11px; font-weight: 900; margin-bottom: 12px; text-align: center; text-shadow: 0 0 5px var(--red-neon); }
 
         .menu-item {
-            background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;
+            background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;
             text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* NOTIFICACIÓN NEÓN */
-        .notif-neon {
-            background: #000; border-radius: 10px; padding: 12px; margin-bottom: 10px;
-            border: 1px solid var(--gold); box-shadow: 0 0 15px var(--gold);
-            display: flex; align-items: center; gap: 10px;
+        /* IA CHAT */
+        #chatIA {
+            position: fixed; bottom: 85px; left: 20px; width: 290px; height: 380px;
+            background: #050505; border: 2px solid var(--blue-neon); border-radius: 15px;
+            display: none; flex-direction: column; z-index: 6000; box-shadow: 0 0 25px var(--blue-neon);
         }
+        .chat-h { background: var(--blue-neon); color: #000; padding: 12px; font-weight: 900; font-size: 12px; border-radius: 12px 12px 0 0; }
+        #chatMsgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 11px; }
+        .bot-m { background: #111; padding: 10px; border-radius: 10px; border-left: 3px solid var(--blue-neon); align-self: flex-start; }
+        .user-m { background: var(--blue-neon); color: #000; padding: 10px; border-radius: 10px; align-self: flex-end; font-weight: bold; }
 
-        /* --- CHAT BOOMI BOT --- */
-        #chatBot {
-            position: fixed; bottom: 85px; left: 20px; width: 280px; height: 350px;
-            background: #0a0a0a; border: 2px solid var(--blue-neon); border-radius: 15px;
-            display: none; flex-direction: column; z-index: 6000; box-shadow: 0 0 20px var(--blue-neon);
-        }
-        .chat-header { background: var(--blue-neon); color: #000; padding: 10px; font-weight: bold; font-size: 12px; border-radius: 12px 12px 0 0; }
-        #chatMessages { flex: 1; padding: 10px; overflow-y: auto; font-size: 11px; display: flex; flex-direction: column; gap: 8px; }
-        .msg { padding: 8px; border-radius: 8px; max-width: 80%; }
-        .bot-msg { background: #222; align-self: flex-start; border-left: 3px solid var(--blue-neon); }
-        .user-msg { background: var(--blue-neon); color: #000; align-self: flex-end; }
-        .chat-input { display: flex; padding: 10px; border-top: 1px solid #333; }
-        .chat-input input { flex: 1; background: #000; border: 1px solid var(--blue-neon); color: #fff; padding: 5px; border-radius: 5px; outline: none; }
-
-        .ia-btn-box { position: fixed; bottom: 20px; left: 20px; z-index: 5000; cursor: pointer; text-align: center; }
-        .ia-icon { width: 55px; height: 55px; background: var(--blue-neon); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 25px; box-shadow: 0 0 15px var(--blue-neon); }
-        .ia-txt { font-size: 8px; margin-top: 5px; background: #fff; color: #000; padding: 2px 5px; border-radius: 5px; font-weight: bold; }
-
-        @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(10deg); } 75% { transform: rotate(-10deg); } }
+        @keyframes shake { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(15deg); } 80% { transform: rotate(-15deg); } }
     </style>
 </head>
 <body>
 
 <header>
     <div class="h-left">
-        <img src="logo.png" style="width:30px; border-radius:50%;">
+        <img src="logo.png" style="width:32px; border-radius:50%; border:1px solid var(--gold);">
         <div class="neon-title">DANIBOOM <span>X</span> <img src="ff_logo.png" class="ff-logo-header"></div>
     </div>
     <div class="h-right">
-        <div class="bell-container" id="bellBtn">
+        <div id="bellBtn" style="cursor:pointer; position:relative;">
             <i class="fas fa-bell" id="bellIcon"></i>
+            <div id="bellDot" style="display:none; position:absolute; top:0; right:0; width:8px; height:8px; background:red; border-radius:50%;"></div>
         </div>
-        <div class="burger" id="burgerBtn">
-            <span></span><span></span><span></span>
-        </div>
+        <div class="burger" id="burgerBtn"><span></span><span></span><span></span></div>
     </div>
 </header>
 
-<div id="chatBot">
-    <div class="chat-header">BOOMI BOT 🤖</div>
-    <div id="chatMessages">
-        <div class="msg bot-msg">¡Hola! Soy Boomi Bot. ¿Qué duda tienes sobre la página?</div>
+<div id="chatIA">
+    <div class="chat-h"><i class="fas fa-robot"></i> BOOMI BOT</div>
+    <div id="chatMsgs">
+        <div class="bot-m">¡Hola! Soy Boomi Bot. Pregúntame sobre la Sensibilidad, Apps Pro o Niveles.</div>
     </div>
-    <div class="chat-input">
-        <input type="text" id="userInput" placeholder="Escribe aquí...">
+    <div style="padding:10px; border-top:1px solid #222; display:flex; gap:5px;">
+        <input type="text" id="chatInput" placeholder="Escribe..." style="flex:1; background:#000; border:1px solid var(--blue-neon); color:#fff; padding:8px; border-radius:5px; outline:none;">
     </div>
 </div>
 
-<div class="ia-btn-box" id="iaToggle">
-    <div class="ia-icon"><i class="fas fa-robot"></i></div>
-    <div class="ia-txt">¿NECESITAS AYUDA?</div>
+<div id="iaBtn" style="position:fixed; bottom:20px; left:20px; z-index:5000; cursor:pointer; text-align:center;">
+    <div style="width:55px; height:55px; background:var(--blue-neon); border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:25px; box-shadow:0 0 15px var(--blue-neon);"><i class="fas fa-robot"></i></div>
+    <div style="font-size:8px; margin-top:5px; background:#fff; color:#000; padding:2px 5px; border-radius:5px; font-weight:bold;">¿AYUDA?</div>
 </div>
 
 <div id="menuNotif" class="side-panel">
-    <h3 style="font-size:12px; margin-bottom:20px; color:var(--gold); text-align:center;">NOTIFICACIONES NEÓN</h3>
-    <div id="notifList"></div>
+    <h3 style="text-align:center; color:var(--gold); font-size:12px; margin-bottom:20px;">NOTIFICACIONES</h3>
+    <div id="notifArea"></div>
 </div>
 
 <div id="menuUser" class="side-panel">
     <div class="profile-card">
         <img src="default.png" id="u-img" class="u-img">
-        <p id="u-name" style="font-size:12px; font-weight:bold;">CARGANDO...</p>
-        <p id="u-lvl" style="font-family:'Press Start 2P'; font-size:7px; color:var(--gold); margin-top:5px;"></p>
-        <span id="u-badge" class="role-tag">INVITADO</span>
+        <p id="u-name"></p>
+        <div id="u-role-box"></div>
+        <div id="u-lvl" class="lvl-tag"></div>
     </div>
-    <nav id="navItems"></nav>
-    <button id="authBtn" style="width:100%; margin-top:20px; background:var(--red-neon); color:#fff; border:none; padding:10px; border-radius:5px; font-weight:bold; cursor:pointer;">INICIAR SESIÓN</button>
+
+    <nav id="navLinks"></nav>
+
+    <div id="adminUtils" style="display:none;">
+        <div class="admin-utils-container">
+            <div class="admin-title">ADMIN UTILS</div>
+            <a href="notificaciones.html" class="menu-item"><i class="fas fa-bullhorn" style="color:red"></i> GESTIONAR NOTIF</a>
+        </div>
+    </div>
+
+    <button id="authBtn" style="width:100%; margin-top:20px; background:none; border:1px solid red; color:red; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">INICIAR SESIÓN</button>
 </div>
 
 <script type="module">
@@ -146,115 +161,131 @@
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
     import { getFirestore, doc, getDoc, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
-        authDomain: "web1-3b83a.firebaseapp.com",
-        projectId: "web1-3b83a"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4", authDomain: "web1-3b83a.firebaseapp.com", projectId: "web1-3b83a" };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
     const db = getFirestore();
 
-    // --- INTERFAZ ---
-    const burger = document.getElementById('burgerBtn');
-    const menuU = document.getElementById('menuUser');
-    const menuN = document.getElementById('menuNotif');
-    const bell = document.getElementById('bellBtn');
+    // --- CONTADOR ANÓNIMO ---
+    function getAnonID() {
+        let id = localStorage.getItem('anon_number');
+        if(!id) {
+            id = Math.floor(Math.random() * 999).toString().padStart(3, '0');
+            localStorage.setItem('anon_number', id);
+        }
+        return id;
+    }
 
-    burger.onclick = () => {
-        burger.classList.toggle('open');
-        menuU.classList.toggle('active');
-        menuN.classList.remove('active');
-    };
-
-    bell.onclick = () => {
-        menuN.classList.toggle('active');
-        menuU.classList.remove('active');
-        burger.classList.remove('open');
-        document.getElementById('bellIcon').classList.remove('bell-shake');
-    };
-
-    // --- DETECCIÓN DE USUARIO Y ROLES ---
+    // --- LÓGICA DE USUARIO ---
     onAuthStateChanged(auth, async (user) => {
-        const nav = document.getElementById('navItems');
+        const nameEl = document.getElementById('u-name');
+        const roleEl = document.getElementById('u-role-box');
+        const lvlEl = document.getElementById('u-lvl');
+        const nav = document.getElementById('navLinks');
         const authBtn = document.getElementById('authBtn');
 
-        if (user) {
+        if(user) {
             const snap = await getDoc(doc(db, "users", user.uid));
-            const data = snap.data() || {};
-            
-            document.getElementById('u-name').innerText = data.username || "Usuario";
-            document.getElementById('u-lvl').innerText = "LVL " + (data.level || "1");
-            document.getElementById('u-badge').innerText = data.membership || "SUSCRIPTOR";
-            document.getElementById('u-img').src = data.photoURL || 'default.png';
-            
-            authBtn.innerText = "CERRAR SESIÓN";
-            authBtn.onclick = () => signOut(auth).then(() => location.reload());
+            const d = snap.data() || {};
+            const role = d.membership || 'user';
 
-            // Roles Dinámicos
-            let items = `<a href="perfil.html" class="menu-item"><i class="fas fa-user"></i> PERFIL</a>
-                         <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
-                         <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
-                         <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSI</a>
-                         <a href="appspro.html" class="menu-item"><i class="fas fa-mobile"></i> APPS PRO</a>
-                         <a href="tienda.html" class="menu-item"><i class="fas fa-shopping-cart"></i> TIENDA</a>`;
+            nameEl.innerText = d.username || user.displayName;
+            lvlEl.innerText = "NIVEL " + (d.level || 1);
             
-            if(data.membership === 'owner' || data.membership === 'admin') {
-                items += `<hr style="opacity:0.1; margin:10px 0;">
-                          <a href="notificaciones.html" class="menu-item" style="border:1px solid var(--red-neon)"><i class="fas fa-tools"></i> ADMIN NOTIF</a>`;
+            if(role === 'owner') {
+                nameEl.className = "name-owner";
+                roleEl.innerHTML = `<span class="role-badge badge-owner">OWNER <i class="fas fa-crown"></i></span>`;
+                document.getElementById('adminUtils').style.display = 'block';
+            } else if(role === 'admin') {
+                nameEl.className = "name-admin";
+                roleEl.innerHTML = `<span class="role-badge badge-admin">ADMIN <i class="fas fa-shield-alt"></i></span>`;
+                document.getElementById('adminUtils').style.display = 'block';
             }
-            nav.innerHTML = items;
 
+            nav.innerHTML = `
+                <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a>
+                <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
+                <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
+                <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSIBILIDADES</a>
+                <a href="appspro.html" class="menu-item"><i class="fas fa-mobile"></i> APPS PRO</a>
+                <a href="tienda.html" class="menu-item"><i class="fas fa-shopping-cart"></i> TIENDA</a>
+            `;
+            authBtn.innerText = "CERRAR SESIÓN";
+            authBtn.onclick = () => signOut(auth).then(()=>location.reload());
         } else {
-            document.getElementById('u-name').innerText = "INVITADO";
-            document.getElementById('u-lvl').innerText = "";
-            document.getElementById('u-badge').innerText = "SIN SESIÓN";
-            nav.innerHTML = `<a href="perfil.html" class="menu-item"><i class="fas fa-user"></i> PERFIL</a>
-                             <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>`;
+            // ANÓNIMO
+            nameEl.innerText = "ANÓNIMO #" + getAnonID();
+            nameEl.className = "name-anon";
+            roleEl.innerHTML = `<span class="role-badge" style="color:#555">SIN ROL</span>`;
+            lvlEl.innerText = "LVL 0";
+            nav.innerHTML = `
+                <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a>
+                <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
+            `;
             authBtn.innerText = "INICIAR SESIÓN";
             authBtn.onclick = () => window.location.href = "index.html";
         }
     });
 
-    // --- NOTIFICACIONES REAL-TIME ---
+    // --- NOTIFICACIONES ---
+    const bellIcon = document.getElementById('bellIcon');
+    let lastNotifCount = localStorage.getItem('notif_seen_count') || 0;
+
     onSnapshot(query(collection(db, "notifications"), orderBy("createdAt", "desc")), (snap) => {
-        const list = document.getElementById('notifList');
-        list.innerHTML = "";
+        const area = document.getElementById('notifArea');
+        area.innerHTML = "";
+        const currentCount = snap.size;
+
+        if(currentCount > lastNotifCount) {
+            bellIcon.classList.add('bell-shake');
+        }
+
         snap.forEach(doc => {
             const n = doc.data();
-            const color = n.type === 'youtube' ? '#ff0000' : n.type === 'tiktok' ? '#fff' : '#ffd700';
-            list.innerHTML += `<div class="notif-neon" style="border-color:${color}; box-shadow: 0 0 10px ${color}">
-                                    <i class="fas fa-info-circle" style="color:${color}"></i>
-                                    <div>
-                                        <p style="font-size:10px; font-weight:bold;">${n.title}</p>
-                                        <p style="font-size:9px; color:#aaa;">${n.desc}</p>
-                                    </div>
-                               </div>`;
-            document.getElementById('bellIcon').classList.add('bell-shake');
+            area.innerHTML += `
+                <div style="border:1px solid var(--gold); box-shadow:0 0 10px var(--gold); padding:12px; border-radius:10px; margin-bottom:10px; background:#000;">
+                    <p style="font-size:11px; font-weight:bold; color:var(--gold);">${n.title}</p>
+                    <p style="font-size:9px; color:#ccc;">${n.desc}</p>
+                </div>`;
         });
     });
 
-    // --- LÓGICA BOOMI BOT ---
-    const chatBot = document.getElementById('chatBot');
-    document.getElementById('iaToggle').onclick = () => chatBot.style.display = chatBot.style.display === 'flex' ? 'none' : 'flex';
+    // --- MENÚS ---
+    document.getElementById('bellBtn').onclick = () => {
+        document.getElementById('menuNotif').classList.toggle('active');
+        document.getElementById('menuUser').classList.remove('active');
+        bellIcon.classList.remove('bell-shake');
+        // Guardar que ya las vio
+        onSnapshot(collection(db, "notifications"), (s) => localStorage.setItem('notif_seen_count', s.size));
+    };
 
-    document.getElementById('userInput').onkeypress = (e) => {
+    document.getElementById('burgerBtn').onclick = () => {
+        document.getElementById('menuUser').classList.toggle('active');
+        document.getElementById('menuNotif').classList.remove('active');
+        document.getElementById('burgerBtn').classList.toggle('open');
+    };
+
+    // --- BOOMI BOT ---
+    document.getElementById('iaBtn').onclick = () => {
+        const chat = document.getElementById('chatIA');
+        chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+    };
+
+    document.getElementById('chatInput').onkeypress = (e) => {
         if(e.key === 'Enter') {
             const val = e.target.value.toLowerCase();
-            const msgs = document.getElementById('chatMessages');
-            msgs.innerHTML += `<div class="msg user-msg">${e.target.value}</div>`;
+            const msgs = document.getElementById('chatMsgs');
+            msgs.innerHTML += `<div class="user-m">${e.target.value}</div>`;
             
-            let reply = "No entiendo eso. Pregúntame sobre sensis, apps o cómo subir de nivel.";
-            if(val.includes("sensi")) reply = "Las sensibilidades están en el menú lateral, sección SENSI.";
-            if(val.includes("app")) reply = "En APPS PRO tienes herramientas para mejorar el lag y FPS.";
-            if(val.includes("nivel") || val.includes("lvl")) reply = "Sube de nivel participando en el chat y siendo activo en la web.";
-            if(val.includes("hola")) reply = "¡Hola! Soy Boomi Bot, tu guía en DANIBOOM X.";
-
+            let r = "Soy un bot enfocado en la web. Pregúntame sobre sensis o apps.";
+            if(val.includes("sensi")) r = "Las sensibilidades están en el menú lateral. ¡Hay para todos los dispositivos!";
+            if(val.includes("app")) r = "En APPS PRO encontrarás optimizadores para reducir el lag.";
+            if(val.includes("nivel")) r = "Sube de nivel siendo activo y participando en la comunidad.";
+            
             setTimeout(() => {
-                msgs.innerHTML += `<div class="msg bot-msg">${reply}</div>`;
+                msgs.innerHTML += `<div class="bot-m">${r}</div>`;
                 msgs.scrollTop = msgs.scrollHeight;
-            }, 600);
+            }, 500);
             e.target.value = "";
         }
     };
