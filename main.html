@@ -2,252 +2,253 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Panel de Notificaciones</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DANIBOOM X | HOME</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
+            --gold: #ffd700;
             --red-neon: #ff0000;
-            --gold-neon: #ffd700;
             --bg: #050505;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; min-height: 100vh; }
+
+        /* --- HEADER REORGANIZADO --- */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 3000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 15px; background: rgba(0,0,0,0.98);
+            border-bottom: 2px solid var(--gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .h-left { display: flex; align-items: center; gap: 8px; }
+        .site-logo { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--gold); }
+        .logo-txt { font-weight: 900; font-size: 14px; letter-spacing: 1px; }
+        .logo-txt span { color: var(--red-neon); text-shadow: 0 0 8px var(--red-neon); }
+
+        /* Logo FF Blanco */
+        .ff-logo-mini { 
+            width: 70px; 
+            filter: brightness(0) invert(1) drop-shadow(0 0 5px #fff); 
+        }
+
+        .h-right { display: flex; align-items: center; gap: 15px; }
+
+        /* Campana Neón y Animación */
+        .bell-box { position: relative; cursor: pointer; }
+        .fa-bell { font-size: 20px; color: var(--gold); filter: drop-shadow(0 0 5px var(--gold)); }
         
-        body { 
-            background: var(--bg); 
-            color: #fff; 
-            height: 100vh; 
-            width: 100vw; 
-            overflow: hidden; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .bell-shake { 
+            animation: shake 0.5s infinite; 
+            color: var(--red-neon) !important; 
+            filter: drop-shadow(0 0 10px var(--red-neon)) !important; 
+        }
+        .bell-dot { 
+            position: absolute; top: -3px; right: -2px; width: 8px; height: 8px; 
+            background: var(--red-neon); border-radius: 50%; box-shadow: 0 0 8px var(--red-neon); 
         }
 
-        /* --- PANTALLA COMPLETA --- */
-        .full-screen-container {
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            padding: 40px 20px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            border: 4px solid var(--red-neon);
-            box-shadow: inset 0 0 30px rgba(255,0,0,0.2);
+        /* Hamburguesa */
+        .burger { display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
+        .burger span { width: 22px; height: 3px; background: var(--gold); transition: 0.3s; }
+        .burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .burger.open span:nth-child(2) { opacity: 0; }
+        .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* --- MENÚ DESPLEGABLE --- */
+        .menu-drop {
+            position: fixed; top: 0; right: -100%; width: 310px; height: 100vh;
+            background: rgba(5,5,5,0.98); border-left: 2px solid var(--gold);
+            padding: 80px 15px 20px; transition: 0.4s ease; z-index: 2500;
         }
+        .menu-drop.active { right: 0; }
 
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            color: var(--red-neon);
-            cursor: pointer;
-            text-shadow: 0 0 10px var(--red-neon);
+        /* CUADRADO PERFIL NEÓN */
+        .profile-neon-box {
+            border: 2px solid var(--gold); border-radius: 15px;
+            padding: 20px; text-align: center; margin-bottom: 20px;
+            box-shadow: inset 0 0 15px rgba(255,215,0,0.1), 0 0 15px rgba(255,215,0,0.1);
         }
-
-        h2 { text-align: center; color: var(--red-neon); margin-bottom: 30px; text-shadow: 0 0 10px var(--red-neon); }
-
-        /* --- FORMULARIO --- */
-        .form-admin {
-            max-width: 500px;
-            margin: 0 auto;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        label { font-size: 10px; color: var(--gold-neon); letter-spacing: 1px; }
-
-        select, input, textarea {
-            background: #111;
-            border: 1px solid #333;
-            padding: 12px;
-            color: #fff;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        select:focus, input:focus { border-color: var(--gold-neon); box-shadow: 0 0 10px rgba(255,215,0,0.2); }
-
-        .btn-send {
-            background: var(--red-neon);
-            color: #fff;
-            border: none;
-            padding: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 10px;
-            box-shadow: 0 0 15px var(--red-neon);
-            text-transform: uppercase;
-        }
-
-        /* --- VISTA PREVIA (DINÁMICA) --- */
-        #preview {
-            margin-top: 40px;
-            border: 2px dashed #444;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .notif-preview-card {
-            background: #111;
-            border-left: 5px solid var(--color-platform);
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            position: relative;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        .platform-icon { font-size: 30px; }
+        .u-img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 10px; }
         
-        .timer-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 3px;
-            background: var(--gold-neon);
-            width: 100%;
+        .role-badge { font-size: 10px; font-weight: 900; padding: 5px 12px; border-radius: 5px; display: inline-block; margin-top: 5px; }
+        .role-owner { color: #fff; border: 1.5px solid var(--red-neon); box-shadow: 0 0 10px var(--red-neon); background: rgba(255,0,0,0.1); }
+        .role-admin { color: #fff; border: 1.5px solid #00f2ff; box-shadow: 0 0 10px #00f2ff; background: rgba(0,242,255,0.1); }
+        .role-suscriptor { color: #fff; border: 1.5px solid var(--gold); box-shadow: 0 0 10px var(--gold); background: rgba(255,215,0,0.1); }
+
+        /* ADMIN UTILS (CUADRADO ROJO NEÓN) */
+        .admin-utils-box {
+            border: 2px solid var(--red-neon); border-radius: 12px;
+            padding: 15px; margin-top: 15px; background: rgba(255,0,0,0.05);
+            box-shadow: 0 0 15px rgba(255,0,0,0.2);
         }
 
-        .action-btn {
-            background: #fff;
-            color: #000;
-            padding: 5px 12px;
-            text-decoration: none;
-            font-size: 10px;
-            font-weight: bold;
-            border-radius: 3px;
-            margin-top: 5px;
-            display: inline-block;
+        .menu-item {
+            background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;
+            text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px;
         }
 
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        /* BOTÓN IA FLOTANTE */
+        .ia-btn {
+            position: fixed; bottom: 20px; left: 20px; width: 55px; height: 55px;
+            background: linear-gradient(45deg, #00f2ff, #0066ff);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 24px; box-shadow: 0 0 20px #00f2ff; cursor: pointer; z-index: 5000;
         }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+
+        main { padding-top: 120px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div class="full-screen-container">
-        <i class="fas fa-times close-btn" onclick="window.location.href='index.html'"></i>
-        
-        <h2>ADMIN NOTIFICACIONES</h2>
+<header>
+    <div class="h-left">
+        <img src="logo.png" class="site-logo">
+        <div class="logo-txt">DANIBOOM <span>X</span></div>
+    </div>
+    
+    <img src="ff_logo.png" class="ff-logo-mini">
 
-        <div class="form-admin">
-            <label>PLATAFORMA / TIPO</label>
-            <select id="notif-type">
-                <option value="youtube">YouTube</option>
-                <option value="tiktok">TikTok</option>
-                <option value="instagram">Instagram</option>
-                <option value="facebook">Facebook</option>
-                <option value="whatsapp">WhatsApp</option>
-                <option value="system">Sistema / Actualización</option>
-                <option value="important">Aviso Importante</option>
-            </select>
-
-            <label>TÍTULO</label>
-            <input type="text" id="notif-title" placeholder="Ej: ¡Nuevo Video!">
-
-            <label>DESCRIPCIÓN</label>
-            <textarea id="notif-desc" rows="3" placeholder="Escribe el mensaje aquí..."></textarea>
-
-            <label>LINK (OPCIONAL)</label>
-            <input type="url" id="notif-link" placeholder="https://...">
-
-            <label>TIEMPO (SEGUNDOS)</label>
-            <input type="number" id="notif-time" value="10">
-
-            <button class="btn-send" onclick="sendNotification()">ENVIAR NOTIFICACIÓN</button>
+    <div class="h-right">
+        <div class="bell-box" id="bellBtn">
+            <i class="fas fa-bell" id="bellIcon"></i>
+            <div class="bell-dot" id="bellDot" style="display:none;"></div>
         </div>
+        <div class="burger" id="burgerBtn">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</header>
 
-        <div id="preview">
-            <p style="text-align:center; font-size:10px; color:#555;">VISTA PREVIA DE SALIDA</p>
-            <div id="preview-content"></div>
+<div class="menu-drop" id="menuDrop">
+    <div class="profile-neon-box">
+        <img src="logo.png" id="u-img" class="u-img">
+        <p id="u-name" style="font-weight: bold; font-size: 14px;"></p>
+        <div id="u-badge-container"></div>
+        <p id="u-lvl" style="font-family:'Press Start 2P'; font-size:8px; color:var(--gold); margin-top:12px;"></p>
+    </div>
+
+    <nav id="navMenu">
+        <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> PERFIL</a>
+        <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
+        <div id="loggedOptions" style="display:none;">
+            <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
+            <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSIBILIDADES</a>
+            <a href="appspro.html" class="menu-item"><i class="fas fa-mobile-alt"></i> APPS PRO</a>
+            <a href="tienda.html" class="menu-item"><i class="fas fa-shopping-cart"></i> TIENDA UE</a>
+        </div>
+    </nav>
+
+    <div id="adminArea" style="display:none;">
+        <div class="admin-utils-box">
+            <p style="color:var(--red-neon); font-size:10px; font-weight:900; margin-bottom:10px;">ADMIN UTILS</p>
+            <a href="notificaciones.html" class="menu-item" style="border: 1px solid var(--red-neon);">
+                <i class="fas fa-bell" style="color:var(--red-neon);"></i> NOTIFICACIONES
+            </a>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    <button id="authBtn" style="width:100%; margin-top:20px; background:none; border:1px solid red; color:red; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold;">CERRAR SESIÓN</button>
+</div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
-            authDomain: "web1-3b83a.firebaseapp.com",
-            projectId: "web1-3b83a"
-        };
+<div class="ia-btn" onclick="alert('Iniciando Chat con IA...')">
+    <i class="fas fa-robot"></i>
+</div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore();
+<main>
+    </main>
 
-        const icons = {
-            youtube: { icon: 'fab fa-youtube', color: '#ff0000' },
-            tiktok: { icon: 'fab fa-tiktok', color: '#fff' },
-            instagram: { icon: 'fab fa-instagram', color: '#e1306c' },
-            facebook: { icon: 'fab fa-facebook', color: '#1877f2' },
-            whatsapp: { icon: 'fab fa-whatsapp', color: '#25d366' },
-            system: { icon: 'fas fa-cog', color: '#00f2ff' },
-            important: { icon: 'fas fa-exclamation-triangle', color: '#ffd700' }
-        };
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, collection, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-        window.sendNotification = async () => {
-            const type = document.getElementById('notif-type').value;
-            const title = document.getElementById('notif-title').value;
-            const desc = document.getElementById('notif-desc').value;
-            const link = document.getElementById('notif-link').value;
-            const time = document.getElementById('notif-time').value;
+    const firebaseConfig = {
+        apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
+        authDomain: "web1-3b83a.firebaseapp.com",
+        projectId: "web1-3b83a"
+    };
 
-            if(!title || !desc) return alert("Llena los campos");
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore();
 
-            // --- Lógica de Botón Automático ---
-            let buttonHTML = link ? `<a href="${link}" class="action-btn" target="_blank">IR AHORA</a>` : "";
+    // INTERACTIVIDAD MENÚ
+    const burger = document.getElementById('burgerBtn');
+    const menu = document.getElementById('menuDrop');
+    const bell = document.getElementById('bellBtn');
 
-            // Mostrar Preview Local
-            const previewArea = document.getElementById('preview-content');
-            const color = icons[type].color;
-            
-            previewArea.innerHTML = `
-                <div class="notif-preview-card" style="border-color: ${color}; --color-platform: ${color}">
-                    <i class="${icons[type].icon} platform-icon" style="color: ${color}"></i>
-                    <div>
-                        <strong style="font-size: 12px;">${title}</strong>
-                        <p style="font-size: 10px; color: #bbb;">${desc}</p>
-                        ${buttonHTML}
-                    </div>
-                    <div class="timer-bar" style="animation: shrink ${time}s linear forwards"></div>
-                </div>
-            `;
+    const toggleMenu = () => {
+        menu.classList.toggle('active');
+        burger.classList.toggle('open');
+        // Al abrir, se asume que vio las notis
+        document.getElementById('bellIcon').classList.remove('bell-shake');
+        document.getElementById('bellDot').style.display = 'none';
+    };
 
-            // Enviar a Firestore para que todos la reciban
-            try {
-                await addDoc(collection(db, "notifications"), {
-                    type,
-                    title,
-                    desc,
-                    link,
-                    duration: time,
-                    createdAt: serverTimestamp()
-                });
-                alert("¡Notificación enviada con éxito!");
-            } catch (e) {
-                console.error("Error: ", e);
+    burger.onclick = toggleMenu;
+    bell.onclick = toggleMenu;
+
+    // LÓGICA DE USUARIO Y ROLES
+    onAuthStateChanged(auth, async (user) => {
+        const badgeContainer = document.getElementById('u-badge-container');
+        
+        if (user) {
+            const docSnap = await getDoc(doc(db, "users", user.uid));
+            const data = docSnap.data() || {};
+            const role = data.membership || 'anonymous';
+
+            document.getElementById('u-name').innerText = data.username || "GAMER";
+            document.getElementById('u-lvl').innerText = "NIVEL " + (data.level || 1);
+
+            if(role === 'owner') {
+                badgeContainer.innerHTML = '<span class="role-badge role-owner">OWNER <i class="fas fa-crown"></i></span>';
+                document.getElementById('adminArea').style.display = 'block';
+            } else if(role === 'admin') {
+                badgeContainer.innerHTML = '<span class="role-badge role-admin">ADMIN <i class="fas fa-shield-alt"></i></span>';
+                document.getElementById('adminArea').style.display = 'block';
+            } else if(role === 'suscriptor') {
+                badgeContainer.innerHTML = '<span class="role-badge role-suscriptor">SUSCRIPTOR <i class="fas fa-gem"></i></span>';
+            } else {
+                badgeContainer.innerHTML = '<span class="role-badge role-anonymous">ANONYMOUS</span>';
             }
-        };
-    </script>
 
-    <style>
-        @keyframes shrink {
-            from { width: 100%; }
-            to { width: 0%; }
+            if(role !== 'anonymous') document.getElementById('loggedOptions').style.display = 'block';
+
+        } else {
+            // Modo invitado o no logueado
+            document.getElementById('u-name').innerText = "INVITADO";
+            badgeContainer.innerHTML = '<span class="role-badge role-anonymous">SIN SESIÓN</span>';
+            document.getElementById('authBtn').innerText = "INICIAR SESIÓN";
         }
-    </style>
+    });
+
+    // ESCUCHA DE NOTIFICACIONES EN TIEMPO REAL
+    const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"), limit(1));
+    onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                // Si se añade una notificación nueva, activar campana
+                document.getElementById('bellIcon').classList.add('bell-shake');
+                document.getElementById('bellDot').style.display = 'block';
+            }
+        });
+    });
+
+    document.getElementById('authBtn').onclick = () => {
+        if(auth.currentUser) signOut(auth).then(() => location.reload());
+        else window.location.href = "login.html"; // O tu página de inicio
+    };
+</script>
 </body>
 </html>
