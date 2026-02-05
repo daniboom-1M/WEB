@@ -11,7 +11,6 @@
             --gold: #ffd700;
             --red-neon: #ff0000;
             --blue-neon: #00f2ff;
-            --purple-neon: #bc13fe;
             --bg: #050505;
         }
 
@@ -25,134 +24,119 @@
             padding: 12px 15px; background: rgba(0,0,0,0.98);
             border-bottom: 2px solid var(--gold);
         }
+        .h-left { display: flex; align-items: center; gap: 8px; }
         .neon-title { font-weight: 900; font-size: 18px; text-shadow: 0 0 10px #fff; display: flex; align-items: center; gap: 8px; }
         .neon-title span { color: var(--red-neon); text-shadow: 0 0 15px var(--red-neon); }
-        .ff-logo-header { height: 20px; filter: brightness(0) invert(1) drop-shadow(0 0 5px #fff); }
+        .ff-logo-header { height: 18px; filter: brightness(0) invert(1) drop-shadow(0 0 5px #fff); }
 
+        /* CAMPANA Y BURGER JUNTOS */
         .h-right { display: flex; align-items: center; gap: 15px; }
-
-        /* CAMPANA */
-        .fa-bell { font-size: 22px; color: var(--gold); transition: 0.3s; }
+        .fa-bell { font-size: 22px; color: var(--gold); cursor: pointer; transition: 0.3s; }
         .bell-shake { animation: shake 0.5s infinite; color: var(--red-neon) !important; filter: drop-shadow(0 0 10px var(--red-neon)); }
 
-        /* BURGER */
         .burger { cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
         .burger span { width: 22px; height: 3px; background: var(--gold); transition: 0.3s; }
         .burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .burger.open span:nth-child(2) { opacity: 0; }
         .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        /* PANELES */
+        /* --- MENÚS --- */
         .side-panel {
             position: fixed; top: 0; right: -100%; width: 310px; height: 100vh;
-            background: rgba(5,5,5,0.99); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 3500;
-            padding: 80px 15px 20px; overflow-y: auto; border-left: 1px solid rgba(255,215,0,0.3);
+            background: rgba(5,5,5,0.99); transition: 0.5s ease; z-index: 3500;
+            padding: 80px 15px 20px; overflow-y: auto; border-left: 1px solid var(--gold);
         }
         .side-panel.active { right: 0; }
 
-        /* --- ESTILOS DE ROL Y NOMBRE --- */
+        /* PERFIL CARD */
         .profile-card {
             border: 2px solid var(--gold); border-radius: 15px; padding: 20px; text-align: center;
-            box-shadow: inset 0 0 15px rgba(255,215,0,0.1), 0 0 20px rgba(0,0,0,1); margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(255,215,0,0.2); margin-bottom: 15px;
         }
-        .u-img { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; box-shadow: 0 0 15px var(--gold); }
+        .u-img { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 10px; object-fit: cover; }
         
-        /* Tipografías por Rol */
-        .name-owner { font-family: 'Permanent Marker', cursive; color: var(--red-neon); text-shadow: 0 0 10px var(--red-neon); font-size: 20px; }
-        .name-admin { font-family: 'Electrolize', sans-serif; color: var(--blue-neon); text-shadow: 0 0 10px var(--blue-neon); font-size: 18px; }
+        /* Tipografías y Colores por Rol */
+        .name-owner { font-family: 'Permanent Marker', cursive; color: var(--red-neon); text-shadow: 0 0 10px var(--red-neon); font-size: 22px; }
+        .name-admin { font-family: 'Electrolize', sans-serif; color: var(--blue-neon); text-shadow: 0 0 10px var(--blue-neon); font-size: 19px; }
         .name-anon { font-family: 'Orbitron', sans-serif; color: #888; font-size: 14px; }
 
-        .role-badge { font-size: 10px; font-weight: bold; margin-top: 10px; display: block; text-transform: uppercase; }
-        .badge-owner { color: var(--red-neon); text-shadow: 0 0 8px var(--red-neon); }
-        .badge-admin { color: var(--blue-neon); text-shadow: 0 0 8px var(--blue-neon); }
+        .badge-owner { color: var(--red-neon); text-shadow: 0 0 8px var(--red-neon); font-weight: 900; }
+        .badge-admin { color: var(--blue-neon); text-shadow: 0 0 8px var(--blue-neon); font-weight: 900; }
 
         /* NIVEL NEÓN */
         .lvl-tag { 
             font-family: 'Press Start 2P', cursive; font-size: 8px; margin-top: 10px; display: inline-block;
-            padding: 5px 10px; border-radius: 5px; background: rgba(0,0,0,0.5);
-            color: var(--gold); border: 1px solid var(--gold); box-shadow: 0 0 10px var(--gold);
+            padding: 6px 12px; border-radius: 5px; color: var(--gold); border: 1px solid var(--gold); 
+            box-shadow: 0 0 10px var(--gold); background: rgba(0,0,0,0.8);
         }
 
-        /* ADMIN UTILS */
-        .admin-utils-container {
+        /* CUADRADO ADMIN UTILS */
+        .admin-box {
             border: 2px solid var(--red-neon); border-radius: 12px; padding: 15px; margin-top: 20px;
             background: rgba(255, 0, 0, 0.05); box-shadow: 0 0 15px var(--red-neon);
         }
-        .admin-title { color: var(--red-neon); font-size: 11px; font-weight: 900; margin-bottom: 12px; text-align: center; text-shadow: 0 0 5px var(--red-neon); }
+        .admin-title { color: var(--red-neon); font-size: 12px; font-weight: 900; text-align: center; margin-bottom: 15px; text-shadow: 0 0 5px var(--red-neon); }
 
         .menu-item {
-            background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;
+            background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;
             text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* IA CHAT */
+        /* NOTIF NEÓN */
+        .notif-neon {
+            border: 1px solid var(--gold); box-shadow: 0 0 15px var(--gold);
+            padding: 12px; border-radius: 10px; margin-bottom: 10px; background: #000;
+        }
+
+        /* CHAT BOOMI BOT */
         #chatIA {
-            position: fixed; bottom: 85px; left: 20px; width: 290px; height: 380px;
-            background: #050505; border: 2px solid var(--blue-neon); border-radius: 15px;
-            display: none; flex-direction: column; z-index: 6000; box-shadow: 0 0 25px var(--blue-neon);
+            position: fixed; bottom: 85px; left: 20px; width: 280px; height: 350px;
+            background: #0a0a0a; border: 2px solid var(--blue-neon); border-radius: 15px;
+            display: none; flex-direction: column; z-index: 6000; box-shadow: 0 0 20px var(--blue-neon);
         }
-        .chat-h { background: var(--blue-neon); color: #000; padding: 12px; font-weight: 900; font-size: 12px; border-radius: 12px 12px 0 0; }
-        #chatMsgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 11px; }
-        .bot-m { background: #111; padding: 10px; border-radius: 10px; border-left: 3px solid var(--blue-neon); align-self: flex-start; }
-        .user-m { background: var(--blue-neon); color: #000; padding: 10px; border-radius: 10px; align-self: flex-end; font-weight: bold; }
+        .chat-h { background: var(--blue-neon); color: #000; padding: 10px; font-weight: 900; font-size: 12px; border-radius: 12px 12px 0 0; }
+        #chatMsgs { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 11px; }
+        .bot-m { background: #1a1a1a; padding: 8px; border-radius: 8px; border-left: 3px solid var(--blue-neon); align-self: flex-start; }
+        .user-m { background: var(--blue-neon); color: #000; padding: 8px; border-radius: 8px; align-self: flex-end; }
 
-        @keyframes shake { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(15deg); } 80% { transform: rotate(-15deg); } }
+        @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
     </style>
 </head>
 <body>
 
 <header>
     <div class="h-left">
-        <img src="logo.png" style="width:32px; border-radius:50%; border:1px solid var(--gold);">
+        <img src="logo.png" style="width:30px; border-radius:50%; border:1px solid var(--gold);">
         <div class="neon-title">DANIBOOM <span>X</span> <img src="ff_logo.png" class="ff-logo-header"></div>
     </div>
     <div class="h-right">
-        <div id="bellBtn" style="cursor:pointer; position:relative;">
-            <i class="fas fa-bell" id="bellIcon"></i>
-            <div id="bellDot" style="display:none; position:absolute; top:0; right:0; width:8px; height:8px; background:red; border-radius:50%;"></div>
-        </div>
+        <i class="fas fa-bell" id="bellIcon"></i>
         <div class="burger" id="burgerBtn"><span></span><span></span><span></span></div>
     </div>
 </header>
 
 <div id="chatIA">
-    <div class="chat-h"><i class="fas fa-robot"></i> BOOMI BOT</div>
-    <div id="chatMsgs">
-        <div class="bot-m">¡Hola! Soy Boomi Bot. Pregúntame sobre la Sensibilidad, Apps Pro o Niveles.</div>
-    </div>
-    <div style="padding:10px; border-top:1px solid #222; display:flex; gap:5px;">
-        <input type="text" id="chatInput" placeholder="Escribe..." style="flex:1; background:#000; border:1px solid var(--blue-neon); color:#fff; padding:8px; border-radius:5px; outline:none;">
-    </div>
+    <div class="chat-h">BOOMI BOT 🤖</div>
+    <div id="chatMsgs"><div class="bot-m">¡Hola! Soy Boomi Bot. ¿En qué puedo ayudarte hoy?</div></div>
+    <div style="padding:10px; display:flex; gap:5px;"><input type="text" id="chatIn" placeholder="Escribe..." style="flex:1; background:#000; border:1px solid var(--blue-neon); color:#fff; padding:8px; border-radius:5px; outline:none;"></div>
 </div>
 
-<div id="iaBtn" style="position:fixed; bottom:20px; left:20px; z-index:5000; cursor:pointer; text-align:center;">
+<div id="iaToggle" style="position:fixed; bottom:20px; left:20px; z-index:5000; cursor:pointer; text-align:center;">
     <div style="width:55px; height:55px; background:var(--blue-neon); border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:25px; box-shadow:0 0 15px var(--blue-neon);"><i class="fas fa-robot"></i></div>
     <div style="font-size:8px; margin-top:5px; background:#fff; color:#000; padding:2px 5px; border-radius:5px; font-weight:bold;">¿AYUDA?</div>
 </div>
 
-<div id="menuNotif" class="side-panel">
-    <h3 style="text-align:center; color:var(--gold); font-size:12px; margin-bottom:20px;">NOTIFICACIONES</h3>
-    <div id="notifArea"></div>
-</div>
+<div id="menuNotif" class="side-panel"><h3 style="text-align:center; color:var(--gold); margin-bottom:20px;">NOTIFICACIONES</h3><div id="notifList"></div></div>
 
 <div id="menuUser" class="side-panel">
     <div class="profile-card">
         <img src="default.png" id="u-img" class="u-img">
-        <p id="u-name"></p>
-        <div id="u-role-box"></div>
-        <div id="u-lvl" class="lvl-tag"></div>
+        <p id="u-name">CARGANDO...</p>
+        <div id="u-badge"></div>
+        <div id="u-lvl" class="lvl-tag">NIVEL 0</div>
     </div>
-
-    <nav id="navLinks"></nav>
-
-    <div id="adminUtils" style="display:none;">
-        <div class="admin-utils-container">
-            <div class="admin-title">ADMIN UTILS</div>
-            <a href="notificaciones.html" class="menu-item"><i class="fas fa-bullhorn" style="color:red"></i> GESTIONAR NOTIF</a>
-        </div>
-    </div>
-
+    <nav id="userNav"></nav>
+    <div id="adminArea" style="display:none;"><div class="admin-box"><div class="admin-title">ADMIN UTILS</div><a href="notificaciones.html" class="menu-item"><i class="fas fa-bullhorn"></i> NOTIFICACIONES</a></div></div>
     <button id="authBtn" style="width:100%; margin-top:20px; background:none; border:1px solid red; color:red; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">INICIAR SESIÓN</button>
 </div>
 
@@ -166,58 +150,62 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // --- CONTADOR ANÓNIMO ---
-    function getAnonID() {
-        let id = localStorage.getItem('anon_number');
-        if(!id) {
-            id = Math.floor(Math.random() * 999).toString().padStart(3, '0');
-            localStorage.setItem('anon_number', id);
-        }
-        return id;
-    }
+    const bell = document.getElementById('bellIcon');
+    const burger = document.getElementById('burgerBtn');
+    const menuU = document.getElementById('menuUser');
+    const menuN = document.getElementById('menuNotif');
 
-    // --- LÓGICA DE USUARIO ---
+    // --- MANEJO DE MENÚS ---
+    burger.onclick = () => { burger.classList.toggle('open'); menuU.classList.toggle('active'); menuN.classList.remove('active'); };
+    bell.onclick = () => { menuN.classList.toggle('active'); menuU.classList.remove('active'); burger.classList.remove('open'); bell.classList.remove('bell-shake'); localStorage.setItem('lastSeenNotif', Date.now()); };
+
+    // --- DETECCIÓN DE USUARIO Y ROLES (Coincidiendo con Screenshot de Firebase) ---
     onAuthStateChanged(auth, async (user) => {
-        const nameEl = document.getElementById('u-name');
-        const roleEl = document.getElementById('u-role-box');
-        const lvlEl = document.getElementById('u-lvl');
-        const nav = document.getElementById('navLinks');
+        const uName = document.getElementById('u-name');
+        const uBadge = document.getElementById('u-badge');
+        const uLvl = document.getElementById('u-lvl');
+        const uImg = document.getElementById('u-img');
+        const nav = document.getElementById('userNav');
         const authBtn = document.getElementById('authBtn');
 
-        if(user) {
+        if (user) {
             const snap = await getDoc(doc(db, "users", user.uid));
-            const d = snap.data() || {};
-            const role = d.membership || 'user';
-
-            nameEl.innerText = d.username || user.displayName;
-            lvlEl.innerText = "NIVEL " + (d.level || 1);
+            const data = snap.data() || {};
             
+            // Mapeo según los campos de tu imagen de Firestore
+            uName.innerText = data.displayName || "USUARIO";
+            uLvl.innerText = "NIVEL " + (data.level || 1);
+            uImg.src = data.photoURL || 'default.png';
+
+            const role = data.membership || 'anonymous';
+
             if(role === 'owner') {
-                nameEl.className = "name-owner";
-                roleEl.innerHTML = `<span class="role-badge badge-owner">OWNER <i class="fas fa-crown"></i></span>`;
-                document.getElementById('adminUtils').style.display = 'block';
+                uName.className = "name-owner";
+                uBadge.innerHTML = `<span class="badge-owner">OWNER <i class="fas fa-crown"></i></span>`;
+                document.getElementById('adminArea').style.display = 'block';
             } else if(role === 'admin') {
-                nameEl.className = "name-admin";
-                roleEl.innerHTML = `<span class="role-badge badge-admin">ADMIN <i class="fas fa-shield-alt"></i></span>`;
-                document.getElementById('adminUtils').style.display = 'block';
+                uName.className = "name-admin";
+                uBadge.innerHTML = `<span class="badge-admin">ADMIN <i class="fas fa-shield-alt"></i></span>`;
+                document.getElementById('adminArea').style.display = 'block';
+            } else {
+                uName.className = "name-anon";
+                uBadge.innerHTML = `<span style="color:#888; font-size:10px;">ANÓNIMO</span>`;
             }
 
+            // Para usuarios registrados
             nav.innerHTML = `
                 <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a>
-                <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
                 <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
-                <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSIBILIDADES</a>
-                <a href="appspro.html" class="menu-item"><i class="fas fa-mobile"></i> APPS PRO</a>
-                <a href="tienda.html" class="menu-item"><i class="fas fa-shopping-cart"></i> TIENDA</a>
+                <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
+                <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSI</a>
             `;
             authBtn.innerText = "CERRAR SESIÓN";
-            authBtn.onclick = () => signOut(auth).then(()=>location.reload());
+            authBtn.onclick = () => signOut(auth).then(() => location.reload());
         } else {
-            // ANÓNIMO
-            nameEl.innerText = "ANÓNIMO #" + getAnonID();
-            nameEl.className = "name-anon";
-            roleEl.innerHTML = `<span class="role-badge" style="color:#555">SIN ROL</span>`;
-            lvlEl.innerText = "LVL 0";
+            // LÓGICA ANÓNIMO (Si no hay sesión)
+            uName.innerText = "ANÓNIMO #001"; // Esto lo detecta de tu DB si creas un registro temporal
+            uName.className = "name-anon";
+            uBadge.innerHTML = `<span style="color:#555; font-size:10px;">SIN ROL</span>`;
             nav.innerHTML = `
                 <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a>
                 <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
@@ -227,65 +215,30 @@
         }
     });
 
-    // --- NOTIFICACIONES ---
-    const bellIcon = document.getElementById('bellIcon');
-    let lastNotifCount = localStorage.getItem('notif_seen_count') || 0;
-
+    // --- NOTIFICACIONES REAL-TIME ---
     onSnapshot(query(collection(db, "notifications"), orderBy("createdAt", "desc")), (snap) => {
-        const area = document.getElementById('notifArea');
-        area.innerHTML = "";
-        const currentCount = snap.size;
-
-        if(currentCount > lastNotifCount) {
-            bellIcon.classList.add('bell-shake');
-        }
-
+        const list = document.getElementById('notifList');
+        list.innerHTML = "";
+        let hasNew = false;
         snap.forEach(doc => {
             const n = doc.data();
-            area.innerHTML += `
-                <div style="border:1px solid var(--gold); box-shadow:0 0 10px var(--gold); padding:12px; border-radius:10px; margin-bottom:10px; background:#000;">
-                    <p style="font-size:11px; font-weight:bold; color:var(--gold);">${n.title}</p>
-                    <p style="font-size:9px; color:#ccc;">${n.desc}</p>
-                </div>`;
+            list.innerHTML += `<div class="notif-neon"><p style="font-size:11px; color:var(--gold); font-weight:bold;">${n.title}</p><p style="font-size:9px; color:#ccc;">${n.desc}</p></div>`;
+            if (n.createdAt?.toMillis() > (localStorage.getItem('lastSeenNotif') || 0)) hasNew = true;
         });
+        if(hasNew) bell.classList.add('bell-shake');
     });
 
-    // --- MENÚS ---
-    document.getElementById('bellBtn').onclick = () => {
-        document.getElementById('menuNotif').classList.toggle('active');
-        document.getElementById('menuUser').classList.remove('active');
-        bellIcon.classList.remove('bell-shake');
-        // Guardar que ya las vio
-        onSnapshot(collection(db, "notifications"), (s) => localStorage.setItem('notif_seen_count', s.size));
-    };
-
-    document.getElementById('burgerBtn').onclick = () => {
-        document.getElementById('menuUser').classList.toggle('active');
-        document.getElementById('menuNotif').classList.remove('active');
-        document.getElementById('burgerBtn').classList.toggle('open');
-    };
-
     // --- BOOMI BOT ---
-    document.getElementById('iaBtn').onclick = () => {
-        const chat = document.getElementById('chatIA');
-        chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
-    };
-
-    document.getElementById('chatInput').onkeypress = (e) => {
+    document.getElementById('iaToggle').onclick = () => { const c = document.getElementById('chatIA'); c.style.display = c.style.display === 'flex' ? 'none' : 'flex'; };
+    document.getElementById('chatIn').onkeypress = (e) => {
         if(e.key === 'Enter') {
             const val = e.target.value.toLowerCase();
             const msgs = document.getElementById('chatMsgs');
             msgs.innerHTML += `<div class="user-m">${e.target.value}</div>`;
-            
-            let r = "Soy un bot enfocado en la web. Pregúntame sobre sensis o apps.";
-            if(val.includes("sensi")) r = "Las sensibilidades están en el menú lateral. ¡Hay para todos los dispositivos!";
-            if(val.includes("app")) r = "En APPS PRO encontrarás optimizadores para reducir el lag.";
-            if(val.includes("nivel")) r = "Sube de nivel siendo activo y participando en la comunidad.";
-            
-            setTimeout(() => {
-                msgs.innerHTML += `<div class="bot-m">${r}</div>`;
-                msgs.scrollTop = msgs.scrollHeight;
-            }, 500);
+            let r = "Lo siento, solo respondo dudas sobre la página. Prueba con 'sensibilidad' o 'apps'.";
+            if(val.includes("sensi")) r = "Las sensibilidades las encuentras en el menú lateral.";
+            if(val.includes("hola")) r = "¡Hola! Soy Boomi Bot, el asistente oficial de DANIBOOM X.";
+            setTimeout(() => { msgs.innerHTML += `<div class="bot-m">${r}</div>`; msgs.scrollTop = msgs.scrollHeight; }, 500);
             e.target.value = "";
         }
     };
