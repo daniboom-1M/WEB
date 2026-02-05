@@ -48,7 +48,6 @@
         }
         .side-panel.active { right: 0; }
 
-        /* PANEL NOTIFICACIONES FULL SCREEN */
         #menuNotif {
             width: 100%; border-left: none; background: rgba(0,0,0,0.98); 
             backdrop-filter: blur(10px); z-index: 5000;
@@ -58,77 +57,61 @@
             cursor: pointer; text-shadow: 0 0 10px var(--red-neon); 
         }
 
-        /* DISEÑO DE TARJETAS NEÓN */
+        /* DISEÑO DE TARJETAS NEÓN CORREGIDO */
         .notif-card {
             border-radius: 15px; padding: 20px; margin-bottom: 20px;
-            position: relative; overflow: hidden; display: flex; flex-direction: column;
-            gap: 10px; border: 2px solid transparent; background: rgba(0,0,0,0.7);
+            position: relative; overflow: visible; display: flex; flex-direction: column;
+            gap: 12px; border: 2px solid transparent; background: rgba(20,20,20,0.9);
             transition: opacity 0.5s ease, transform 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-        .notif-card h4 { font-size: 16px; font-weight: 900; text-transform: uppercase; text-shadow: 0 0 10px currentColor; }
-        .notif-card p { font-size: 12px; color: #eee; line-height: 1.4; padding-right: 40px; }
+        .notif-card h4 { font-size: 16px; font-weight: 900; text-transform: uppercase; text-shadow: 0 0 10px currentColor; width: 80%; }
+        .notif-card p { font-size: 13px; color: #eee; line-height: 1.4; }
         
         .platform-icon { 
-            position: absolute; top: 15px; right: 15px; font-size: 40px; 
+            position: absolute; top: 15px; right: 15px; font-size: 35px; 
             filter: drop-shadow(0 0 8px currentColor);
         }
 
-        .card-youtube { border-color: #ff0000; color: #ff0000; box-shadow: 0 0 15px rgba(255,0,0,0.3); }
-        .card-tiktok { border-color: #00f2ff; color: #00f2ff; box-shadow: 0 0 15px rgba(0,242,255,0.3); }
-        .card-whatsapp { border-color: #25d366; color: #25d366; box-shadow: 0 0 15px rgba(37,211,102,0.3); }
-        .card-facebook { border-color: #1877f2; color: #1877f2; box-shadow: 0 0 15px rgba(24,119,242,0.3); }
-        .card-instagram { border-color: #e4405f; color: #e4405f; box-shadow: 0 0 15px rgba(228,64,95,0.3); }
-        .card-sistema { border-color: var(--gold); color: var(--gold); box-shadow: 0 0 15px rgba(255,215,0,0.3); }
+        .card-youtube { border-color: #ff0000; color: #ff0000; }
+        .card-tiktok { border-color: #00f2ff; color: #00f2ff; }
+        .card-whatsapp { border-color: #25d366; color: #25d366; }
+        .card-facebook { border-color: #1877f2; color: #1877f2; }
+        .card-instagram { border-color: #e4405f; color: #e4405f; }
+        .card-sistema { border-color: var(--gold); color: var(--gold); }
 
+        /* BOTÓN VISIBLE Y CLICKEABLE */
         .notif-btn {
-            align-self: flex-start; padding: 10px 18px; border-radius: 8px;
-            text-decoration: none; font-weight: bold; font-size: 11px;
-            text-transform: uppercase; margin-top: 5px; transition: 0.3s;
-            display: flex; align-items: center; gap: 8px;
-            background: currentColor; color: #000 !important;
-            box-shadow: 0 0 12px currentColor;
+            display: inline-flex !important;
+            align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 14px; border-radius: 10px;
+            text-decoration: none !important; font-weight: 900; font-size: 12px;
+            text-transform: uppercase; margin-top: 10px; 
+            background: #fff; color: #000 !important;
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+            cursor: pointer; z-index: 10;
         }
+
+        .timer-text { font-size: 10px; color: #aaa; margin-top: 5px; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; }
 
         /* PERFIL CARD */
-        .profile-card {
-            border: 2px solid var(--gold); border-radius: 15px; padding: 20px; text-align: center;
-            box-shadow: 0 0 15px rgba(255,215,0,0.2); margin-bottom: 15px;
-        }
+        .profile-card { border: 2px solid var(--gold); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 0 15px rgba(255,215,0,0.2); margin-bottom: 15px; }
         .u-img { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 10px; object-fit: cover; }
-        
         .name-owner { font-family: 'Permanent Marker', cursive !important; color: var(--red-neon) !important; text-shadow: 0 0 15px var(--red-neon) !important; font-size: 22px; }
         .name-admin { font-family: 'Electrolize', sans-serif !important; color: var(--blue-neon) !important; text-shadow: 0 0 15px var(--blue-neon) !important; font-size: 19px; }
         .name-sub { font-family: 'Orbitron', sans-serif !important; color: var(--green-neon) !important; text-shadow: 0 0 15px var(--green-neon) !important; font-size: 19px; font-weight: 900; }
         .name-anon { font-family: 'Orbitron', sans-serif !important; color: #fff !important; text-shadow: 0 0 10px #fff !important; font-size: 14px; }
-
         .badge-owner { color: var(--red-neon); text-shadow: 0 0 8px var(--red-neon); font-weight: 900; font-size: 10px; }
         .badge-admin { color: var(--blue-neon); text-shadow: 0 0 8px var(--blue-neon); font-weight: 900; font-size: 10px; }
         .badge-sub { color: var(--green-neon); text-shadow: 0 0 8px var(--green-neon); font-weight: 900; font-size: 10px; }
         .badge-anon { color: #888; font-weight: 900; font-size: 10px; }
+        .lvl-tag { font-family: 'Press Start 2P', cursive; font-size: 8px; margin-top: 10px; display: inline-block; padding: 6px 12px; border-radius: 5px; color: var(--gold); border: 1px solid var(--gold); background: rgba(0,0,0,0.8); }
 
-        .lvl-tag { 
-            font-family: 'Press Start 2P', cursive; font-size: 8px; margin-top: 10px; display: inline-block;
-            padding: 6px 12px; border-radius: 5px; color: var(--gold); border: 1px solid var(--gold); 
-            box-shadow: 0 0 15px var(--gold); background: rgba(0,0,0,0.8);
-        }
+        .admin-box { border: 2px solid var(--red-neon); border-radius: 12px; padding: 15px; margin-top: 20px; background: rgba(255, 0, 0, 0.05); }
+        .admin-title { color: var(--red-neon); font-size: 12px; font-weight: 900; text-align: center; margin-bottom: 15px; }
+        .menu-item { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px; }
 
-        .admin-box {
-            border: 2px solid var(--red-neon); border-radius: 12px; padding: 15px; margin-top: 20px;
-            background: rgba(255, 0, 0, 0.05); box-shadow: 0 0 15px var(--red-neon);
-        }
-        .admin-title { color: var(--red-neon); font-size: 12px; font-weight: 900; text-align: center; margin-bottom: 15px; text-shadow: 0 0 5px var(--red-neon); }
-
-        .menu-item {
-            background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;
-            text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px;
-        }
-
-        /* CHAT BOOMI BOT */
-        #chatIA {
-            position: fixed; bottom: 85px; left: 20px; width: 280px; height: 350px;
-            background: #0a0a0a; border: 2px solid var(--blue-neon); border-radius: 15px;
-            display: none; flex-direction: column; z-index: 6000; box-shadow: 0 0 20px var(--blue-neon);
-        }
+        #chatIA { position: fixed; bottom: 85px; left: 20px; width: 280px; height: 350px; background: #0a0a0a; border: 2px solid var(--blue-neon); border-radius: 15px; display: none; flex-direction: column; z-index: 6000; box-shadow: 0 0 20px var(--blue-neon); }
         .chat-h { background: var(--blue-neon); color: #000; padding: 10px; font-weight: 900; font-size: 12px; border-radius: 12px 12px 0 0; }
         #chatMsgs { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 11px; }
         .bot-m { background: #1a1a1a; padding: 8px; border-radius: 8px; border-left: 3px solid var(--blue-neon); align-self: flex-start; }
@@ -140,19 +123,13 @@
 <body>
 
 <header>
-    <div class="h-left">
-        <img src="logo.png" style="width:30px; border-radius:50%; border:1px solid var(--gold);">
-        <div class="neon-title">DANIBOOM <span>X</span> <img src="ff_logo.png" class="ff-logo-header"></div>
-    </div>
-    <div class="h-right">
-        <i class="fas fa-bell" id="bellIcon"></i>
-        <div class="burger" id="burgerBtn"><span></span><span></span><span></span></div>
-    </div>
+    <div class="h-left"><img src="logo.png" style="width:30px; border-radius:50%; border:1px solid var(--gold);"><div class="neon-title">DANIBOOM <span>X</span> <img src="ff_logo.png" class="ff-logo-header"></div></div>
+    <div class="h-right"><i class="fas fa-bell" id="bellIcon"></i><div class="burger" id="burgerBtn"><span></span><span></span><span></span></div></div>
 </header>
 
 <div id="chatIA">
     <div class="chat-h">BOOMI BOT 🤖</div>
-    <div id="chatMsgs"><div class="bot-m">¡Hola! Soy Boomi Bot. ¿En qué puedo ayudarte hoy?</div></div>
+    <div id="chatMsgs"><div class="bot-m">¡Hola! Soy Boomi Bot. ¿En qué puedo ayudarte?</div></div>
     <div style="padding:10px; display:flex; gap:5px;"><input type="text" id="chatIn" placeholder="Escribe..." style="flex:1; background:#000; border:1px solid var(--blue-neon); color:#fff; padding:8px; border-radius:5px; outline:none;"></div>
 </div>
 
@@ -162,7 +139,7 @@
 </div>
 
 <div id="menuNotif" class="side-panel">
-    <i class="fas fa-times close-notif" id="closeNotif" style="position: absolute; top: 20px; right: 20px; font-size: 30px; color: var(--red-neon); cursor: pointer;"></i>
+    <i class="fas fa-times close-notif" id="closeNotif"></i>
     <h3 style="text-align:center; color:var(--gold); margin: 40px 0; font-family:'Press Start 2P'; font-size: 14px;">AVISOS BOOM</h3>
     <div id="notifList"></div>
 </div>
@@ -193,6 +170,14 @@
     bell.onclick = () => { menuN.classList.add('active'); menuU.classList.remove('active'); burger.classList.remove('open'); bell.classList.remove('bell-shake'); localStorage.setItem('lastSeenNotif', Date.now()); };
     if(closeNotif) closeNotif.onclick = () => { menuN.classList.remove('active'); };
 
+    // --- LÓGICA DE TIEMPO INTELIGENTE ---
+    function formatTime(seconds) {
+        if (seconds >= 86400) return Math.floor(seconds / 86400) + " días";
+        if (seconds >= 3600) return Math.floor(seconds / 3600) + " horas";
+        if (seconds >= 60) return Math.floor(seconds / 60) + " minutos";
+        return Math.floor(seconds) + " segundos";
+    }
+
     onAuthStateChanged(auth, async (user) => {
         const profileTarget = document.getElementById('profileTarget');
         const nav = document.getElementById('userNav');
@@ -211,16 +196,9 @@
             else { badgeHTML = `<span class="badge-anon">ANÓNIMO <i class="fas fa-ghost"></i></span>`; adminArea.style.display = 'none'; }
 
             profileTarget.innerHTML = `<div class="profile-card"><img src="${data.photoURL || 'default.png'}" class="u-img"><p class="${nameClass}">${data.displayName || "USUARIO"}</p><div id="u-badge">${badgeHTML}</div><div class="lvl-tag">NIVEL ${data.level || 1}</div></div>`;
-
-            if(role === 'anonymous') {
-                nav.innerHTML = `<a href="redes.html" class="menu-item"><i class="fas fa-share-alt" style="color:var(--gold)"></i> REDES</a>`;
-                authBtn.innerText = "INICIAR SESIÓN"; authBtn.onclick = () => window.location.href = "index.html";
-            } else {
-                nav.innerHTML = `<a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a><a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a><a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a><a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSI</a>`;
-                authBtn.innerText = "CERRAR SESIÓN"; authBtn.onclick = () => signOut(auth).then(() => location.reload());
-            }
+            nav.innerHTML = `<a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a><a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a><a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a><a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSI</a>`;
+            authBtn.innerText = "CERRAR SESIÓN"; authBtn.onclick = () => signOut(auth).then(() => location.reload());
         } else {
-            adminArea.style.display = 'none';
             profileTarget.innerHTML = `<div class="profile-card"><img src="default.png" class="u-img"><p class="name-anon">Anónimo #000</p><div id="u-badge"><span class="badge-anon">ANÓNIMO <i class="fas fa-ghost"></i></span></div><div class="lvl-tag">NIVEL 0</div></div>`;
             nav.innerHTML = `<a href="redes.html" class="menu-item"><i class="fas fa-share-alt" style="color:var(--gold)"></i> REDES</a>`;
             authBtn.innerText = "INICIAR SESIÓN"; authBtn.onclick = () => window.location.href = "index.html";
@@ -233,33 +211,36 @@
         
         snap.forEach(docSnap => {
             const n = docSnap.data(); const id = docSnap.id;
-            
-            let fechaMs;
-            if (n.createdAt && typeof n.createdAt.toMillis === 'function') fechaMs = n.createdAt.toMillis();
-            else if (typeof n.createdAt === 'number') fechaMs = n.createdAt;
-            else fechaMs = ahora;
-
-            const transcurrido = (ahora - fechaMs) / 1000;
-            if (n.duration && transcurrido > n.duration) return;
+            let fechaMs = (n.createdAt && n.createdAt.toMillis) ? n.createdAt.toMillis() : (typeof n.createdAt === 'number' ? n.createdAt : ahora);
+            const segPasados = (ahora - fechaMs) / 1000;
+            if (n.duration && segPasados > n.duration) return;
 
             const type = (n.iconType || "").toLowerCase();
             let cardClass = "card-sistema"; let icon = "fas fa-bell";
-
             if(type.includes("youtube")) { cardClass = "card-youtube"; icon = "fab fa-youtube"; }
             else if(type.includes("tiktok")) { cardClass = "card-tiktok"; icon = "fab fa-tiktok"; }
             else if(type.includes("whatsapp")) { cardClass = "card-whatsapp"; icon = "fab fa-whatsapp"; }
             else if(type.includes("facebook")) { cardClass = "card-facebook"; icon = "fab fa-facebook"; }
             else if(type.includes("instagram")) { cardClass = "card-instagram"; icon = "fab fa-instagram"; }
-            else if(type.includes("actualizacion")) { cardClass = "card-sistema"; icon = "fas fa-sync-alt"; }
 
             const tieneLink = n.link && n.link !== "" && n.link !== "#";
-            const btnHTML = tieneLink ? `<a href="${n.link}" target="_blank" class="notif-btn">VER AHORA <i class="fas fa-external-link-alt"></i></a>` : "";
+            const btnHTML = tieneLink ? `<a href="${n.link}" target="_blank" class="notif-btn">VER VIDEO AHORA <i class="fas fa-play-circle"></i></a>` : "";
+            
+            let timerHTML = "";
+            if(n.duration) {
+                const segQuedan = Math.max(0, n.duration - segPasados);
+                timerHTML = `<p id="timer-${id}" class="timer-text">Expira en: ${formatTime(segQuedan)}</p>`;
+            }
 
-            list.innerHTML += `<div class="notif-card ${cardClass}" id="card-${id}"><i class="${icon} platform-icon"></i><h4>${n.title}</h4><p>${n.message}</p>${btnHTML}</div>`;
+            list.innerHTML += `<div class="notif-card ${cardClass}" id="card-${id}"><i class="${icon} platform-icon"></i><h4>${n.title}</h4><p>${n.message}</p>${btnHTML}${timerHTML}</div>`;
 
             if (n.duration) {
-                const restante = (n.duration - transcurrido) * 1000;
-                if (restante > 0) setTimeout(() => { const el = document.getElementById(`card-${id}`); if(el){el.style.opacity="0"; setTimeout(()=>el.remove(),500);} }, restante);
+                const interval = setInterval(() => {
+                    const segQ = Math.max(0, n.duration - ((Date.now() - fechaMs) / 1000));
+                    const el = document.getElementById(`timer-${id}`);
+                    if(el) el.innerText = `Expira en: ${formatTime(segQ)}`;
+                    if (segQ <= 0) { clearInterval(interval); document.getElementById(`card-${id}`)?.remove(); }
+                }, 1000);
             }
             if (fechaMs > (localStorage.getItem('lastSeenNotif') || 0)) hasNew = true;
         });
@@ -271,9 +252,8 @@
         if(e.key === 'Enter') {
             const val = e.target.value.toLowerCase(); const msgs = document.getElementById('chatMsgs');
             msgs.innerHTML += `<div class="user-m">${e.target.value}</div>`;
-            let r = "Lo siento, solo respondo dudas sobre la página.";
+            let r = "¡Hola! Soy Boomi Bot, el asistente oficial de DANIBOOM X.";
             if(val.includes("sensi")) r = "Las sensibilidades las encuentras en el menú lateral.";
-            if(val.includes("hola")) r = "¡Hola! Soy Boomi Bot, el asistente oficial de DANIBOOM X.";
             setTimeout(() => { msgs.innerHTML += `<div class="bot-m">${r}</div>`; msgs.scrollTop = msgs.scrollHeight; }, 500);
             e.target.value = "";
         }
