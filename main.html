@@ -14,161 +14,86 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
-        
-        body { 
-            background: var(--bg); 
-            color: #fff; 
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; min-height: 100vh; }
 
-        /* --- NAVEGACIÓN --- */
+        /* --- HEADER --- */
         header {
             position: fixed; top: 0; width: 100%; z-index: 3000;
             display: flex; justify-content: space-between; align-items: center;
             padding: 15px 20px; background: rgba(0,0,0,0.95);
             border-bottom: 2px solid var(--gold);
-            backdrop-filter: blur(10px);
         }
 
         .logo { display: flex; align-items: center; gap: 10px; }
         .logo img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); }
         .logo span { font-family: 'Press Start 2P'; font-size: 10px; color: var(--gold); }
 
-        .nav-icons { display: flex; align-items: center; gap: 20px; }
-        .icon-btn { font-size: 24px; color: var(--gold); cursor: pointer; position: relative; }
-        
-        /* --- MENU HAMBURGUESA --- */
-        .burger { width: 25px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
-        .burger span { display: block; height: 3px; width: 100%; background: var(--gold); border-radius: 2px; transition: 0.3s; }
-        .burger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-        .burger.open span:nth-child(2) { opacity: 0; }
-        .burger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
-
         /* --- MENU DESPLEGABLE --- */
         .menu-drop {
             position: fixed; top: 75px; right: -100%; width: 280px; 
             background: rgba(10,10,10,0.98); border: 2px solid var(--gold);
             border-radius: 15px 0 0 15px; padding: 20px; transition: 0.4s;
-            z-index: 4000; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            z-index: 4000;
         }
         .menu-drop.active { right: 0; }
 
-        .profile-section { text-align: center; border-bottom: 1px solid rgba(255,215,0,0.2); padding-bottom: 15px; margin-bottom: 15px; }
-        .user-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 10px; }
-        
-        .menu-link { 
-            padding: 12px; display: flex; align-items: center; gap: 10px; 
-            color: #fff; text-decoration: none; font-size: 13px; font-weight: bold;
-            border-radius: 8px; transition: 0.2s;
-        }
-        .menu-link:hover { background: rgba(255,215,0,0.1); color: var(--gold); }
-        .menu-link i { width: 20px; color: var(--gold); }
+        /* --- ROLES CON NEÓN --- */
+        .role-badge { font-size: 10px; font-weight: 900; padding: 5px 12px; border-radius: 5px; display: inline-block; margin-top: 5px; }
+        .role-owner { color: #ff0000; border: 1px solid #ff0000; box-shadow: 0 0 10px #ff0000; text-shadow: 0 0 5px #ff0000; }
+        .role-admin { color: #00f2ff; border: 1px solid #00f2ff; box-shadow: 0 0 10px #00f2ff; text-shadow: 0 0 5px #00f2ff; }
+        .role-suscriptor { color: #ffd700; border: 1px solid #ffd700; box-shadow: 0 0 10px #ffd700; text-shadow: 0 0 5px #ffd700; }
+        .role-anonymous { color: #888; border: 1px solid #555; }
 
         /* --- CONTENIDO PRINCIPAL --- */
-        main { 
-            padding-top: 140px; 
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-        }
+        main { padding-top: 140px; display: flex; flex-direction: column; align-items: center; text-align: center; }
 
-        /* TÍTULO ÚNICO (ELIMINADO BIENVENIDO) */
-        .main-title {
-            font-size: clamp(24px, 8vw, 60px);
-            font-weight: 900; font-style: italic; line-height: 1.1;
-            text-shadow: 4px 4px 0px #000; margin-bottom: 20px;
-        }
-        .main-title span.red { color: var(--red); font-family: 'Press Start 2P'; font-size: 0.6em; }
+        .daniboom-text { font-size: 35px; font-weight: 900; font-style: italic; text-shadow: 3px 3px 0px #000; }
+        .x-red { color: var(--red); font-family: 'Press Start 2P'; }
 
-        /* EL CUCHILLO DE FF */
-        .knife { 
-            display: inline-block; color: var(--gold); 
-            transform: rotate(-15deg); filter: drop-shadow(0 0 10px var(--gold));
-            font-size: 0.9em; margin: 0 -5px;
-        }
-
-        /* LA PISTOLA (SIN DESTELLO ERROR) */
-        .gun-container {
-            font-size: 80px; color: var(--gold);
-            filter: drop-shadow(0 0 20px var(--gold));
-            animation: shoot 0.1s infinite alternate;
+        /* AJUSTE PARA LOGO NEGRO */
+        .ff-logo-png {
+            width: 280px; max-width: 85vw;
+            /* Fuerza a que el negro se vea brillante y visible */
+            filter: brightness(0) invert(1) drop-shadow(0 0 15px var(--gold));
             margin: 20px 0;
         }
-        @keyframes shoot {
-            0% { transform: scale(1) translateX(0); }
-            100% { transform: scale(0.96) translateX(10px); }
-        }
 
-        .footer-tag {
-            font-family: 'Press Start 2P'; font-size: 9px; color: var(--gold);
-            letter-spacing: 2px; margin-top: 30px; opacity: 0.8;
-        }
-
-        /* PANEL NOTIFICACIONES */
-        .notif-side {
-            position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
-            background: rgba(0,0,0,0.95); z-index: 5000; transition: 0.5s;
-            display: flex; flex-direction: column; align-items: center; padding: 40px;
-        }
-        .notif-side.active { left: 0; }
+        .gun-container { font-size: 80px; color: var(--gold); filter: drop-shadow(0 0 20px var(--gold)); animation: shoot 0.1s infinite alternate; }
+        @keyframes shoot { 0% { transform: scale(1); } 100% { transform: scale(0.95) translateX(5px); } }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">
-        <img src="logo.png" alt="logo">
-        <span>DANIBOOM</span>
-    </div>
-
-    <div class="nav-icons">
-        <div class="icon-btn" id="openNotif">
-            <i class="fas fa-bell"></i>
-        </div>
-        <div class="burger" id="burgerBtn">
-            <span></span><span></span><span></span>
+    <div class="logo"><img src="logo.png"><span>DANIBOOM</span></div>
+    <div class="nav-icons" style="display:flex; gap:20px;">
+        <i class="fas fa-bell" id="openNotif" style="color:gold; font-size:24px;"></i>
+        <div class="burger" id="burgerBtn" style="cursor:pointer;">
+            <i class="fas fa-bars" style="color:gold; font-size:24px;"></i>
         </div>
     </div>
 </header>
 
 <div class="menu-drop" id="menuDrop">
-    <div class="profile-section">
-        <img src="logo.png" id="u-img" class="user-img">
-        <p id="u-name" style="font-size: 12px; font-weight: bold;">Cargando...</p>
-        <p id="u-role" style="font-size: 10px; margin-top: 5px;"></p>
+    <div style="text-align:center; padding-bottom:15px; border-bottom:1px solid gold;">
+        <img src="logo.png" id="u-img" style="width:60px; border-radius:50%; border:2px solid gold;">
+        <p id="u-name" style="font-weight:bold; margin-top:10px;"></p>
+        <div id="u-badge-container"></div>
+        <p id="u-lvl" style="font-family:'Press Start 2P'; font-size:8px; color:gold; margin-top:10px;"></p>
     </div>
-
-    <div id="links-vip" style="display: none;">
-        <a href="perfil.html" class="menu-link"><i class="fas fa-user"></i> PERFIL VIP</a>
-        <a href="sensibilidades.html" class="menu-link"><i class="fas fa-crosshairs"></i> SENSIBILIDADES</a>
-        <a href="apps.html" class="menu-link"><i class="fas fa-bolt"></i> APPS PREMIUM</a>
+    <div id="links-vip" style="display:none; margin-top:15px;">
+        <a href="#" class="menu-link" style="display:block; color:white; text-decoration:none; padding:10px;"><i class="fas fa-star"></i> VIP AREA</a>
     </div>
-
-    <a href="redes.html" class="menu-link"><i class="fas fa-share-nodes"></i> REDES SOCIALES</a>
-
-    <div id="admin-panel" style="display: none; margin-top: 15px; border-top: 1px solid red; padding-top: 10px;">
-        <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; border:none; color:white; padding:10px; border-radius:5px; font-weight:bold; cursor:pointer;">ENVIAR GLOBAL</button>
-    </div>
-
-    <button id="logout" style="width:100%; background:#222; border:none; color:white; padding:10px; margin-top:20px; border-radius:5px; cursor:pointer;">CERRAR SESIÓN</button>
-</div>
-
-<div class="notif-side" id="notifSide">
-    <i class="fas fa-times" id="closeNotif" style="position:absolute; top:25px; right:25px; font-size:30px; color:gold;"></i>
-    <h2 style="font-family:'Press Start 2P'; font-size:12px; color:gold;">NOTIFICACIONES</h2>
-    <div id="notif-list" style="margin-top:30px; width:100%;"></div>
+    <button id="logout" style="width:100%; margin-top:20px; background:red; color:white; border:none; padding:10px; border-radius:5px;">CERRAR SESIÓN</button>
 </div>
 
 <main>
-    <h1 class="main-title">
-        DANIBOOM <span class="red">X</span> <br>
-        FREE F<span class="knife"><i class="fas fa-screwdriver-wrench"></i></span>RE
-    </h1>
+    <h1 class="daniboom-text">DANIBOOM <span class="x-red">X</span></h1>
+    
+    <img src="ff_logo.png" alt="FREE FIRE" class="ff-logo-png">
 
-    <div class="gun-container">
-        <i class="fas fa-gun"></i>
-    </div>
-
-    <p class="footer-tag">ZONA OFICIAL • INFLUENCER</p>
+    <div class="gun-container"><i class="fas fa-gun"></i></div>
+    <p style="font-family:'Press Start 2P'; font-size:9px; color:gold; margin-top:30px;">ZONA OFICIAL • INFLUENCER</p>
 </main>
 
 <script type="module">
@@ -186,60 +111,33 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // SEGURIDAD Y ROLES
     onAuthStateChanged(auth, async (user) => {
         if (!user) {
-            // Si no hay usuario, mandamos al login UNA SOLA VEZ
-            if(window.location.pathname.includes("principal.html")) {
-                window.location.href = "index.html";
-            }
+            window.location.href = "index.html"; 
             return;
         }
 
-        // Obtener datos del usuario
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
+        const docSnap = await getDoc(doc(db, "users", user.uid));
         const userData = docSnap.data() || {};
-        const role = userData.membership || 'user';
-
-        // Actualizar UI del Menú
-        document.getElementById('u-name').innerText = user.displayName || "Gamer";
-        document.getElementById('u-img').src = user.photoURL || "logo.png";
         
-        const roleDisplay = document.getElementById('u-role');
-        if(role === 'owner') { roleDisplay.innerHTML = "👑 OWNER"; roleDisplay.style.color = "red"; }
-        else if(role === 'admin') { roleDisplay.innerHTML = "🛡️ ADMIN"; roleDisplay.style.color = "cyan"; }
-        else if(role === 'suscriptor') { roleDisplay.innerHTML = "⭐ VIP"; roleDisplay.style.color = "gold"; }
-        else { roleDisplay.innerHTML = "👤 USUARIO"; roleDisplay.style.color = "#888"; }
+        document.getElementById('u-name').innerText = userData.username || user.displayName || "Gamer";
+        document.getElementById('u-lvl').innerText = "LVL " + (userData.level || 1);
+        
+        const role = userData.membership || 'anonymous';
+        const badge = document.getElementById('u-badge-container');
+        
+        if(role === 'owner') badge.innerHTML = `<span class="role-badge role-owner">OWNER</span>`;
+        else if(role === 'admin') badge.innerHTML = `<span class="role-badge role-admin">ADMIN</span>`;
+        else if(role === 'suscriptor') badge.innerHTML = `<span class="role-badge role-suscriptor">VIP</span>`;
+        else badge.innerHTML = `<span class="role-badge role-anonymous">ANONYMOUS</span>`;
 
-        // Mostrar botones según rango
-        if(role !== 'user') document.getElementById('links-vip').style.display = 'block';
-        if(role === 'admin' || role === 'owner') document.getElementById('admin-panel').style.display = 'block';
+        if(role !== 'anonymous') document.getElementById('links-vip').style.display = 'block';
     });
 
-    // INTERACCIONES
     const burger = document.getElementById('burgerBtn');
     const menu = document.getElementById('menuDrop');
-
-    burger.onclick = (e) => {
-        e.stopPropagation();
-        burger.classList.toggle('open');
-        menu.classList.toggle('active');
-    };
-
-    document.getElementById('openNotif').onclick = () => document.getElementById('notifSide').classList.add('active');
-    document.getElementById('closeNotif').onclick = () => document.getElementById('notifSide').classList.remove('active');
-
-    // Cerrar menú si tocas la pantalla
-    document.addEventListener('click', (e) => {
-        if(!menu.contains(e.target) && !burger.contains(e.target)) {
-            menu.classList.remove('active');
-            burger.classList.remove('open');
-        }
-    });
-
+    burger.onclick = () => menu.classList.toggle('active');
     document.getElementById('logout').onclick = () => signOut(auth).then(() => location.reload());
-
 </script>
 </body>
 </html>
