@@ -2,160 +2,179 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANIBOOM WEB | Principal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DANIBOOM WEB | Oficial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --neon-gold: #ffd700;
-            --neon-red: #ff0000;
-            --neon-blue: #00f2ff;
-            --glass: rgba(0, 0, 0, 0.85);
+            --gold: #ffd700;
+            --red: #ff0000;
+            --bg: #050505;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+        
         body { 
-            background: #050505; 
+            background: var(--bg); 
             color: #fff; 
-            overflow-x: hidden; 
+            overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* --- HEADER --- */
+        /* --- NAVEGACIÓN --- */
         header {
-            position: fixed; top: 0; width: 100%; z-index: 2000;
+            position: fixed; top: 0; width: 100%; z-index: 3000;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 1rem 1.5rem; background: var(--glass);
-            backdrop-filter: blur(15px); border-bottom: 2px solid var(--neon-gold);
+            padding: 15px 20px; background: rgba(0,0,0,0.95);
+            border-bottom: 2px solid var(--gold);
+            backdrop-filter: blur(10px);
         }
 
-        .logo { display: flex; align-items: center; gap: 0.8rem; cursor: pointer; }
-        .logo img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--neon-gold); }
-        .logo span { font-family: 'Press Start 2P'; font-size: 0.7rem; color: var(--neon-gold); }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--gold); }
+        .logo span { font-family: 'Press Start 2P'; font-size: 10px; color: var(--gold); }
 
-        .header-right { display: flex; align-items: center; gap: 20px; }
-
-        /* --- BOTONES INTERACTIVOS --- */
-        .notif-container, .menu-btn { cursor: pointer; color: var(--neon-gold); font-size: 1.5rem; z-index: 3000; }
-        .menu-btn { display: flex; flex-direction: column; gap: 5px; width: 25px; }
-        .menu-btn span { height: 3px; width: 100%; background: var(--neon-gold); border-radius: 3px; transition: 0.4s; }
-
-        /* Animación Botón Menú */
-        .menu-btn.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .menu-btn.active span:nth-child(2) { opacity: 0; }
-        .menu-btn.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-        /* --- MENÚ POPUP --- */
-        .menu-popup {
-            position: fixed; top: 80px; right: 10px; background: rgba(10, 10, 10, 0.98); 
-            border: 2px solid var(--neon-gold); border-radius: 20px; padding: 1.5rem; 
-            display: none; flex-direction: column; min-width: 280px; 
-            z-index: 2500; box-shadow: 0 0 30px rgba(0,0,0,1);
-        }
-        .profile-card { background: rgba(255,255,255,0.05); border: 1px solid var(--neon-gold); border-radius: 15px; padding: 15px; text-align: center; margin-bottom: 10px; }
-        .profile-pic { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--neon-gold); margin-bottom: 10px; }
-
-        .nav-item { padding: 12px; color: var(--neon-gold); font-size: 0.75rem; font-weight: 800; display: flex; align-items: center; gap: 10px; cursor: pointer; border-radius: 8px; }
-        .nav-item:hover { background: rgba(255, 215, 0, 0.1); }
-
-        /* --- SECCIONES (SOLUCIÓN A PANTALLA NEGRA) --- */
-        main { padding-top: 100px; width: 100%; }
+        .nav-icons { display: flex; align-items: center; gap: 20px; }
+        .icon-btn { font-size: 24px; color: var(--gold); cursor: pointer; position: relative; }
         
-        .scroll-section {
-            min-height: 80vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 40px 20px;
-            opacity: 1; /* Forzamos visibilidad inicial */
-            transform: translateY(0);
-            transition: 0.8s ease;
+        /* --- MENU HAMBURGUESA --- */
+        .burger { width: 25px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .burger span { display: block; height: 3px; width: 100%; background: var(--gold); border-radius: 2px; transition: 0.3s; }
+        .burger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .burger.open span:nth-child(2) { opacity: 0; }
+        .burger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+        /* --- MENU DESPLEGABLE --- */
+        .menu-drop {
+            position: fixed; top: 75px; right: -100%; width: 280px; 
+            background: rgba(10,10,10,0.98); border: 2px solid var(--gold);
+            border-radius: 15px 0 0 15px; padding: 20px; transition: 0.4s;
+            z-index: 4000; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+        .menu-drop.active { right: 0; }
+
+        .profile-section { text-align: center; border-bottom: 1px solid rgba(255,215,0,0.2); padding-bottom: 15px; margin-bottom: 15px; }
+        .user-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 10px; }
+        
+        .menu-link { 
+            padding: 12px; display: flex; align-items: center; gap: 10px; 
+            color: #fff; text-decoration: none; font-size: 13px; font-weight: bold;
+            border-radius: 8px; transition: 0.2s;
+        }
+        .menu-link:hover { background: rgba(255,215,0,0.1); color: var(--gold); }
+        .menu-link i { width: 20px; color: var(--gold); }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        main { 
+            padding-top: 140px; 
+            display: flex; flex-direction: column; align-items: center; text-align: center;
         }
 
-        /* Estilo FF */
-        .ff-logo-text {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            font-weight: 900; font-style: italic; color: #fff;
-            text-shadow: 3px 3px 0px #000; line-height: 1.1; text-align: center;
+        /* TÍTULO ÚNICO (ELIMINADO BIENVENIDO) */
+        .main-title {
+            font-size: clamp(24px, 8vw, 60px);
+            font-weight: 900; font-style: italic; line-height: 1.1;
+            text-shadow: 4px 4px 0px #000; margin-bottom: 20px;
         }
-        .ff-i { color: var(--neon-gold); display: inline-block; transform: skewX(-15deg); filter: drop-shadow(0 0 10px var(--neon-gold)); }
+        .main-title span.red { color: var(--red); font-family: 'Press Start 2P'; font-size: 0.6em; }
 
-        .weapon-box { font-size: 4rem; color: var(--neon-gold); margin-bottom: 20px; animation: float 3s infinite ease-in-out; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
-        .video-box { 
-            width: 100%; max-width: 700px; aspect-ratio: 16/9; 
-            border: 3px solid var(--neon-gold); border-radius: 15px; overflow: hidden; margin: 20px 0;
+        /* EL CUCHILLO DE FF */
+        .knife { 
+            display: inline-block; color: var(--gold); 
+            transform: rotate(-15deg); filter: drop-shadow(0 0 10px var(--gold));
+            font-size: 0.9em; margin: 0 -5px;
         }
 
-        /* --- PANEL NOTIFICACIONES --- */
-        .notif-panel { 
-            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; 
-            background: rgba(0,0,0,0.95); z-index: 4000; transition: 0.5s; 
-            padding: 2rem; display: flex; flex-direction: column; align-items: center;
+        /* LA PISTOLA (SIN DESTELLO ERROR) */
+        .gun-container {
+            font-size: 80px; color: var(--gold);
+            filter: drop-shadow(0 0 20px var(--gold));
+            animation: shoot 0.1s infinite alternate;
+            margin: 20px 0;
         }
-        .notif-panel.active { right: 0; }
+        @keyframes shoot {
+            0% { transform: scale(1) translateX(0); }
+            100% { transform: scale(0.96) translateX(10px); }
+        }
+
+        .footer-tag {
+            font-family: 'Press Start 2P'; font-size: 9px; color: var(--gold);
+            letter-spacing: 2px; margin-top: 30px; opacity: 0.8;
+        }
+
+        /* PANEL NOTIFICACIONES */
+        .notif-side {
+            position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
+            background: rgba(0,0,0,0.95); z-index: 5000; transition: 0.5s;
+            display: flex; flex-direction: column; align-items: center; padding: 40px;
+        }
+        .notif-side.active { left: 0; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo" onclick="location.reload()">
-        <img src="logo.png" onerror="this.src='https://via.placeholder.com/50'">
+    <div class="logo">
+        <img src="logo.png" alt="logo">
         <span>DANIBOOM</span>
     </div>
 
-    <div class="header-right">
-        <div id="notifBtn" class="notif-container">
-            <i class="fas fa-bell" id="bellIcon"></i>
+    <div class="nav-icons">
+        <div class="icon-btn" id="openNotif">
+            <i class="fas fa-bell"></i>
         </div>
-        <div id="menuBtn" class="menu-btn">
+        <div class="burger" id="burgerBtn">
             <span></span><span></span><span></span>
-        </div>
-    </div>
-
-    <div class="menu-popup" id="menuPopup">
-        <div class="profile-card">
-            <img src="" id="profilePic" class="profile-pic" onerror="this.src='https://via.placeholder.com/70'">
-            <h3 id="profileName" style="font-size: 0.8rem;">Cargando...</h3>
-            <div id="roleUI"></div>
-        </div>
-        <div id="menuItems">
-            <div class="nav-item" onclick="location.href='perfil.html'"><i class="fas fa-user"></i> MI SESIÓN</div>
-            <div class="nav-item" onclick="location.href='redes.html'"><i class="fas fa-share-nodes"></i> REDES</div>
-            <div class="nav-item" onclick="location.href='sensibilidades.html'"><i class="fas fa-crosshairs"></i> SENSIBILIDADES</div>
-            <div id="adminUtils" style="display:none; border:1px solid red; margin-top:10px; border-radius:10px; padding:5px;">
-                <div class="nav-item" onclick="location.href='notificaciones.html'" style="color:red;"><i class="fas fa-bullhorn"></i> PANEL AVISO</div>
-            </div>
-            <div id="sessionBtnArea"></div>
         </div>
     </div>
 </header>
 
-<aside class="notif-panel" id="notifPanel">
-    <div style="width:100%; text-align:right;"><i class="fas fa-times" id="closeNotif" style="font-size:2rem; color:gold; cursor:pointer;"></i></div>
-    <h2 style="font-family:'Press Start 2P'; font-size:0.7rem; color:gold; margin: 20px 0;">AVISOS RECIENTES</h2>
-    <div id="notifContainer" style="width:100%; max-width:400px;"></div>
-</aside>
+<div class="menu-drop" id="menuDrop">
+    <div class="profile-section">
+        <img src="logo.png" id="u-img" class="user-img">
+        <p id="u-name" style="font-size: 12px; font-weight: bold;">Cargando...</p>
+        <p id="u-role" style="font-size: 10px; margin-top: 5px;"></p>
+    </div>
+
+    <div id="links-vip" style="display: none;">
+        <a href="perfil.html" class="menu-link"><i class="fas fa-user"></i> PERFIL VIP</a>
+        <a href="sensibilidades.html" class="menu-link"><i class="fas fa-crosshairs"></i> SENSIBILIDADES</a>
+        <a href="apps.html" class="menu-link"><i class="fas fa-bolt"></i> APPS PREMIUM</a>
+    </div>
+
+    <a href="redes.html" class="menu-link"><i class="fas fa-share-nodes"></i> REDES SOCIALES</a>
+
+    <div id="admin-panel" style="display: none; margin-top: 15px; border-top: 1px solid red; padding-top: 10px;">
+        <button onclick="location.href='notificaciones.html'" style="width:100%; background:red; border:none; color:white; padding:10px; border-radius:5px; font-weight:bold; cursor:pointer;">ENVIAR GLOBAL</button>
+    </div>
+
+    <button id="logout" style="width:100%; background:#222; border:none; color:white; padding:10px; margin-top:20px; border-radius:5px; cursor:pointer;">CERRAR SESIÓN</button>
+</div>
+
+<div class="notif-side" id="notifSide">
+    <i class="fas fa-times" id="closeNotif" style="position:absolute; top:25px; right:25px; font-size:30px; color:gold;"></i>
+    <h2 style="font-family:'Press Start 2P'; font-size:12px; color:gold;">NOTIFICACIONES</h2>
+    <div id="notif-list" style="margin-top:30px; width:100%;"></div>
+</div>
 
 <main>
-    <section class="scroll-section">
-        <div class="weapon-box"><i class="fas fa-gun"></i></div>
-        <div class="ff-logo-text">DANIBOOM <br> FREE F<span class="ff-i">I</span>RE</div>
-        <p style="color:var(--neon-blue); font-family:'Press Start 2P'; font-size:0.5rem; margin-top:15px;">PROGRAMA DE INFLUENCERS</p>
-    </section>
+    <h1 class="main-title">
+        DANIBOOM <span class="red">X</span> <br>
+        FREE F<span class="knife"><i class="fas fa-screwdriver-wrench"></i></span>RE
+    </h1>
 
-    <section class="scroll-section">
-        <h2 style="font-family:'Press Start 2P'; font-size:0.7rem; color:var(--neon-gold);">VIDEO ESPECIAL</h2>
-        <div class="video-box">
-            <iframe src="https://www.youtube.com/embed/TU_ID_AQUI" frameborder="0" allowfullscreen></iframe>
-        </div>
-    </section>
+    <div class="gun-container">
+        <i class="fas fa-gun"></i>
+    </div>
+
+    <p class="footer-tag">ZONA OFICIAL • INFLUENCER</p>
 </main>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, collection, query, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -167,71 +186,60 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // --- ARREGLO DE CLICS (MENÚ Y NOTIFICACIONES) ---
-    const menuBtn = document.getElementById('menuBtn');
-    const menuPopup = document.getElementById('menuPopup');
-    const notifBtn = document.getElementById('notifBtn');
-    const notifPanel = document.getElementById('notifPanel');
-    const closeNotif = document.getElementById('closeNotif');
-
-    menuBtn.onclick = (e) => {
-        e.stopPropagation();
-        menuBtn.classList.toggle('active');
-        menuPopup.style.display = menuPopup.style.display === 'flex' ? 'none' : 'flex';
-        notifPanel.classList.remove('active'); // Cerrar notif si abres menú
-    };
-
-    notifBtn.onclick = () => {
-        notifPanel.classList.add('active');
-        menuPopup.style.display = 'none';
-        menuBtn.classList.remove('active');
-    };
-
-    closeNotif.onclick = () => notifPanel.classList.remove('active');
-
-    // Cerrar menú al tocar fuera
-    document.onclick = (e) => {
-        if (!menuPopup.contains(e.target) && e.target !== menuBtn) {
-            menuPopup.style.display = 'none';
-            menuBtn.classList.remove('active');
-        }
-    };
-
-    // --- FIREBASE LOGIC ---
+    // SEGURIDAD Y ROLES
     onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            const snap = await getDoc(doc(db, "users", user.uid));
-            const d = snap.data() || {};
-            document.getElementById('profileName').innerText = d.displayName || "Usuario";
-            document.getElementById('profilePic').src = d.photoURL || "logo.png";
-            
-            if (d.membership === 'admin' || d.membership === 'owner') {
-                document.getElementById('adminUtils').style.display = 'block';
+        if (!user) {
+            // Si no hay usuario, mandamos al login UNA SOLA VEZ
+            if(window.location.pathname.includes("principal.html")) {
+                window.location.href = "index.html";
             }
+            return;
+        }
 
-            document.getElementById('sessionBtnArea').innerHTML = `
-                <button onclick="window.location.reload()" id="logoutBtn" style="width:100%; background:#222; color:white; border:none; padding:10px; border-radius:8px; margin-top:10px; cursor:pointer;">CERRAR SESIÓN</button>
-            `;
-            
-            document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => location.href='index.html');
-        } else {
-            location.href = "index.html";
+        // Obtener datos del usuario
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        const userData = docSnap.data() || {};
+        const role = userData.membership || 'user';
+
+        // Actualizar UI del Menú
+        document.getElementById('u-name').innerText = user.displayName || "Gamer";
+        document.getElementById('u-img').src = user.photoURL || "logo.png";
+        
+        const roleDisplay = document.getElementById('u-role');
+        if(role === 'owner') { roleDisplay.innerHTML = "👑 OWNER"; roleDisplay.style.color = "red"; }
+        else if(role === 'admin') { roleDisplay.innerHTML = "🛡️ ADMIN"; roleDisplay.style.color = "cyan"; }
+        else if(role === 'suscriptor') { roleDisplay.innerHTML = "⭐ VIP"; roleDisplay.style.color = "gold"; }
+        else { roleDisplay.innerHTML = "👤 USUARIO"; roleDisplay.style.color = "#888"; }
+
+        // Mostrar botones según rango
+        if(role !== 'user') document.getElementById('links-vip').style.display = 'block';
+        if(role === 'admin' || role === 'owner') document.getElementById('admin-panel').style.display = 'block';
+    });
+
+    // INTERACCIONES
+    const burger = document.getElementById('burgerBtn');
+    const menu = document.getElementById('menuDrop');
+
+    burger.onclick = (e) => {
+        e.stopPropagation();
+        burger.classList.toggle('open');
+        menu.classList.toggle('active');
+    };
+
+    document.getElementById('openNotif').onclick = () => document.getElementById('notifSide').classList.add('active');
+    document.getElementById('closeNotif').onclick = () => document.getElementById('notifSide').classList.remove('active');
+
+    // Cerrar menú si tocas la pantalla
+    document.addEventListener('click', (e) => {
+        if(!menu.contains(e.target) && !burger.contains(e.target)) {
+            menu.classList.remove('active');
+            burger.classList.remove('open');
         }
     });
 
-    // --- NOTIFICACIONES REAL-TIME ---
-    const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
-    onSnapshot(q, (snapshot) => {
-        const container = document.getElementById('notifContainer');
-        container.innerHTML = "";
-        snapshot.forEach((doc) => {
-            const data = doc.data();
-            const div = document.createElement('div');
-            div.style.cssText = "background:#111; border:1px solid gold; padding:15px; margin-bottom:10px; border-radius:10px;";
-            div.innerHTML = `<h4 style="color:gold; font-size:0.8rem;">${data.title}</h4><p style="font-size:0.7rem;">${data.message}</p>`;
-            container.appendChild(div);
-        });
-    });
+    document.getElementById('logout').onclick = () => signOut(auth).then(() => location.reload());
+
 </script>
 </body>
 </html>
