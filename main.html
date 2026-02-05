@@ -3,187 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DANIBOOM X | WEB</title>
+    <title>DANIBOOM X | OFICIAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --gold-neon: #ffd700;
             --red-neon: #ff0000;
-            --blue-neon: #00f2ff;
             --bg: #050505;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
         body { background: var(--bg); color: #fff; overflow-x: hidden; min-height: 100vh; }
 
-        /* --- HEADER --- */
+        /* --- HEADER REORGANIZADO --- */
         header {
             position: fixed; top: 0; width: 100%; z-index: 3000;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 20px; background: rgba(0,0,0,0.95);
+            padding: 10px 15px; background: rgba(0,0,0,0.95);
             border-bottom: 2px solid var(--gold-neon);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
 
-        .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo-text { 
-            font-family: 'Orbitron'; font-weight: 900; font-size: 1.2rem;
-            color: #fff; text-shadow: 0 0 10px #fff, 0 0 20px #fff; 
-        }
-        .logo-text .x-neon { 
-            color: var(--red-neon); 
-            text-shadow: 0 0 10px var(--red-neon), 0 0 20px var(--red-neon); 
-        }
-        .mini-gun { font-size: 18px; color: var(--gold-neon); filter: drop-shadow(0 0 5px var(--gold-neon)); }
-        .ff-tag { font-family: 'Press Start 2P'; font-size: 8px; color: #aaa; }
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .site-logo { width: 35px; height: 35px; border-radius: 50%; border: 1.5px solid var(--gold-neon); }
+        .logo-text { font-weight: 900; font-size: 1rem; color: #fff; text-shadow: 0 0 10px #fff; }
+        .logo-text span { color: var(--red-neon); text-shadow: 0 0 10px var(--red-neon); }
 
-        /* --- ICONOS NAV --- */
-        .nav-icons { display: flex; align-items: center; gap: 15px; }
-        
+        /* Logo FF que se vuelve blanco automáticamente */
+        .ff-logo-png { 
+            width: 70px; 
+            filter: brightness(0) invert(1) drop-shadow(0 0 5px #fff); 
+        }
+
+        .nav-icons { display: flex; align-items: center; gap: 18px; }
+
+        /* Campana Neón */
         .bell-container { position: relative; cursor: pointer; }
-        .fa-bell { 
-            font-size: 22px; color: var(--gold-neon); 
-            text-shadow: 0 0 10px var(--gold-neon);
-            transition: 0.3s;
-        }
-        /* Animación campana */
-        .bell-active { 
-            animation: shake 0.5s infinite; 
-            color: var(--red-neon) !important; 
-            filter: drop-shadow(0 0 10px var(--red-neon));
-        }
-        .bell-dot { 
-            position: absolute; top: -2px; right: -2px; 
-            width: 8px; height: 8px; background: var(--red-neon); 
-            border-radius: 50%; box-shadow: 0 0 5px var(--red-neon);
-        }
+        .fa-bell { font-size: 22px; color: var(--gold-neon); filter: drop-shadow(0 0 8px var(--gold-neon)); transition: 0.3s; }
+        .bell-active { animation: shake 0.5s infinite; color: var(--red-neon) !important; filter: drop-shadow(0 0 10px var(--red-neon)); }
+        .bell-dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--red-neon); border-radius: 50%; box-shadow: 0 0 5px var(--red-neon); }
 
-        /* --- HAMBURGUESA --- */
+        /* Hamburguesa Neón */
         .burger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
-        .burger span { 
-            width: 25px; height: 3px; background: var(--gold-neon); 
-            transition: 0.4s; box-shadow: 0 0 5px var(--gold-neon);
-        }
+        .burger span { width: 25px; height: 3px; background: var(--gold-neon); box-shadow: 0 0 5px var(--gold-neon); transition: 0.4s; }
         .burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
         .burger.open span:nth-child(2) { opacity: 0; }
         .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
-        /* --- DASHBOARD NEÓN (MENU) --- */
+        /* --- MENÚ DESPLEGABLE --- */
         .menu-drop {
-            position: fixed; top: 0; right: -100%; width: 300px; height: 100vh;
-            background: rgba(5,5,5,0.98); border-left: 3px solid var(--gold-neon);
-            padding: 80px 20px 20px; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2500;
+            position: fixed; top: 0; right: -100%; width: 310px; height: 100vh;
+            background: rgba(5,5,5,0.98); border-left: 2px solid var(--gold-neon);
+            padding: 80px 15px 20px; transition: 0.5s; z-index: 2500; overflow-y: auto;
         }
         .menu-drop.active { right: 0; }
 
-        .profile-card {
-            border: 2px solid var(--gold-neon); border-radius: 15px;
-            padding: 20px; text-align: center; margin-bottom: 20px;
-            box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.2), 0 0 15px rgba(255, 215, 0, 0.2);
+        /* CUADRADO DE NOTIFICACIONES DENTRO DEL MENÚ */
+        .notif-box {
+            background: rgba(20,20,20,0.9); border: 1.5px solid var(--gold-neon);
+            border-radius: 12px; padding: 12px; margin-bottom: 20px;
+            box-shadow: inset 0 0 10px rgba(255,215,0,0.1);
+        }
+        .notif-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px;
+            border-radius: 8px; margin-bottom: 8px; background: #111;
+            border-left: 3px solid var(--gold-neon);
         }
 
-        /* ROLES DINÁMICOS */
-        .role-badge { 
-            font-size: 10px; font-weight: 900; padding: 6px 15px; 
-            border-radius: 20px; display: inline-block; margin-top: 10px;
-            text-transform: uppercase; letter-spacing: 1px;
+        /* CUADRADO ADMIN UTILS (ROJO NEÓN) */
+        .admin-neon-box {
+            border: 2px solid var(--red-neon); border-radius: 15px;
+            padding: 15px; margin-top: 20px; background: rgba(255, 0, 0, 0.05);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2), inset 0 0 10px rgba(255, 0, 0, 0.1);
         }
-        .role-owner { border: 2px solid #ff0000; color: #fff; background: rgba(255,0,0,0.2); box-shadow: 0 0 15px #ff0000; }
-        .role-admin { border: 2px solid #00f2ff; color: #fff; background: rgba(0,242,255,0.2); box-shadow: 0 0 15px #00f2ff; }
-        .role-suscriptor { border: 2px solid #ffd700; color: #fff; background: rgba(255,215,0,0.2); box-shadow: 0 0 15px #ffd700; }
+
+        /* PERFIL CARD */
+        .profile-card { text-align: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .role-badge { font-size: 10px; font-weight: 900; padding: 5px 12px; border-radius: 20px; display: inline-block; margin-top: 8px; text-transform: uppercase; }
+        .role-owner { border: 2px solid var(--red-neon); box-shadow: 0 0 10px var(--red-neon); color: #fff; }
+        .role-admin { border: 2px solid #00f2ff; box-shadow: 0 0 10px #00f2ff; color: #fff; }
+        .role-suscriptor { border: 2px solid var(--gold-neon); box-shadow: 0 0 10px var(--gold-neon); color: #fff; }
         .role-anonymous { border: 2px solid #555; color: #888; }
 
-        /* SECCIONES CLICKABLES */
-        .nav-links { display: grid; gap: 10px; margin-top: 20px; }
         .menu-item {
             background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;
-            text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px;
-            border: 1px solid transparent; transition: 0.3s;
+            text-decoration: none; color: #fff; display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
         }
-        .menu-item:hover { border-color: var(--gold-neon); background: rgba(255,215,0,0.1); }
-        .menu-item i { color: var(--gold-neon); width: 20px; }
-
-        /* BOTÓN FLOTANTE IA */
-        .ia-float {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 60px; height: 60px; background: linear-gradient(45deg, #00f2ff, #0066ff);
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 25px; cursor: pointer; box-shadow: 0 0 20px #00f2ff;
-            z-index: 5000; transition: 0.3s;
-        }
-        .ia-float:hover { transform: scale(1.1); }
 
         @keyframes shake {
-            0% { transform: rotate(0); }
+            0%, 100% { transform: rotate(0); }
             25% { transform: rotate(15deg); }
-            50% { transform: rotate(-15deg); }
-            75% { transform: rotate(10deg); }
-            100% { transform: rotate(0); }
+            75% { transform: rotate(-15deg); }
         }
 
-        main { padding-top: 120px; text-align: center; }
+        main { padding-top: 100px; text-align: center; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-container">
-        <div class="logo-text">DANIBOOM <span class="x-neon">X</span></div>
-        <i class="fas fa-gun mini-gun"></i>
-        <div class="ff-tag">FREE FIRE</div>
+    <div class="header-left">
+        <img src="logo.png" class="site-logo">
+        <div class="logo-text">DANIBOOM <span>X</span></div>
     </div>
-    
+
+    <img src="ff_logo.png" class="ff-logo-png" alt="FF">
+
     <div class="nav-icons">
-        <div class="bell-container" id="notifBtn">
-            <i class="fas fa-bell"></i>
+        <div class="bell-container" id="bellBtn">
+            <i class="fas fa-bell" id="bellIcon"></i>
             <div class="bell-dot" id="bellDot" style="display:none;"></div>
         </div>
         <div class="burger" id="burgerBtn">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
     </div>
 </header>
 
 <div class="menu-drop" id="menuDrop">
-    <div class="profile-card">
-        <img src="logo.png" id="u-img" style="width:70px; height:70px; border-radius:50%; border:2px solid var(--gold-neon); object-fit: cover;">
-        <h3 id="u-name" style="margin-top:10px; font-size: 14px;">CARGANDO...</h3>
-        <div id="u-badge-container"></div>
-        <p id="u-lvl" style="font-family:'Press Start 2P'; font-size:8px; color:var(--gold-neon); margin-top:15px;"></p>
+    <p style="font-size: 10px; color: var(--gold-neon); margin-bottom: 8px;">AVISOS RECIENTES</p>
+    <div class="notif-box" id="notifArea">
+        <div class="notif-item">
+            <i class="fab fa-youtube" style="color:#ff0000"></i>
+            <div>
+                <p style="font-size:10px; font-weight:bold;">YOUTUBE</p>
+                <p style="font-size:9px; color:#aaa;">Nueva sensiblidad disponible</p>
+            </div>
+        </div>
     </div>
 
-    <nav class="nav-links" id="mainNav">
-        <a href="perfil.html" class="menu-item"><i class="fas fa-user"></i> PERFIL</a>
-        <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
+    <div class="profile-card">
+        <img src="logo.png" id="u-img" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--gold-neon);">
+        <h3 id="u-name" style="font-size:14px; margin-top:8px;">CARGANDO...</h3>
+        <div id="u-badge"></div>
+        <p id="u-lvl" style="font-family:'Press Start 2P'; font-size:8px; color:var(--gold-neon); margin-top:10px;"></p>
+    </div>
+
+    <nav id="navLinks">
         <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
-        <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSIBILIDADES</a>
-        <a href="appspro.html" class="menu-item"><i class="fas fa-rocket"></i> APPS PRO</a>
-        <a href="tienda.html" class="menu-item"><i class="fas fa-shopping-cart"></i> TIENDA</a>
+        <div id="privateLinks" style="display:none;">
+            <a href="perfil.html" class="menu-item"><i class="fas fa-user"></i> MI PERFIL</a>
+            <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT GLOBAL</a>
+            <a href="tienda.html" class="menu-item"><i class="fas fa-shopping-cart"></i> TIENDA UE</a>
+        </div>
     </nav>
 
-    <div id="adminPanel" style="display:none; margin-top: 20px; padding-top: 15px; border-top: 1px solid #333;">
-        <p style="font-size: 10px; color: #888; margin-bottom: 10px;">ADMIN UTILS</p>
-        <a href="notificaciones.html" class="menu-item" style="border: 1px solid var(--red-neon);">
-            <i class="fas fa-bullhorn" style="color: var(--red-neon);"></i> NOTIFICACIONES
-        </a>
+    <div id="adminPanel" style="display:none;">
+        <div class="admin-neon-box">
+            <p style="color: var(--red-neon); font-size: 11px; font-weight: bold; margin-bottom: 10px; text-align: center;">ADMIN UTILS</p>
+            <a href="notificaciones.html" class="menu-item" style="background: rgba(255,0,0,0.1); border: 1px solid var(--red-neon);">
+                <i class="fas fa-bell-plus" style="color: var(--red-neon);"></i> NOTIFICACIONES
+            </a>
+        </div>
     </div>
 
-    <button id="logout" style="width:100%; margin-top:30px; background:none; border: 1px solid #ff0000; color:#ff0000; padding:12px; border-radius:8px; cursor:pointer; font-weight:bold;">CERRAR SESIÓN</button>
+    <button id="logout" style="width:100%; margin-top:25px; background:none; border:1px solid red; color:red; padding:12px; border-radius:10px; cursor:pointer;">CERRAR SESIÓN</button>
 </div>
-
-<div class="ia-float" onclick="alert('Iniciando IA de asistencia...')">
-    <i class="fas fa-robot"></i>
-</div>
-
-<main>
-    </main>
 
 <script type="module">
-    // --- Lógica de Firebase (Manteniendo tu config) ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
@@ -198,76 +175,61 @@
     const auth = getAuth();
     const db = getFirestore();
 
-    // --- Interactividad UI ---
+    // --- INTERACCIÓN MENÚ Y CAMPANA ---
     const burger = document.getElementById('burgerBtn');
     const menu = document.getElementById('menuDrop');
-    
-    burger.onclick = () => {
-        burger.classList.toggle('open');
+    const bellBtn = document.getElementById('bellBtn');
+
+    function toggleMenu() {
         menu.classList.toggle('active');
-    };
+        burger.classList.toggle('open');
+        // Detener animación al abrir
+        document.getElementById('bellIcon').classList.remove('bell-active');
+        document.getElementById('bellDot').style.display = 'none';
+    }
 
-    // --- Lógica de Usuario ---
+    burger.onclick = toggleMenu;
+    bellBtn.onclick = toggleMenu;
+
+    // --- LÓGICA FIRESTORE ---
     onAuthStateChanged(auth, async (user) => {
-        const badgeBox = document.getElementById('u-badge-container');
-        const adminPanel = document.getElementById('adminPanel');
-        const mainNav = document.getElementById('mainNav');
-
         if (user) {
             const docSnap = await getDoc(doc(db, "users", user.uid));
             const userData = docSnap.data() || {};
             const role = userData.membership || 'anonymous';
 
-            document.getElementById('u-name').innerText = userData.username || user.displayName || "GAMER";
-            document.getElementById('u-lvl').innerText = "NIVEL " + (userData.level || 0);
+            document.getElementById('u-name').innerText = userData.username || "GAMER";
+            document.getElementById('u-lvl').innerText = "NVL " + (userData.level || 0);
             
-            // Render de Insignias Neón
-            let badgeHTML = '';
-            switch(role) {
-                case 'owner': 
-                    badgeHTML = '<span class="role-badge role-owner">OWNER <i class="fas fa-crown"></i></span>';
-                    adminPanel.style.display = 'block';
-                    break;
-                case 'admin': 
-                    badgeHTML = '<span class="role-badge role-admin">ADMIN <i class="fas fa-shield-alt"></i></span>';
-                    adminPanel.style.display = 'block';
-                    break;
-                case 'suscriptor': 
-                    badgeHTML = '<span class="role-badge role-suscriptor">SUSCRIPTOR <i class="fas fa-gem"></i></span>';
-                    break;
-                default: 
-                    badgeHTML = '<span class="role-badge role-anonymous">ANONYMOUS</span>';
-                    // Restringir vista para anónimos
-                    mainNav.innerHTML = '<a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>';
-                    document.getElementById('logout').innerText = "INICIAR SESIÓN";
+            // Gestión de Roles e Interfaz
+            let badgeContainer = document.getElementById('u-badge');
+            if(role === 'owner') {
+                badgeContainer.innerHTML = '<span class="role-badge role-owner">OWNER</span>';
+                document.getElementById('adminPanel').style.display = 'block';
+            } else if(role === 'admin') {
+                badgeContainer.innerHTML = '<span class="role-badge role-admin">ADMIN</span>';
+                document.getElementById('adminPanel').style.display = 'block';
+            } else if(role === 'suscriptor') {
+                badgeContainer.innerHTML = '<span class="role-badge role-suscriptor">SUSCRIPTOR</span>';
+            } else {
+                badgeContainer.innerHTML = '<span class="role-badge role-anonymous">ANONYMOUS</span>';
+                document.getElementById('logout').innerText = "INICIAR SESIÓN";
             }
-            badgeBox.innerHTML = badgeHTML;
 
-        } else {
-            // Si no hay usuario, forzar vista anónima o login
-            badgeBox.innerHTML = '<span class="role-badge role-anonymous">ANONYMOUS</span>';
-            mainNav.innerHTML = '<a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>';
-            document.getElementById('logout').innerText = "INICIAR SESIÓN";
+            if(role !== 'anonymous') {
+                document.getElementById('privateLinks').style.display = 'block';
+            }
         }
     });
 
-    // Logout
     document.getElementById('logout').onclick = () => signOut(auth).then(() => location.reload());
 
-    // Ejemplo de activación de campana (puedes disparar esto cuando llegue un mensaje de Firestore)
-    function activarCampana() {
-        const bell = document.querySelector('.fa-bell');
-        const dot = document.getElementById('bellDot');
-        bell.classList.add('bell-active');
-        dot.style.display = 'block';
-    }
-
-    // Al hacer clic en la campana, se detiene la animación
-    document.getElementById('notifBtn').onclick = () => {
-        document.querySelector('.fa-bell').classList.remove('bell-active');
-        document.getElementById('bellDot').style.display = 'none';
-        window.location.href = "notificaciones.html";
+    // Esta función la puedes llamar cuando detectes un cambio en Firestore de notificaciones
+    window.alertaNotificacion = () => {
+        document.getElementById('bellIcon').classList.add('bell-active');
+        document.getElementById('bellDot').style.display = 'block';
     };
 </script>
 </body>
 </html>
+ 
