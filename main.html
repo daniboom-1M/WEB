@@ -29,7 +29,6 @@
         .neon-title span { color: var(--red-neon); text-shadow: 0 0 15px var(--red-neon); }
         .ff-logo-header { height: 18px; filter: brightness(0) invert(1) drop-shadow(0 0 5px #fff); }
 
-        /* CAMPANA Y BURGER JUNTOS */
         .h-right { display: flex; align-items: center; gap: 15px; }
         .fa-bell { font-size: 22px; color: var(--gold); cursor: pointer; transition: 0.3s; }
         .bell-shake { animation: shake 0.5s infinite; color: var(--red-neon) !important; filter: drop-shadow(0 0 10px var(--red-neon)); }
@@ -55,19 +54,20 @@
         }
         .u-img { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 10px; object-fit: cover; }
         
-        /* Tipografías y Colores por Rol */
-        .name-owner { font-family: 'Permanent Marker', cursive; color: var(--red-neon); text-shadow: 0 0 10px var(--red-neon); font-size: 22px; }
-        .name-admin { font-family: 'Electrolize', sans-serif; color: var(--blue-neon); text-shadow: 0 0 10px var(--blue-neon); font-size: 19px; }
-        .name-anon { font-family: 'Orbitron', sans-serif; color: #888; font-size: 14px; }
+        /* TIPOGRAFÍAS Y COLORES POR ROL */
+        .name-owner { font-family: 'Permanent Marker', cursive !important; color: var(--red-neon) !important; text-shadow: 0 0 15px var(--red-neon) !important; font-size: 22px; }
+        .name-admin { font-family: 'Electrolize', sans-serif !important; color: var(--blue-neon) !important; text-shadow: 0 0 15px var(--blue-neon) !important; font-size: 19px; }
+        .name-anon { font-family: 'Orbitron', sans-serif !important; color: #fff !important; text-shadow: 0 0 10px #fff !important; font-size: 14px; }
 
-        .badge-owner { color: var(--red-neon); text-shadow: 0 0 8px var(--red-neon); font-weight: 900; }
-        .badge-admin { color: var(--blue-neon); text-shadow: 0 0 8px var(--blue-neon); font-weight: 900; }
+        .badge-owner { color: var(--red-neon); text-shadow: 0 0 8px var(--red-neon); font-weight: 900; font-size: 10px; }
+        .badge-admin { color: var(--blue-neon); text-shadow: 0 0 8px var(--blue-neon); font-weight: 900; font-size: 10px; }
+        .badge-anon { color: #888; font-weight: 900; font-size: 10px; }
 
         /* NIVEL NEÓN */
         .lvl-tag { 
             font-family: 'Press Start 2P', cursive; font-size: 8px; margin-top: 10px; display: inline-block;
             padding: 6px 12px; border-radius: 5px; color: var(--gold); border: 1px solid var(--gold); 
-            box-shadow: 0 0 10px var(--gold); background: rgba(0,0,0,0.8);
+            box-shadow: 0 0 15px var(--gold); background: rgba(0,0,0,0.8);
         }
 
         /* CUADRADO ADMIN UTILS */
@@ -129,14 +129,8 @@
 <div id="menuNotif" class="side-panel"><h3 style="text-align:center; color:var(--gold); margin-bottom:20px;">NOTIFICACIONES</h3><div id="notifList"></div></div>
 
 <div id="menuUser" class="side-panel">
-    <div class="profile-card">
-        <img src="default.png" id="u-img" class="u-img">
-        <p id="u-name">CARGANDO...</p>
-        <div id="u-badge"></div>
-        <div id="u-lvl" class="lvl-tag">NIVEL 0</div>
-    </div>
-    <nav id="userNav"></nav>
-    <div id="adminArea" style="display:none;"><div class="admin-box"><div class="admin-title">ADMIN UTILS</div><a href="notificaciones.html" class="menu-item"><i class="fas fa-bullhorn"></i> NOTIFICACIONES</a></div></div>
+    <div id="profileTarget"></div> <nav id="userNav"></nav>
+    <div id="adminArea" style="display:none;"><div class="admin-box"><div class="admin-title">ADMIN UTILS</div><a href="notificaciones.html" class="menu-item"><i class="fas fa-bullhorn" style="color:var(--red-neon)"></i> NOTIFICACIONES</a></div></div>
     <button id="authBtn" style="width:100%; margin-top:20px; background:none; border:1px solid red; color:red; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">INICIAR SESIÓN</button>
 </div>
 
@@ -155,67 +149,82 @@
     const menuU = document.getElementById('menuUser');
     const menuN = document.getElementById('menuNotif');
 
-    // --- MANEJO DE MENÚS ---
     burger.onclick = () => { burger.classList.toggle('open'); menuU.classList.toggle('active'); menuN.classList.remove('active'); };
     bell.onclick = () => { menuN.classList.toggle('active'); menuU.classList.remove('active'); burger.classList.remove('open'); bell.classList.remove('bell-shake'); localStorage.setItem('lastSeenNotif', Date.now()); };
 
-    // --- DETECCIÓN DE USUARIO Y ROLES (Coincidiendo con Screenshot de Firebase) ---
     onAuthStateChanged(auth, async (user) => {
-        const uName = document.getElementById('u-name');
-        const uBadge = document.getElementById('u-badge');
-        const uLvl = document.getElementById('u-lvl');
-        const uImg = document.getElementById('u-img');
+        const profileTarget = document.getElementById('profileTarget');
         const nav = document.getElementById('userNav');
         const authBtn = document.getElementById('authBtn');
+        const adminArea = document.getElementById('adminArea');
 
         if (user) {
             const snap = await getDoc(doc(db, "users", user.uid));
             const data = snap.data() || {};
             
-            // Mapeo según los campos de tu imagen de Firestore
-            uName.innerText = data.displayName || "USUARIO";
-            uLvl.innerText = "NIVEL " + (data.level || 1);
-            uImg.src = data.photoURL || 'default.png';
-
+            const name = data.displayName || "USUARIO";
+            const lvl = data.level || 1;
+            const photo = data.photoURL || 'default.png';
             const role = data.membership || 'anonymous';
 
+            // GENERAR CARD DE PERFIL CON ROL
+            let badgeHTML = "";
+            let nameClass = "name-anon";
+
             if(role === 'owner') {
-                uName.className = "name-owner";
-                uBadge.innerHTML = `<span class="badge-owner">OWNER <i class="fas fa-crown"></i></span>`;
-                document.getElementById('adminArea').style.display = 'block';
+                nameClass = "name-owner";
+                badgeHTML = `<span class="badge-owner">OWNER <i class="fas fa-crown"></i></span>`;
+                adminArea.style.display = 'block';
             } else if(role === 'admin') {
-                uName.className = "name-admin";
-                uBadge.innerHTML = `<span class="badge-admin">ADMIN <i class="fas fa-shield-alt"></i></span>`;
-                document.getElementById('adminArea').style.display = 'block';
+                nameClass = "name-admin";
+                badgeHTML = `<span class="badge-admin">ADMIN <i class="fas fa-shield-alt"></i></span>`;
+                adminArea.style.display = 'block';
             } else {
-                uName.className = "name-anon";
-                uBadge.innerHTML = `<span style="color:#888; font-size:10px;">ANÓNIMO</span>`;
+                badgeHTML = `<span class="badge-anon">ANÓNIMO <i class="fas fa-ghost"></i></span>`;
+                adminArea.style.display = 'none';
             }
 
-            // Para usuarios registrados
-            nav.innerHTML = `
-                <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a>
-                <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
-                <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
-                <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSI</a>
+            profileTarget.innerHTML = `
+                <div class="profile-card">
+                    <img src="${photo}" class="u-img">
+                    <p class="${nameClass}">${name}</p>
+                    <div id="u-badge">${badgeHTML}</div>
+                    <div class="lvl-tag">NIVEL ${lvl}</div>
+                </div>
             `;
-            authBtn.innerText = "CERRAR SESIÓN";
-            authBtn.onclick = () => signOut(auth).then(() => location.reload());
+
+            // FILTRADO DE MENÚ PARA ANÓNIMOS REGISTRADOS
+            if(role === 'anonymous') {
+                nav.innerHTML = `<a href="redes.html" class="menu-item"><i class="fas fa-share-alt" style="color:var(--gold)"></i> REDES</a>`;
+                authBtn.innerText = "INICIAR SESIÓN";
+                authBtn.onclick = () => window.location.href = "index.html";
+            } else {
+                nav.innerHTML = `
+                    <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a>
+                    <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
+                    <a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a>
+                    <a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSI</a>
+                `;
+                authBtn.innerText = "CERRAR SESIÓN";
+                authBtn.onclick = () => signOut(auth).then(() => location.reload());
+            }
+
         } else {
-            // LÓGICA ANÓNIMO (Si no hay sesión)
-            uName.innerText = "ANÓNIMO #001"; // Esto lo detecta de tu DB si creas un registro temporal
-            uName.className = "name-anon";
-            uBadge.innerHTML = `<span style="color:#555; font-size:10px;">SIN ROL</span>`;
-            nav.innerHTML = `
-                <a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a>
-                <a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a>
+            // LÓGICA ANÓNIMO SIN SESIÓN
+            profileTarget.innerHTML = `
+                <div class="profile-card">
+                    <img src="default.png" class="u-img">
+                    <p class="name-anon">Anónimo #000</p>
+                    <div id="u-badge"><span class="badge-anon">ANÓNIMO <i class="fas fa-ghost"></i></span></div>
+                    <div class="lvl-tag">NIVEL 0</div>
+                </div>
             `;
+            nav.innerHTML = `<a href="redes.html" class="menu-item"><i class="fas fa-share-alt" style="color:var(--gold)"></i> REDES</a>`;
             authBtn.innerText = "INICIAR SESIÓN";
             authBtn.onclick = () => window.location.href = "index.html";
         }
     });
 
-    // --- NOTIFICACIONES REAL-TIME ---
     onSnapshot(query(collection(db, "notifications"), orderBy("createdAt", "desc")), (snap) => {
         const list = document.getElementById('notifList');
         list.innerHTML = "";
@@ -228,7 +237,6 @@
         if(hasNew) bell.classList.add('bell-shake');
     });
 
-    // --- BOOMI BOT ---
     document.getElementById('iaToggle').onclick = () => { const c = document.getElementById('chatIA'); c.style.display = c.style.display === 'flex' ? 'none' : 'flex'; };
     document.getElementById('chatIn').onkeypress = (e) => {
         if(e.key === 'Enter') {
