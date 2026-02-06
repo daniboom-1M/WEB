@@ -7,18 +7,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&family=Permanent+Marker&family=Electrolize&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --gold: #ffd700;
-            --red-neon: #ff0000;
-            --blue-neon: #00f2ff;
-            --green-neon: #39ff14;
-            --bg: #050505;
-        }
+    :root {
+        --gold: #ffd700;
+        --red-neon: #ff0000;
+        --blue-neon: #00f2ff;
+        --green-neon: #39ff14;
+        --bg: #050505;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
-        body { background: var(--bg); color: #fff; overflow-x: hidden; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+    body { background: var(--bg); color: #fff; overflow-x: hidden; }
 
-        /* --- HEADER --- */
+    /* --- PANTALLA DE CARGA NEÓN --- */
+    #loader-wrapper {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #000; z-index: 9999; display: flex; flex-direction: column;
+        justify-content: center; align-items: center; transition: opacity 0.8s;
+    }
+    .loader-neon {
+        width: 50px; height: 50px; border: 5px solid #111; border-top: 5px solid var(--red-neon);
+        border-radius: 50%; animation: spin 1s linear infinite;
+        box-shadow: 0 0 15px var(--red-neon);
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* --- HEADER --- */
         header {
             position: fixed; top: 0; width: 100%; z-index: 4000;
             display: flex; justify-content: space-between; align-items: center;
@@ -40,7 +53,70 @@
         .burger.open span:nth-child(2) { opacity: 0; }
         .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        /* --- MENÚS --- */
+    /* --- SECCIONES CON EFECTO NEÓN Y DESAPARICIÓN --- */
+    .section-box { 
+        background: rgba(10, 10, 10, 0.98); 
+        border: 2px solid var(--red-neon) !important; /* Borde Rojo Neón */
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); /* Brillo Rojo */
+        border-radius: 20px; padding: 25px; margin-bottom: 50px; text-align: left;
+        
+        /* Configuración para desaparecer cuando no está en pantalla */
+        opacity: 0;
+        transform: scale(0.8) translateY(50px);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        visibility: hidden;
+    }
+
+    /* Cuando la sección entra en vista (activada por AOS) */
+    .section-box.aos-animate {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        visibility: visible;
+    }
+
+    .section-title { 
+        color: #ffff00 !important; /* Amarillo Neón */
+        text-shadow: 0 0 10px #ffff00, 0 0 20px #ffcc00; 
+        font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; font-weight: 900; 
+        border-bottom: 2px solid rgba(255,215,0,0.3); padding-bottom: 12px; 
+    }
+    
+    .section-title i { color: #ffff00; filter: drop-shadow(0 0 5px #ffff00); }
+
+    /* --- PORTAFOLIO Y OTROS --- */
+    .main-content { margin-top: 90px; padding: 20px 15px; text-align: center; padding-bottom: 150px; }
+    .hero-title { font-size: 28px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--gold); margin-bottom: 10px; }
+    
+    .influencer-badge { 
+        display: flex; align-items: center; justify-content: center; gap: 15px; 
+        background: rgba(255, 215, 0, 0.15); border: 2px solid var(--gold);
+        padding: 15px 25px; border-radius: 20px; margin: 25px auto; width: fit-content;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    .influencer-badge img { width: 50px; height: auto; }
+    .influencer-badge span { font-size: 14px; font-weight: 900; color: #fff; text-shadow: 0 0 5px var(--gold); text-transform: uppercase; }
+
+    .text-large { font-size: 16px; line-height: 1.8; color: #eee; }
+    .video-text-container { display: flex; flex-direction: row; gap: 12px; align-items: stretch; margin-top: 15px; width: 100%; }
+    .video-tiktok { flex: 0 0 130px; border-radius: 15px; border: 2px solid var(--blue-neon); box-shadow: 0 0 15px var(--blue-neon); overflow: hidden; background: #000; height: fit-content; }
+    .video-tiktok video { width: 100%; height: auto; display: block; }
+    .text-agradecimiento { flex: 1; font-size: 11px; line-height: 1.4; color: #fff; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; border-right: 3px solid var(--gold); display: flex; flex-direction: column; justify-content: center; }
+
+    .img-container-box { width: 100%; border-radius: 15px; border: 2px solid var(--blue-neon); overflow: hidden; box-shadow: 0 0 25px rgba(0, 242, 255, 0.2); background: #000; }
+    .img-container-box img { width: 100%; height: auto; display: block; }
+
+    .device-btn { width: 100%; padding: 18px; background: var(--gold); border: none; color: #000; border-radius: 12px; cursor: pointer; font-weight: 900; margin-top: 15px; font-size: 15px; text-transform: uppercase; }
+    #deviceList { display: none; background: rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; margin-top: 15px; font-size: 15px; color: #fff; line-height: 2.5; border: 1px solid rgba(255,255,255,0.1); }
+    .brand-tag { color: var(--blue-neon); font-weight: 900; margin-right: 8px; font-size: 16px; }
+
+    .btn-apoyar {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        width: 100%; padding: 15px; background: #ff0000; color: #fff !important;
+        text-decoration: none; border-radius: 12px; font-weight: 900; margin-top: 20px;
+        text-transform: uppercase; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); transition: 0.3s;
+    }
+
+    /* --- MENÚS --- */
         .side-panel {
             position: fixed; top: 0; right: -100%; width: 310px; height: 100vh;
             background: rgba(5,5,5,0.99); transition: 0.5s ease; z-index: 3500;
@@ -56,7 +132,7 @@
             position: absolute; top: 20px; right: 20px; font-size: 30px; color: var(--red-neon); 
             cursor: pointer; text-shadow: 0 0 10px var(--red-neon); 
         }
-
+        
         /* DISEÑO DE TARJETAS NEÓN CORREGIDO */
         .notif-card {
             border-radius: 15px; padding: 20px; margin-bottom: 20px;
@@ -79,7 +155,7 @@
         .card-facebook { border-color: #1877f2; color: #1877f2; }
         .card-instagram { border-color: #e4405f; color: #e4405f; }
         .card-sistema { border-color: var(--gold); color: var(--gold); }
-
+        
         /* BOTÓN VISIBLE Y CLICKEABLE */
         .notif-btn {
             display: inline-flex !important;
@@ -93,7 +169,7 @@
         }
 
         .timer-text { font-size: 10px; color: #aaa; margin-top: 5px; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; }
-
+        
         /* PERFIL CARD */
         .profile-card { border: 2px solid var(--gold); border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 0 15px rgba(255,215,0,0.2); margin-bottom: 15px; }
         .u-img { width: 75px; height: 75px; border-radius: 50%; border: 2px solid var(--gold); margin-bottom: 10px; object-fit: cover; }
@@ -119,145 +195,125 @@
 
         @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
     </style>
+
+
 </head>
 <body>
+
+<div id="loader-wrapper">
+    <div class="loader-neon"></div>
+    <p style="color: var(--red-neon); margin-top: 20px; font-weight: 900; letter-spacing: 2px;">INICIANDO SISTEMA</p>
+</div>
 
 <header>
     <div class="h-left"><img src="logo.png" style="width:30px; border-radius:50%; border:1px solid var(--gold);"><div class="neon-title">DANIBOOM <span>X</span> <img src="ff_logo.png" class="ff-logo-header"></div></div>
     <div class="h-right"><i class="fas fa-bell" id="bellIcon"></i><div class="burger" id="burgerBtn"><span></span><span></span><span></span></div></div>
 </header>
 
-<div id="chatIA">
-    <div class="chat-h">BOOMI BOT 🤖</div>
-    <div id="chatMsgs"><div class="bot-m">¡Hola! Soy Boomi Bot. ¿En qué puedo ayudarte?</div></div>
-    <div style="padding:10px; display:flex; gap:5px;"><input type="text" id="chatIn" placeholder="Escribe..." style="flex:1; background:#000; border:1px solid var(--blue-neon); color:#fff; padding:8px; border-radius:5px; outline:none;"></div>
-</div>
+<main class="main-content">
+    <h1 class="hero-title">DANIBOOM PÁGINA OFICIAL</h1>
+    
+    <div class="influencer-badge">
+        <img src="logo_influencer.png" alt="Logo Influencer"> 
+        <span>MINI INFLUENCER OFICIAL DE FREE FIRE</span>
+    </div>
 
-<div id="iaToggle" style="position:fixed; bottom:20px; left:20px; z-index:5000; cursor:pointer; text-align:center;">
-    <div style="width:55px; height:55px; background:var(--blue-neon); border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:25px; box-shadow:0 0 15px var(--blue-neon);"><i class="fas fa-robot"></i></div>
-    <div style="font-size:8px; margin-top:5px; background:#fff; color:#000; padding:2px 5px; border-radius:5px; font-weight:bold;">¿AYUDA?</div>
-</div>
+    <div class="section-box" data-aos="fade-up">
+        <div class="section-title"><i class="fas fa-star"></i> SOBRE MÍ & AGRADECIMIENTOS</div>
+        <p class="text-large">
+            ¡Hola a todos! Soy <b>DANIBOOM X</b>. Primero que nada, quiero expresar mi más sincero agradecimiento a toda mi comunidad por el apoyo incondicional y a <b>Garena</b> por confiar en mi contenido. Formar parte del programa oficial de Mini Influencers es un logro que comparto con cada uno de ustedes. ¡Aquí encontrarán solo lo mejor para subir de nivel!
+        </p>
+    </div>
+<div class="section-box" data-aos="fade-up">
+        <div class="section-title"><i class="fab fa-tiktok"></i> AGRADECIMIENTO ESPECIAL</div>
+        <div class="video-text-container">
+            <div class="video-tiktok">
+                <video controls autoplay muted loop playsinline>
+                    <source src="video_agradecimiento.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="text-agradecimiento">
+                <p>
+                    <i class="fas fa-quote-left" style="color:var(--gold); font-size: 15px; margin-bottom: 5px; display: block;"></i>
+                    "Este logro es de la <b>Familia BOOM</b>. Gracias por el apoyo diario. Ser <b>Mini Influencer</b> es solo el inicio. ¡Traeré las mejores sensis Y LA MEJOR WEB, PARA SUS NESECIDADES DISFRUTA!"
+                    <span style="display:block; margin-top: 8px; color: var(--gold); font-weight: 900; text-align: right; font-size: 10px;">- DANIBOOM</span>
+                </p>
+            </div>
+        </div>
+    </div>
 
-<div id="menuNotif" class="side-panel">
-    <i class="fas fa-times close-notif" id="closeNotif"></i>
-    <h3 style="text-align:center; color:var(--gold); margin: 40px 0; font-family:'Press Start 2P'; font-size: 14px;">AVISOS BOOM</h3>
-    <div id="notifList"></div>
-</div>
+    <div class="section-box" data-aos="fade-up">
+        <div class="section-title"><i class="fas fa-shield-alt"></i> COMUNICADO OFICIAL GARENA</div>
+        <div class="img-container-box">
+            <img src="comunicado.png" alt="Comunicado de Garena">
+        </div>
+    </div>
 
-<div id="menuUser" class="side-panel">
-    <div id="profileTarget"></div> <nav id="userNav"></nav>
-    <div id="adminArea" style="display:none;"><div class="admin-box"><div class="admin-title">ADMIN UTILS</div><a href="notificaciones.html" class="menu-item"><i class="fas fa-bullhorn" style="color:var(--red-neon)"></i> NOTIFICACIONES</a></div></div>
-    <button id="authBtn" style="width:100%; margin-top:20px; background:none; border:1px solid red; color:red; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">INICIAR SESIÓN</button>
-</div>
+         <div class="section-box" data-aos="fade-up"> 
+        <div class="section-title"><i class="fas fa-list-check"></i> ACA ENCONTRARAS...</div>
+        <p class="text-large">
+            En esta plataforma oficial tendrás acceso a configuraciones de sensibilidad avanzada, herramientas de optimización y una comunidad exclusiva de seguidores. 
+            <br><br>
+            <span style="color: var(--red-neon); font-weight: 900; text-transform: uppercase;">Nota importante:</span> 
+            Para usar alguna función de mi página tienes que crear una cuenta obligatoriamente. Los usuarios anónimos no podrán acceder completamente a todas las opciones de la página. Regístrate para disfrutar de todas las opciones sin restricciones.
+        </p>
+    </div>
+    
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    <div class="section-box" data-aos="fade-up">
+        <div class="section-title"><i class="fas fa-code"></i> APARTADO: APLICACIONES PRO</div>
+        <p class="text-large">
+            En la sección de Aplicaciones Pro se encuentran todas las aplicaciones modificadas con juegos, herramientas premium y funciones con todo ilimitado. 
+            <br><br>
+            Aviso: Cuando el canal oficial de YouTube alcance la meta de 1,000 seguidores, se agregarán paneles y macros 100% funcionales con sistema antiban.
+        </p>
+        <a href="TU_LINK_DE_YOUTUBE" target="_blank" class="btn-apoyar">
+            <i class="fab fa-youtube"></i> APOYAR CANAL
+        </a>
+    </div>
+    
 
-    const firebaseConfig = { apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4", authDomain: "web1-3b83a.firebaseapp.com", projectId: "web1-3b83a" };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
-    const db = getFirestore();
+  <div class="section-box" data-aos="fade-up">
+        <div class="section-title"><i class="fas fa-microchip"></i> DISPOSITIVOS CON SENSIBILIDAD</div>
+        <p class="text-large" style="margin-bottom: 15px;">Explora la lista completa de dispositivos móviles para los que hemos diseñado configuraciones exclusivas:</p>
+        <button class="device-btn" onclick="let d = document.getElementById('deviceList'); d.style.display = d.style.display === 'block' ? 'none' : 'block'">
+            <i class="fas fa-search"></i> VER MODELOS COMPATIBLES
+        </button>
+        <div id="deviceList">
+            <div><span class="brand-tag">SAMSUNG:</span> A10, A20, A30, A50, A70, S10, S20, S21, S22, S23 Ultra, Note 20.</div>
+            <div><span class="brand-tag">XIAOMI:</span> Poco X3 Pro, Poco F4, Redmi Note 8, 9, 10, 11, 12 Pro, Black Shark 5.</div>
+            <div><span class="brand-tag">IPHONE:</span> 6s, 7 Plus, 8, X, XR, 11, 12, 13, 14, 15 Pro Max, iPad Pro.</div>
+            <div><span class="brand-tag">MOTOROLA:</span> G8, G9, G20, G60, Edge 30, Moto Fusion.</div>
+            <div><span class="brand-tag">HUAWEI:</span> P30, P40 Pro, Y9 Prime, Nova 9.</div>
+            <div><span class="brand-tag">OTROS:</span> Realme, Infinix, Tecno, Blue, Honor y más.</div>
+        </div>
+    </div>
 
-    const bell = document.getElementById('bellIcon');
-    const burger = document.getElementById('burgerBtn');
-    const menuU = document.getElementById('menuUser');
-    const menuN = document.getElementById('menuNotif');
-    const closeNotif = document.getElementById('closeNotif');
+    <div class="section-box" data-aos="fade-up">
+        <div class="section-title"><i class="fas fa-comments"></i> CHAT PARA MIEMBROS Y GLOBAL</div>
+        <p class="text-large">
+            Espacio diseñado para interactuar con todos los usuarios en el chat global. Puedes chatear con los amigos que tengas agregados buscándolos por su UID o nombre de usuario exacto. 
+            <br><br>
+            Estas funciones, junto con las solicitudes de amistad recibidas, las encontrarás en el menú de las tres líneas entrando a la sección Ver Perfil.
+        </p>
+    </div>
+    
+        <div class="section-box" data-aos="fade-up">
+        <div class="section-title"><i class="fas fa-share-nodes"></i> TODAS MIS REDES</div>
+        <p class="text-large">
+            Aquí encontrarás el acceso directo a todas las redes oficiales de DANIBOOM para mantenerte al tanto de las últimas actualizaciones y lanzamientos.
+        </p>
+        <div style="display: flex; gap: 20px; margin-top: 15px; justify-content: center; color: var(--gold);">
+             <i class="fab fa-tiktok" style="font-size: 24px;"></i>
+             <i class="fab fa-instagram" style="font-size: 24px;"></i>
+             <i class="fab fa-facebook" style="font-size: 24px;"></i>
+              <i class="fab fa-youtube" style="font-size: 24px;"></i>
+        </div>
+    </div>
 
-    burger.onclick = () => { burger.classList.toggle('open'); menuU.classList.toggle('active'); menuN.classList.remove('active'); };
-    bell.onclick = () => { menuN.classList.add('active'); menuU.classList.remove('active'); burger.classList.remove('open'); bell.classList.remove('bell-shake'); localStorage.setItem('lastSeenNotif', Date.now()); };
-    if(closeNotif) closeNotif.onclick = () => { menuN.classList.remove('active'); };
-
-    // --- LÓGICA DE TIEMPO INTELIGENTE ---
-    function formatTime(seconds) {
-        if (seconds >= 86400) return Math.floor(seconds / 86400) + " días";
-        if (seconds >= 3600) return Math.floor(seconds / 3600) + " horas";
-        if (seconds >= 60) return Math.floor(seconds / 60) + " minutos";
-        return Math.floor(seconds) + " segundos";
-    }
-
-    onAuthStateChanged(auth, async (user) => {
-        const profileTarget = document.getElementById('profileTarget');
-        const nav = document.getElementById('userNav');
-        const authBtn = document.getElementById('authBtn');
-        const adminArea = document.getElementById('adminArea');
-
-        if (user) {
-            const snap = await getDoc(doc(db, "users", user.uid));
-            const data = snap.data() || {};
-            const role = data.membership || 'anonymous';
-            let badgeHTML = ""; let nameClass = "name-anon";
-
-            if(role === 'owner') { nameClass = "name-owner"; badgeHTML = `<span class="badge-owner">OWNER <i class="fas fa-crown"></i></span>`; adminArea.style.display = 'block'; }
-            else if(role === 'admin') { nameClass = "name-admin"; badgeHTML = `<span class="badge-admin">ADMIN <i class="fas fa-shield-alt"></i></span>`; adminArea.style.display = 'block'; }
-            else if(role === 'suscriptor') { nameClass = "name-sub"; badgeHTML = `<span class="badge-sub">SUSCRIPTOR <i class="fas fa-star"></i></span>`; adminArea.style.display = 'none'; }
-            else { badgeHTML = `<span class="badge-anon">ANÓNIMO <i class="fas fa-ghost"></i></span>`; adminArea.style.display = 'none'; }
-
-            profileTarget.innerHTML = `<div class="profile-card"><img src="${data.photoURL || 'default.png'}" class="u-img"><p class="${nameClass}">${data.displayName || "USUARIO"}</p><div id="u-badge">${badgeHTML}</div><div class="lvl-tag">NIVEL ${data.level || 1}</div></div>`;
-            nav.innerHTML = `<a href="perfil.html" class="menu-item"><i class="fas fa-user-circle"></i> VER PERFIL</a><a href="redes.html" class="menu-item"><i class="fas fa-share-alt"></i> REDES</a><a href="chat.html" class="menu-item"><i class="fas fa-comments"></i> CHAT</a><a href="sensibilidades.html" class="menu-item"><i class="fas fa-crosshairs"></i> SENSI</a>`;
-            authBtn.innerText = "CERRAR SESIÓN"; authBtn.onclick = () => signOut(auth).then(() => location.reload());
-        } else {
-            profileTarget.innerHTML = `<div class="profile-card"><img src="default.png" class="u-img"><p class="name-anon">Anónimo #000</p><div id="u-badge"><span class="badge-anon">ANÓNIMO <i class="fas fa-ghost"></i></span></div><div class="lvl-tag">NIVEL 0</div></div>`;
-            nav.innerHTML = `<a href="redes.html" class="menu-item"><i class="fas fa-share-alt" style="color:var(--gold)"></i> REDES</a>`;
-            authBtn.innerText = "INICIAR SESIÓN"; authBtn.onclick = () => window.location.href = "index.html";
-        }
-    });
-
-    onSnapshot(query(collection(db, "notifications"), orderBy("createdAt", "desc")), (snap) => {
-        const list = document.getElementById('notifList');
-        list.innerHTML = ""; let hasNew = false; const ahora = Date.now();
-        
-        snap.forEach(docSnap => {
-            const n = docSnap.data(); const id = docSnap.id;
-            let fechaMs = (n.createdAt && n.createdAt.toMillis) ? n.createdAt.toMillis() : (typeof n.createdAt === 'number' ? n.createdAt : ahora);
-            const segPasados = (ahora - fechaMs) / 1000;
-            if (n.duration && segPasados > n.duration) return;
-
-            const type = (n.iconType || "").toLowerCase();
-            let cardClass = "card-sistema"; let icon = "fas fa-bell";
-            if(type.includes("youtube")) { cardClass = "card-youtube"; icon = "fab fa-youtube"; }
-            else if(type.includes("tiktok")) { cardClass = "card-tiktok"; icon = "fab fa-tiktok"; }
-            else if(type.includes("whatsapp")) { cardClass = "card-whatsapp"; icon = "fab fa-whatsapp"; }
-            else if(type.includes("facebook")) { cardClass = "card-facebook"; icon = "fab fa-facebook"; }
-            else if(type.includes("instagram")) { cardClass = "card-instagram"; icon = "fab fa-instagram"; }
-
-            const tieneLink = n.link && n.link !== "" && n.link !== "#";
-            const btnHTML = tieneLink ? `<a href="${n.link}" target="_blank" class="notif-btn">VER VIDEO AHORA <i class="fas fa-play-circle"></i></a>` : "";
-            
-            let timerHTML = "";
-            if(n.duration) {
-                const segQuedan = Math.max(0, n.duration - segPasados);
-                timerHTML = `<p id="timer-${id}" class="timer-text">Expira en: ${formatTime(segQuedan)}</p>`;
-            }
-
-            list.innerHTML += `<div class="notif-card ${cardClass}" id="card-${id}"><i class="${icon} platform-icon"></i><h4>${n.title}</h4><p>${n.message}</p>${btnHTML}${timerHTML}</div>`;
-
-            if (n.duration) {
-                const interval = setInterval(() => {
-                    const segQ = Math.max(0, n.duration - ((Date.now() - fechaMs) / 1000));
-                    const el = document.getElementById(`timer-${id}`);
-                    if(el) el.innerText = `Expira en: ${formatTime(segQ)}`;
-                    if (segQ <= 0) { clearInterval(interval); document.getElementById(`card-${id}`)?.remove(); }
-                }, 1000);
-            }
-            if (fechaMs > (localStorage.getItem('lastSeenNotif') || 0)) hasNew = true;
-        });
-        if(hasNew) bell.classList.add('bell-shake');
-    });
-
-    document.getElementById('iaToggle').onclick = () => { const c = document.getElementById('chatIA'); c.style.display = c.style.display === 'flex' ? 'none' : 'flex'; };
-    document.getElementById('chatIn').onkeypress = (e) => {
-        if(e.key === 'Enter') {
-            const val = e.target.value.toLowerCase(); const msgs = document.getElementById('chatMsgs');
-            msgs.innerHTML += `<div class="user-m">${e.target.value}</div>`;
-            let r = "¡Hola! Soy Boomi Bot, el asistente oficial de DANIBOOM X.";
-            if(val.includes("sensi")) r = "Las sensibilidades las encuentras en el menú lateral.";
-            setTimeout(() => { msgs.innerHTML += `<div class="bot-m">${r}</div>`; msgs.scrollTop = msgs.scrollHeight; }, 500);
-            e.target.value = "";
-        }
-    };
-</script>
-</body>
-</html>
+    <div style="background: rgba(0, 242, 255, 0.05); padding: 25px; border-radius: 20px; border: 2px solid var(--blue-neon); margin-top: 20px;">
+        <p style="font-size: 16px; color: #fff; font-weight: bold; text-transform: uppercase;">
+            <i class="fas fa-info-circle" style="color:var(--blue-neon)"></i> ¿CÓMO USAR LAS FUNCIONES?
+        </p>
+        <p style="font-size: 14px; color: #ccc; margin-top: 10px; line-height: 1.6;">
+            Para acceder a las <b>Aplicaciones Hackeadas</b> y al <b>Creador de Sensibilidades</b>, por favor toca el menú de las 3
