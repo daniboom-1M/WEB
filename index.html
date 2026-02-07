@@ -1,193 +1,444 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROYECTO BOOM | HYPER NEON</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DANIBOOM | SISTEMA ELITE</title>
 
-    <style>
-        :root { --yellow: #ccff00; --orange: #ff6a00; --red: #ff003c; --bg: #020202; }
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
-        body { background: var(--bg); font-family: 'Rajdhani', sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; color: #fff; }
-        #particles-js { position: absolute; width: 100%; height: 100%; z-index: 1; }
-        .neon-card { position: relative; z-index: 10; width: 400px; padding: 3px; background: linear-gradient(45deg, var(--yellow), var(--orange), var(--red)); border-radius: 25px; animation: borderFlow 4s linear infinite; box-shadow: 0 0 50px rgba(255, 106, 0, 0.2); display: none; }
-        @keyframes borderFlow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
-        .inner { background: #080808; border-radius: 22px; padding: 2rem; text-align: center; }
-        .logo-box { width: 65px; height: 65px; margin: 0 auto 1rem; border: 2px solid var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--yellow); background: #000; }
-        .logo-box i { font-size: 28px; color: var(--yellow); filter: drop-shadow(0 0 8px var(--yellow)); }
-        h1 { font-family: 'Orbitron'; font-size: 1.4rem; text-shadow: 0 0 10px var(--orange); margin-bottom: 5px; }
-        .subtitle { font-size: 0.75rem; color: #888; margin-bottom: 20px; line-height: 1.3; font-weight: 600; }
-        .input-group { position: relative; margin-bottom: 0.8rem; }
-        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--orange); }
-        input { width: 100%; padding: 0.9rem 1rem 0.9rem 45px; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 12px; color: #fff; outline: none; font-family: 'Orbitron'; font-size: 0.75rem; }
-        .btn-boom { width: 100%; padding: 0.9rem; border: none; border-radius: 12px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; background: linear-gradient(90deg, var(--red), var(--orange)); color: #fff; text-transform: uppercase; font-size: 0.8rem; margin-top: 5px; }
-        .btn-google { background: #fff; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: sans-serif; font-weight: bold; }
-        .btn-anon { background: rgba(255, 255, 255, 0.05); border: 1px dashed var(--yellow); color: var(--yellow); margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .divider { margin: 1rem 0; color: #444; font-size: 0.65rem; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
-        .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #222; }
-        .error-msg { background: rgba(255, 0, 60, 0.15); border: 1px solid var(--red); color: var(--red); padding: 10px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 12px; display: none; font-weight: bold; }
-        .toggle-link { margin-top: 1rem; font-size: 0.8rem; color: #666; cursor: pointer; }
-        .toggle-link b { color: var(--yellow); }
-        #recoveryMenu { display: none; }
-    </style>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --neon-gold: #ffd700;
+  --neon-orange: #ff8800;
+  --neon-red: #ff0000;
+  --neon-cyan: #00f2ff;
+  --bg-dark: #000000;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Orbitron', sans-serif; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg-dark);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- FONDO ATÓMICO DINÁMICO --- */
+#canvasAtoms {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: -1;
+  background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+}
+
+/* --- CARGADOR IMPACTO "PELIGRO" --- */
+#loader {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.warning-glitch {
+  font-size: 90px;
+  color: var(--neon-red);
+  text-shadow: 0 0 20px var(--neon-red), 0 0 40px var(--neon-red);
+  animation: mega-glitch 0.1s infinite alternate;
+}
+
+.text-danger-alert {
+  color: var(--neon-red);
+  font-weight: 900;
+  font-size: 2.5rem;
+  letter-spacing: 10px;
+  text-shadow: 0 0 15px var(--neon-red);
+  margin-top: 20px;
+}
+
+.loading-text {
+  color: #fff;
+  font-size: 0.8rem;
+  margin-top: 15px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-family: 'Rajdhani';
+}
+
+@keyframes mega-glitch {
+  0% { transform: skew(5deg) scale(1); opacity: 0.8; }
+  100% { transform: skew(-5deg) scale(1.1); opacity: 1; filter: hue-rotate(45deg); }
+}
+
+/* --- LOGO RAYO ELITE --- */
+.insignia-rayo {
+  width: 100px; height: 100px;
+  border: 4px solid var(--neon-gold);
+  border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  margin-bottom: 20px;
+  background: rgba(0,0,0,0.8);
+  box-shadow: 0 0 30px var(--neon-gold), inset 0 0 20px var(--neon-gold);
+  z-index: 10;
+  animation: rayo-pulse 2s infinite;
+}
+
+.insignia-rayo i {
+  font-size: 50px;
+  color: var(--neon-gold);
+  filter: drop-shadow(0 0 15px var(--neon-gold));
+}
+
+@keyframes rayo-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 20px var(--neon-gold); }
+  50% { transform: scale(1.1); box-shadow: 0 0 40px var(--neon-gold); }
+}
+
+/* --- CAJA PRINCIPAL NEON --- */
+.main-card-neon {
+  position: relative;
+  z-index: 10;
+  width: 92%;
+  max-width: 400px;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--neon-gold), var(--neon-orange), var(--neon-red));
+  border-radius: 25px;
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+  display: none;
+}
+
+.inner-content {
+  background: rgba(5, 5, 5, 0.9);
+  border-radius: 22px;
+  padding: 35px 25px;
+  text-align: center;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+h1 {
+  font-size: 1.8rem;
+  color: var(--neon-gold);
+  text-shadow: 0 0 15px var(--neon-gold), 0 0 30px var(--neon-orange);
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+
+.neon-alert-msg {
+  font-family: 'Rajdhani';
+  font-size: 0.9rem;
+  color: #fff;
+  line-height: 1.4;
+  margin-bottom: 25px;
+  text-shadow: 0 0 5px #fff;
+}
+
+.neon-alert-msg b {
+  color: var(--neon-orange);
+  text-shadow: 0 0 10px var(--neon-orange);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* --- INPUTS CON INSIGNIAS NEON --- */
+.field-box {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.field-box i {
+  position: absolute;
+  left: 15px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--neon-gold);
+  font-size: 1.1rem;
+  filter: drop-shadow(0 0 8px var(--neon-gold));
+}
+
+input {
+  width: 100%;
+  padding: 15px 15px 15px 50px;
+  background: rgba(20, 20, 20, 0.8);
+  border: 2px solid #333;
+  border-radius: 12px;
+  color: #fff;
+  outline: none;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: var(--neon-gold);
+  box-shadow: 0 0 20px var(--neon-gold);
+}
+
+/* --- BOTONES CHIMBA --- */
+.btn-neon-action {
+  width: 100%;
+  padding: 16px;
+  background: var(--neon-gold);
+  border: none;
+  border-radius: 12px;
+  color: #000;
+  font-weight: 900;
+  font-size: 1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0 0 25px var(--neon-gold);
+  transition: 0.3s;
+}
+
+.btn-neon-action:active { transform: scale(0.95); }
+
+.btn-anon {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  border-radius: 12px;
+  margin-top: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-shadow: 0 0 10px var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+}
+
+.switch-text {
+  margin-top: 25px;
+  font-size: 0.85rem;
+  color: #888;
+  cursor: pointer;
+}
+
+.switch-text span {
+  color: var(--neon-gold);
+  text-shadow: 0 0 10px var(--neon-gold);
+}
+
+.error-neon-box {
+  color: var(--neon-red);
+  text-shadow: 0 0 10px var(--neon-red);
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+  display: none;
+}
+</style>
 </head>
+
 <body>
 
-<div id="particles-js"></div>
+<canvas id="canvasAtoms"></canvas>
 
-<div class="neon-card" id="cardCont">
-    <div class="inner">
-        <div class="logo-box"><i class="fas fa-atom"></i></div>
-        <h1>PROYECTO BOOM</h1>
-        <p class="subtitle">Acceso restringido. Solo personal autorizado.</p>
-
-        <div id="alertBox" class="error-msg"></div>
-
-        <div id="loginSection">
-            <form id="loginForm">
-                <div class="input-group"><i class="fas fa-envelope"></i><input type="email" id="lEmail" placeholder="CORREO" required></div>
-                <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="lPass" placeholder="CONTRASEÑA" required></div>
-                <button class="btn-boom">INGRESAR AL SISTEMA</button>
-            </form>
-            <div class="divider">O ACCEDE CON</div>
-            <button class="btn-boom btn-google" id="gBtnLog"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="18"> GOOGLE</button>
-            <p class="toggle-link" onclick="view('reg')">¿Sin cuenta? <b>REGÍSTRATE</b></p>
-        </div>
-
-        <div id="recoveryMenu">
-            <h2 style="color:var(--yellow); font-size:1rem; margin-bottom:10px;">ACCESO DENEGADO</h2>
-            <p style="font-size:0.7rem; color:#888; margin-bottom:15px;">Contraseña incorrecta. Revisa tu carpeta de Spam tras enviar.</p>
-            <div class="input-group"><i class="fas fa-paper-plane"></i><input type="email" id="resEmail" readonly></div>
-            <button class="btn-boom" id="sendReset">ENVIAR ENLACE</button>
-            <p class="toggle-link" onclick="location.reload()"><b>VOLVER</b></p>
-        </div>
-
-        <div id="registerSection" style="display:none;">
-            <form id="registerForm">
-                <div class="input-group"><i class="fas fa-user"></i><input type="text" id="rUser" placeholder="NICKNAME" required></div>
-                <div class="input-group"><i class="fas fa-at"></i><input type="email" id="rEmail" placeholder="CORREO" required></div>
-                <div class="input-group"><i class="fas fa-shield-alt"></i><input type="password" id="rPass" placeholder="PASSWORD" required></div>
-                <button class="btn-boom">UNIRSE AL PROYECTO</button>
-            </form>
-            <div class="divider">O ACCEDE CON</div>
-            <button class="btn-boom btn-google" id="gBtnReg"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="18"> GOOGLE</button>
-            <button class="btn-boom btn-anon" onclick="enterAnon()">
-                <i class="fas fa-user-secret"></i> MODO ANÓNIMO (INFILTRADO)
-            </button>
-            <p class="toggle-link" onclick="view('log')">¿Ya tienes cuenta? <b>INICIAR SESIÓN</b></p>
-        </div>
-    </div>
+<div id="loader">
+  <div class="warning-glitch"><i class="fas fa-biohazard"></i></div>
+  <div class="text-danger-alert">PELIGRO</div>
+  <div class="loading-text">CARGANDO PROTOCOLOS DE DANIBOOM WEB</div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<div class="insignia-rayo">
+  <i class="fas fa-bolt"></i>
+</div>
+
+<div class="main-card-neon" id="mainWrapper">
+  <div class="inner-content">
+    <h1>DANIBOOM WEB</h1>
+    
+    <p class="neon-alert-msg" id="alertText">
+      Si entraste como anónimo no vas a poder usar toda la página 100%. 
+      <b onclick="showView('reg')">Crea una cuenta</b> o Inicia Sesión para el acceso completo.
+      <i>Estamos trabajando para que quede lo mejor posible.</i>
+    </p>
+
+    <div id="loginBox">
+      <div class="field-box">
+        <i class="fas fa-user-shield"></i>
+        <input id="lEmail" type="email" placeholder="CORREO ELITE">
+      </div>
+      <div class="field-box">
+        <i class="fas fa-key"></i>
+        <input id="lPass" type="password" placeholder="PASSWORD">
+      </div>
+      <p id="lError" class="error-neon-box"></p>
+      <button class="btn-neon-action" id="lBtn">AUTENTICAR</button>
+      <div class="switch-text" onclick="showView('reg')">¿SISTEMA NUEVO? <span>REGISTRARSE</span></div>
+    </div>
+
+    <div id="registerBox" style="display:none">
+      <div class="field-box">
+        <i class="fas fa-id-card"></i>
+        <input id="rUser" type="text" placeholder="NOMBRE DE USUARIO">
+      </div>
+      <div class="field-box">
+        <i class="fas fa-envelope-open-text"></i>
+        <input id="rEmail" type="email" placeholder="CORREO">
+      </div>
+      <div class="field-box">
+        <i class="fas fa-unlock-alt"></i>
+        <input id="rPass" type="password" placeholder="CONTRASEÑA SEGURA">
+      </div>
+      <button class="btn-neon-action" id="rBtn">CREAR CUENTA</button>
+      <div class="switch-text" onclick="showView('log')">¿YA TIENES CUENTA? <span>LOGUEAR</span></div>
+    </div>
+
+    <div id="recoveryBox" style="display:none">
+      <p style="color:var(--neon-red); text-shadow: 0 0 10px var(--neon-red); margin-bottom:20px;">
+        <i class="fas fa-user-lock"></i> PASSWORD INCORRECTO
+      </p>
+      <button class="btn-neon-action" id="sendResetBtn">RECOBRAR ACCESO</button>
+      <div class="switch-text" onclick="showView('log')">VOLVER</div>
+    </div>
+
+    <div style="margin: 25px 0 10px; color: var(--neon-gold); font-size: 0.7rem; letter-spacing: 4px;">ZONA ANÓNIMA</div>
+    <button class="btn-anon" id="aBtn"><i class="fas fa-ghost"></i> ACCESO ANÓNIMO</button>
+  </div>
+</div>
+
 <script type="module">
+// --- SISTEMA DE ÁTOMOS ELITE ---
+const canvas = document.getElementById('canvasAtoms');
+const ctx = canvas.getContext('2d');
+let atoms = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 1.5;
+    this.vy = (Math.random() - 0.5) * 1.5;
+    this.size = Math.random() * 2 + 1;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
+  draw() {
+    ctx.fillStyle = "#ffd700";
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "#ffaa00";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function initAtoms() {
+  atoms = [];
+  const total = (canvas.width * canvas.height) / 10000;
+  for(let i=0; i<total; i++) atoms.push(new Particle());
+}
+
+function drawLines() {
+  for(let i=0; i<atoms.length; i++) {
+    for(let j=i+1; j<atoms.length; j++) {
+      let d = Math.hypot(atoms[i].x - atoms[j].x, atoms[i].y - atoms[j].y);
+      if(d < 120) {
+        ctx.strokeStyle = `rgba(255, 215, 0, ${1 - d/120})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(atoms[i].x, atoms[i].y);
+        ctx.lineTo(atoms[j].x, atoms[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  atoms.forEach(a => { a.update(); a.draw(); });
+  drawLines();
+  requestAnimationFrame(loop);
+}
+initAtoms(); loop();
+
+// --- LÓGICA FIREBASE ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signInAnonymously, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDocs, collection, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
-    authDomain: "web1-3b83a.firebaseapp.com",
-    projectId: "web1-3b83a"
+  apiKey:"AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
+  authDomain:"web1-3b83a.firebaseapp.com",
+  projectId:"web1-3b83a"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
-const provider = new GoogleAuthProvider();
 
-// DETECCIÓN DE SESIÓN
-onAuthStateChanged(auth, (user) => {
-    if (user) { location.href = "main.html"; } 
-    else { document.getElementById('cardCont').style.display = 'block'; }
+onAuthStateChanged(auth, u => {
+  setTimeout(() => {
+    document.getElementById('loader').style.display = 'none';
+    if(u && !u.isAnonymous) {
+      location.href = "main.html";
+    } else {
+      document.getElementById('mainWrapper').style.display = 'block';
+    }
+  }, 3000);
 });
 
-window.view = (t) => {
-    alertBox.style.display = 'none';
-    loginSection.style.display = t === 'log' ? 'block' : 'none';
-    registerSection.style.display = t === 'reg' ? 'block' : 'none';
-    recoveryMenu.style.display = 'none';
-}
+window.showView = (v) => {
+  loginBox.style.display = v === 'log' ? 'block' : 'none';
+  registerBox.style.display = v === 'reg' ? 'block' : 'none';
+  recoveryBox.style.display = v === 'rec' ? 'block' : 'none';
+};
 
-// LOGIN
-loginForm.onsubmit = async e => {
-    e.preventDefault();
-    try {
-        await signInWithEmailAndPassword(auth, lEmail.value, lPass.value);
-    } catch (err) {
-        const q = query(collection(db, "users"), where("email", "==", lEmail.value));
-        const snap = await getDocs(q);
-        if (snap.empty) { alertBox.textContent = "CUENTA NO EXISTE."; alertBox.style.display = 'block'; }
-        else { loginSection.style.display = 'none'; recoveryMenu.style.display = 'block'; resEmail.value = lEmail.value; }
-    }
-}
+lBtn.onclick = async () => {
+  const e = lEmail.value, p = lPass.value;
+  if(!e || !p) return alert("SISTEMA: Ingrese credenciales.");
+  try { await signInWithEmailAndPassword(auth, e, p); }
+  catch(err) {
+    if(err.code.includes('password')) showView('rec');
+    else { lError.innerText = "ACCESO DENEGADO: Usuario no registrado."; lError.style.display = 'block'; }
+  }
+};
 
-// RECUPERACIÓN
-sendReset.onclick = async () => {
-    try {
-        await sendPasswordResetEmail(auth, resEmail.value);
-        alertBox.textContent = "ENLACE ENVIADO."; alertBox.style.display = 'block'; alertBox.style.color = "var(--yellow)";
-    } catch { alertBox.textContent = "ERROR."; alertBox.style.display = 'block'; }
-}
+rBtn.onclick = async () => {
+  if(!rUser.value || !rEmail.value || !rPass.value) return alert("Complete los datos.");
+  try {
+    const res = await createUserWithEmailAndPassword(auth, rEmail.value, rPass.value);
+    await setDoc(doc(db, "users", res.user.uid), {
+      displayName: rUser.value, email: rEmail.value, membership: "suscriptor", status: "active", nvl: "0", createdAt: serverTimestamp()
+    });
+  } catch(e) { alert("ERROR: El sistema no pudo crear la cuenta."); }
+};
 
-// GOOGLE AUTH (ESTRUCTURA SOLICITADA)
-const googleAuth = async () => {
-    try {
-        const res = await signInWithPopup(auth, provider);
-        await setDoc(doc(db, "users", res.user.uid), {
-            displayName: res.user.displayName,
-            email: res.user.email,
-            photoURL: res.user.photoURL || "default.png",
-            membership: "suscriptor",
-            createdAt: serverTimestamp(),
-            status: "active",
-            nvl: "0"
-        }, { merge: true });
-    } catch { alert("Error Google"); }
-}
-gBtnLog.onclick = googleAuth;
-if(document.getElementById('gBtnReg')) gBtnReg.onclick = googleAuth;
-
-// ANÓNIMO (ESTRUCTURA SOLICITADA + CONTEO)
-window.enterAnon = async () => {
-    try {
-        const q = query(collection(db, "users"), where("membership", "==", "anonymous"));
-        const snap = await getDocs(q);
-        const count = String(snap.size + 1).padStart(3, '0');
-        const res = await signInAnonymously(auth);
-        
-        await setDoc(doc(db, "users", res.user.uid), {
-            displayName: `Anónimo#${count}`,
-            email: "none",
-            photoURL: "default.png",
-            membership: "anonymous",
-            createdAt: serverTimestamp(),
-            status: "active",
-            nvl: "0"
-        });
-    } catch (e) { console.error(e); }
-}
-
-// REGISTRO EMAIL (ESTRUCTURA SOLICITADA)
-registerForm.onsubmit = async e => {
-    e.preventDefault();
-    try {
-        const c = await createUserWithEmailAndPassword(auth, rEmail.value, rPass.value);
-        await setDoc(doc(db, "users", c.user.uid), {
-            displayName: rUser.value,
-            email: rEmail.value,
-            photoURL: "default.png",
-            membership: "suscriptor",
-            createdAt: serverTimestamp(),
-            status: "active",
-            nvl: "0"
-        });
-    } catch { alertBox.textContent = "ERROR EN DATOS."; alertBox.style.display = 'block'; }
-}
-
-particlesJS("particles-js", { particles: { number: { value: 40 }, color: { value: ["#ccff00", "#ff6a00"] }, shape: { type: "circle" }, opacity: { value: 0.3 }, size: { value: 2 }, move: { enable: true, speed: 1 } } });
+aBtn.onclick = async () => {
+  const res = await signInAnonymously(auth);
+  const counterRef = doc(db, "system", "anonCounter");
+  await runTransaction(db, async (tx) => {
+    const c = await tx.get(counterRef);
+    let n = c.exists() ? c.data().value + 1 : 1;
+    tx.set(counterRef, { value: n });
+    await setDoc(doc(db, "users", res.user.uid), {
+      displayName: `Anónimo#${n}`, membership: "anonymous", status: "active", nvl: "0", createdAt: serverTimestamp()
+    });
+  });
+  location.href = "main.html";
+};
 </script>
 </body>
-</html>
+    </html>
+    
