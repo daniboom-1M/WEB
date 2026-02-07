@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DANIBOOM | SISTEMA ELITE</title>
+<title>DANIBOOM WEB | FLUID EDITION</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,14 +14,13 @@
   --neon-orange: #ff8800;
   --neon-red: #ff0000;
   --neon-cyan: #00f2ff;
-  --bg-dark: #000000;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Orbitron', sans-serif; }
 
 body {
   min-height: 100vh;
-  background: var(--bg-dark);
+  background: #000;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -31,16 +30,15 @@ body {
   position: relative;
 }
 
-/* --- FONDO ATÓMICO DINÁMICO --- */
+/* --- CANVAS OPTIMIZADO (SIN LAG) --- */
 #canvasAtoms {
   position: fixed;
   top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  width: 100%; height: 100%;
   z-index: -1;
-  background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
 }
 
-/* --- CARGADOR IMPACTO "PELIGRO" --- */
+/* --- CARGADOR GLITCH --- */
 #loader {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -53,189 +51,78 @@ body {
 }
 
 .warning-glitch {
-  font-size: 90px;
+  font-size: 80px;
   color: var(--neon-red);
-  text-shadow: 0 0 20px var(--neon-red), 0 0 40px var(--neon-red);
-  animation: mega-glitch 0.1s infinite alternate;
+  text-shadow: 0 0 20px var(--neon-red);
+  animation: glitch-fluid 0.2s infinite;
 }
 
-.text-danger-alert {
-  color: var(--neon-red);
-  font-weight: 900;
-  font-size: 2.5rem;
-  letter-spacing: 10px;
-  text-shadow: 0 0 15px var(--neon-red);
-  margin-top: 20px;
+@keyframes glitch-fluid {
+  0% { transform: translate(2px,0); }
+  50% { transform: translate(-2px,0); opacity: 0.8; }
+  100% { transform: translate(0); }
 }
 
-.loading-text {
-  color: #fff;
-  font-size: 0.8rem;
-  margin-top: 15px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-family: 'Rajdhani';
-}
-
-@keyframes mega-glitch {
-  0% { transform: skew(5deg) scale(1); opacity: 0.8; }
-  100% { transform: skew(-5deg) scale(1.1); opacity: 1; filter: hue-rotate(45deg); }
-}
-
-/* --- LOGO RAYO ELITE --- */
-.insignia-rayo {
-  width: 100px; height: 100px;
-  border: 4px solid var(--neon-gold);
-  border-radius: 50%;
-  display: flex; justify-content: center; align-items: center;
-  margin-bottom: 20px;
-  background: rgba(0,0,0,0.8);
-  box-shadow: 0 0 30px var(--neon-gold), inset 0 0 20px var(--neon-gold);
-  z-index: 10;
-  animation: rayo-pulse 2s infinite;
-}
-
-.insignia-rayo i {
-  font-size: 50px;
-  color: var(--neon-gold);
-  filter: drop-shadow(0 0 15px var(--neon-gold));
-}
-
-@keyframes rayo-pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 20px var(--neon-gold); }
-  50% { transform: scale(1.1); box-shadow: 0 0 40px var(--neon-gold); }
-}
-
-/* --- CAJA PRINCIPAL NEON --- */
+/* --- CONTENEDOR PRINCIPAL --- */
 .main-card-neon {
-  position: relative;
   z-index: 10;
-  width: 92%;
+  width: 90%;
   max-width: 400px;
-  padding: 3px;
-  background: linear-gradient(135deg, var(--neon-gold), var(--neon-orange), var(--neon-red));
-  border-radius: 25px;
-  box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
-  display: none;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--neon-gold), var(--neon-red));
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+  display: none; /* Se activa cuando carga */
 }
 
 .inner-content {
-  background: rgba(5, 5, 5, 0.9);
-  border-radius: 22px;
-  padding: 35px 25px;
+  background: rgba(5, 5, 5, 0.92);
+  border-radius: 18px;
+  padding: 30px 20px;
   text-align: center;
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 215, 0, 0.2);
+  backdrop-filter: blur(10px);
 }
 
-h1 {
-  font-size: 1.8rem;
-  color: var(--neon-gold);
-  text-shadow: 0 0 15px var(--neon-gold), 0 0 30px var(--neon-orange);
-  margin-bottom: 15px;
-  letter-spacing: 2px;
-}
-
-.neon-alert-msg {
-  font-family: 'Rajdhani';
-  font-size: 0.9rem;
-  color: #fff;
-  line-height: 1.4;
-  margin-bottom: 25px;
-  text-shadow: 0 0 5px #fff;
-}
-
-.neon-alert-msg b {
-  color: var(--neon-orange);
-  text-shadow: 0 0 10px var(--neon-orange);
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-/* --- INPUTS CON INSIGNIAS NEON --- */
-.field-box {
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.field-box i {
-  position: absolute;
-  left: 15px; top: 50%;
-  transform: translateY(-50%);
-  color: var(--neon-gold);
-  font-size: 1.1rem;
-  filter: drop-shadow(0 0 8px var(--neon-gold));
-}
-
-input {
-  width: 100%;
-  padding: 15px 15px 15px 50px;
-  background: rgba(20, 20, 20, 0.8);
-  border: 2px solid #333;
-  border-radius: 12px;
-  color: #fff;
-  outline: none;
-  font-size: 1rem;
-  transition: 0.3s;
-}
-
-input:focus {
-  border-color: var(--neon-gold);
+.rayo-badge {
+  width: 70px; height: 70px;
+  border: 3px solid var(--neon-gold);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center;
   box-shadow: 0 0 20px var(--neon-gold);
 }
 
-/* --- BOTONES CHIMBA --- */
-.btn-neon-action {
-  width: 100%;
-  padding: 16px;
-  background: var(--neon-gold);
-  border: none;
-  border-radius: 12px;
-  color: #000;
-  font-weight: 900;
-  font-size: 1rem;
-  cursor: pointer;
-  text-transform: uppercase;
-  box-shadow: 0 0 25px var(--neon-gold);
-  transition: 0.3s;
-}
+h1 { font-size: 1.5rem; color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); margin-bottom: 10px; }
 
-.btn-neon-action:active { transform: scale(0.95); }
+.alert-p { font-family: 'Rajdhani'; font-size: 0.85rem; color: #ccc; margin-bottom: 20px; }
+.alert-p b { color: var(--neon-orange); cursor: pointer; text-decoration: underline; }
+
+/* INPUTS --- */
+.f-box { position: relative; margin-bottom: 15px; }
+.f-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--neon-gold); }
+
+input {
+  width: 100%; padding: 12px 10px 12px 45px;
+  background: #111; border: 1px solid #333; border-radius: 10px;
+  color: #fff; outline: none; transition: 0.3s;
+}
+input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-gold); }
+
+.btn-main {
+  width: 100%; padding: 15px; background: var(--neon-gold);
+  border: none; border-radius: 10px; font-weight: 900;
+  cursor: pointer; text-transform: uppercase; box-shadow: 0 0 20px var(--neon-gold);
+}
 
 .btn-anon {
-  width: 100%;
-  padding: 12px;
-  background: transparent;
-  border: 2px solid var(--neon-cyan);
-  color: var(--neon-cyan);
-  border-radius: 12px;
-  margin-top: 15px;
-  font-weight: 700;
-  text-transform: uppercase;
-  cursor: pointer;
-  text-shadow: 0 0 10px var(--neon-cyan);
-  box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+  width: 100%; padding: 12px; background: transparent;
+  border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
+  border-radius: 10px; margin-top: 15px; cursor: pointer;
+  text-shadow: 0 0 5px var(--neon-cyan);
 }
 
-.switch-text {
-  margin-top: 25px;
-  font-size: 0.85rem;
-  color: #888;
-  cursor: pointer;
-}
-
-.switch-text span {
-  color: var(--neon-gold);
-  text-shadow: 0 0 10px var(--neon-gold);
-}
-
-.error-neon-box {
-  color: var(--neon-red);
-  text-shadow: 0 0 10px var(--neon-red);
-  font-size: 0.8rem;
-  margin-bottom: 15px;
-  display: none;
-}
+.switch { margin-top: 20px; font-size: 0.8rem; color: #777; cursor: pointer; }
+.switch span { color: var(--neon-gold); font-weight: bold; }
 </style>
 </head>
 
@@ -245,138 +132,96 @@ input:focus {
 
 <div id="loader">
   <div class="warning-glitch"><i class="fas fa-biohazard"></i></div>
-  <div class="text-danger-alert">PELIGRO</div>
-  <div class="loading-text">CARGANDO PROTOCOLOS DE DANIBOOM WEB</div>
-</div>
-
-<div class="insignia-rayo">
-  <i class="fas fa-bolt"></i>
+  <h2 style="color:var(--neon-red); letter-spacing:5px; margin-top:10px;">PELIGRO</h2>
+  <p style="font-size:0.7rem; margin-top:10px; opacity:0.6;">Sincronizando Daniboom Web...</p>
 </div>
 
 <div class="main-card-neon" id="mainWrapper">
   <div class="inner-content">
+    <div class="rayo-badge"><i class="fas fa-bolt" style="color:var(--neon-gold); font-size:30px;"></i></div>
     <h1>DANIBOOM WEB</h1>
     
-    <p class="neon-alert-msg" id="alertText">
-      Si entraste como anónimo no vas a poder usar toda la página 100%. 
-      <b onclick="showView('reg')">Crea una cuenta</b> o Inicia Sesión para el acceso completo.
-      <i>Estamos trabajando para que quede lo mejor posible.</i>
+    <p class="alert-p" id="msgInfo">
+      Los usuarios anónimos tienen acceso restringido. 
+      <b onclick="showView('reg')">Crea una cuenta</b> para liberar todo el poder.
     </p>
 
     <div id="loginBox">
-      <div class="field-box">
-        <i class="fas fa-user-shield"></i>
-        <input id="lEmail" type="email" placeholder="CORREO ELITE">
-      </div>
-      <div class="field-box">
-        <i class="fas fa-key"></i>
-        <input id="lPass" type="password" placeholder="PASSWORD">
-      </div>
-      <p id="lError" class="error-neon-box"></p>
-      <button class="btn-neon-action" id="lBtn">AUTENTICAR</button>
-      <div class="switch-text" onclick="showView('reg')">¿SISTEMA NUEVO? <span>REGISTRARSE</span></div>
+      <div class="f-box"><i class="fas fa-envelope"></i><input id="lEmail" type="email" placeholder="CORREO"></div>
+      <div class="f-box"><i class="fas fa-lock"></i><input id="lPass" type="password" placeholder="PASSWORD"></div>
+      <button class="btn-main" id="lBtn">INGRESAR</button>
+      <div class="switch" onclick="showView('reg')">¿SISTEMA NUEVO? <span>REGISTRARSE</span></div>
     </div>
 
     <div id="registerBox" style="display:none">
-      <div class="field-box">
-        <i class="fas fa-id-card"></i>
-        <input id="rUser" type="text" placeholder="NOMBRE DE USUARIO">
-      </div>
-      <div class="field-box">
-        <i class="fas fa-envelope-open-text"></i>
-        <input id="rEmail" type="email" placeholder="CORREO">
-      </div>
-      <div class="field-box">
-        <i class="fas fa-unlock-alt"></i>
-        <input id="rPass" type="password" placeholder="CONTRASEÑA SEGURA">
-      </div>
-      <button class="btn-neon-action" id="rBtn">CREAR CUENTA</button>
-      <div class="switch-text" onclick="showView('log')">¿YA TIENES CUENTA? <span>LOGUEAR</span></div>
+      <div class="f-box"><i class="fas fa-user"></i><input id="rUser" type="text" placeholder="NOMBRE USUARIO"></div>
+      <div class="f-box"><i class="fas fa-envelope"></i><input id="rEmail" type="email" placeholder="CORREO"></div>
+      <div class="f-box"><i class="fas fa-lock"></i><input id="rPass" type="password" placeholder="PASSWORD"></div>
+      <button class="btn-main" id="rBtn">CREAR CUENTA</button>
+      <div class="switch" onclick="showView('log')">¿YA TIENES CUENTA? <span>LOGUEAR</span></div>
     </div>
 
-    <div id="recoveryBox" style="display:none">
-      <p style="color:var(--neon-red); text-shadow: 0 0 10px var(--neon-red); margin-bottom:20px;">
-        <i class="fas fa-user-lock"></i> PASSWORD INCORRECTO
-      </p>
-      <button class="btn-neon-action" id="sendResetBtn">RECOBRAR ACCESO</button>
-      <div class="switch-text" onclick="showView('log')">VOLVER</div>
-    </div>
-
-    <div style="margin: 25px 0 10px; color: var(--neon-gold); font-size: 0.7rem; letter-spacing: 4px;">ZONA ANÓNIMA</div>
-    <button class="btn-anon" id="aBtn"><i class="fas fa-ghost"></i> ACCESO ANÓNIMO</button>
+    <button class="btn-anon" id="aBtn">ACCESO ANÓNIMO</button>
   </div>
 </div>
 
 <script type="module">
-// --- SISTEMA DE ÁTOMOS ELITE ---
+// --- CANVAS ULTRA FLUIDO (Optimizado para GitHub/Móvil) ---
 const canvas = document.getElementById('canvasAtoms');
 const ctx = canvas.getContext('2d');
-let atoms = [];
+let particles = [];
 
-function resize() {
+function init() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  particles = [];
+  // Menos partículas = Más fluidez
+  const count = Math.min(40, (canvas.width * canvas.height) / 15000); 
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 1,
+      vy: (Math.random() - 0.5) * 1,
+      r: 1.5
+    });
+  }
 }
-window.addEventListener('resize', resize);
-resize();
 
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.vx = (Math.random() - 0.5) * 1.5;
-    this.vy = (Math.random() - 0.5) * 1.5;
-    this.size = Math.random() * 2 + 1;
-  }
-  update() {
-    this.x += this.vx; this.y += this.vy;
-    if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
-    if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
-  }
-  draw() {
-    ctx.fillStyle = "#ffd700";
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = "#ffaa00";
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255, 215, 0, 0.8)";
+  ctx.strokeStyle = "rgba(255, 215, 0, 0.15)";
+
+  particles.forEach((p, i) => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
     ctx.fill();
-  }
-}
 
-function initAtoms() {
-  atoms = [];
-  const total = (canvas.width * canvas.height) / 10000;
-  for(let i=0; i<total; i++) atoms.push(new Particle());
-}
-
-function drawLines() {
-  for(let i=0; i<atoms.length; i++) {
-    for(let j=i+1; j<atoms.length; j++) {
-      let d = Math.hypot(atoms[i].x - atoms[j].x, atoms[i].y - atoms[j].y);
-      if(d < 120) {
-        ctx.strokeStyle = `rgba(255, 215, 0, ${1 - d/120})`;
-        ctx.lineWidth = 0.5;
+    for (let j = i + 1; j < particles.length; j++) {
+      let p2 = particles[j];
+      let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+      if (dist < 110) {
         ctx.beginPath();
-        ctx.moveTo(atoms[i].x, atoms[i].y);
-        ctx.lineTo(atoms[j].x, atoms[j].y);
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
         ctx.stroke();
       }
     }
-  }
+  });
+  requestAnimationFrame(draw);
 }
+window.addEventListener('resize', init);
+init(); draw();
 
-function loop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  atoms.forEach(a => { a.update(); a.draw(); });
-  drawLines();
-  requestAnimationFrame(loop);
-}
-initAtoms(); loop();
-
-// --- LÓGICA FIREBASE ---
+// --- LÓGICA FIREBASE (SOLUCIÓN CICLO INFINITO) ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey:"AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -388,57 +233,50 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
 
-onAuthStateChanged(auth, u => {
+onAuthStateChanged(auth, user => {
   setTimeout(() => {
     document.getElementById('loader').style.display = 'none';
-    if(u && !u.isAnonymous) {
+    
+    // SI HAY USUARIO Y NO ES ANÓNIMO -> REDIRECCIONAR AL MAIN
+    // SI ES ANÓNIMO -> SE QUEDA AQUÍ PARA PODER LOGUEARSE DE VERDAD
+    if (user && !user.isAnonymous) {
       location.href = "main.html";
     } else {
       document.getElementById('mainWrapper').style.display = 'block';
     }
-  }, 3000);
+  }, 2000);
 });
 
 window.showView = (v) => {
   loginBox.style.display = v === 'log' ? 'block' : 'none';
   registerBox.style.display = v === 'reg' ? 'block' : 'none';
-  recoveryBox.style.display = v === 'rec' ? 'block' : 'none';
 };
 
 lBtn.onclick = async () => {
   const e = lEmail.value, p = lPass.value;
-  if(!e || !p) return alert("SISTEMA: Ingrese credenciales.");
-  try { await signInWithEmailAndPassword(auth, e, p); }
-  catch(err) {
-    if(err.code.includes('password')) showView('rec');
-    else { lError.innerText = "ACCESO DENEGADO: Usuario no registrado."; lError.style.display = 'block'; }
-  }
+  if(!e || !p) return alert("Faltan datos");
+  try {
+    // Si ya es anónimo, Firebase intentará vincular o simplemente cambiar de sesión
+    await signInWithEmailAndPassword(auth, e, p);
+  } catch(err) { alert("Error: Credenciales inválidas"); }
 };
 
 rBtn.onclick = async () => {
-  if(!rUser.value || !rEmail.value || !rPass.value) return alert("Complete los datos.");
+  if(!rUser.value || !rEmail.value || !rPass.value) return alert("Completa los campos");
   try {
     const res = await createUserWithEmailAndPassword(auth, rEmail.value, rPass.value);
     await setDoc(doc(db, "users", res.user.uid), {
       displayName: rUser.value, email: rEmail.value, membership: "suscriptor", status: "active", nvl: "0", createdAt: serverTimestamp()
     });
-  } catch(e) { alert("ERROR: El sistema no pudo crear la cuenta."); }
+  } catch(e) { alert("Error en el registro"); }
 };
 
 aBtn.onclick = async () => {
-  const res = await signInAnonymously(auth);
-  const counterRef = doc(db, "system", "anonCounter");
-  await runTransaction(db, async (tx) => {
-    const c = await tx.get(counterRef);
-    let n = c.exists() ? c.data().value + 1 : 1;
-    tx.set(counterRef, { value: n });
-    await setDoc(doc(db, "users", res.user.uid), {
-      displayName: `Anónimo#${n}`, membership: "anonymous", status: "active", nvl: "0", createdAt: serverTimestamp()
-    });
-  });
-  location.href = "main.html";
+  try {
+    const res = await signInAnonymously(auth);
+    location.href = "main.html"; // El anónimo si va al main directo al darle click
+  } catch(e) { console.error(e); }
 };
 </script>
 </body>
-    </html>
-    
+</html>
