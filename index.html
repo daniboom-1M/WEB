@@ -8,92 +8,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root {
-            --yellow: #ccff00;
-            --orange: #ff6a00;
-            --red: #ff003c;
-            --bg: #020202;
-        }
-
+        :root { --yellow: #ccff00; --orange: #ff6a00; --red: #ff003c; --bg: #020202; }
         * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
-
-        body {
-            background: var(--bg);
-            font-family: 'Rajdhani', sans-serif;
-            height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden; color: #fff;
-        }
-
+        body { background: var(--bg); font-family: 'Rajdhani', sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; color: #fff; }
         #particles-js { position: absolute; width: 100%; height: 100%; z-index: 1; }
-
-        .neon-card {
-            position: relative; z-index: 10; width: 400px; padding: 3px;
-            background: linear-gradient(45deg, var(--yellow), var(--orange), var(--red));
-            border-radius: 25px; animation: borderFlow 4s linear infinite;
-            box-shadow: 0 0 50px rgba(255, 106, 0, 0.2);
-            /* Oculto inicialmente para evitar parpadeo mientras detecta sesión */
-            display: none; 
-        }
-
-        @keyframes borderFlow {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
+        .neon-card { position: relative; z-index: 10; width: 400px; padding: 3px; background: linear-gradient(45deg, var(--yellow), var(--orange), var(--red)); border-radius: 25px; animation: borderFlow 4s linear infinite; box-shadow: 0 0 50px rgba(255, 106, 0, 0.2); display: none; }
+        @keyframes borderFlow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
         .inner { background: #080808; border-radius: 22px; padding: 2rem; text-align: center; }
-
-        .logo-box {
-            width: 65px; height: 65px; margin: 0 auto 1rem;
-            border: 2px solid var(--yellow); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 15px var(--yellow); background: #000;
-        }
+        .logo-box { width: 65px; height: 65px; margin: 0 auto 1rem; border: 2px solid var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--yellow); background: #000; }
         .logo-box i { font-size: 28px; color: var(--yellow); filter: drop-shadow(0 0 8px var(--yellow)); }
-
         h1 { font-family: 'Orbitron'; font-size: 1.4rem; text-shadow: 0 0 10px var(--orange); margin-bottom: 5px; }
         .subtitle { font-size: 0.75rem; color: #888; margin-bottom: 20px; line-height: 1.3; font-weight: 600; }
-
         .input-group { position: relative; margin-bottom: 0.8rem; }
-        .input-group i { 
-            position: absolute; left: 15px; top: 50%; transform: translateY(-50%); 
-            color: var(--orange); filter: drop-shadow(0 0 5px var(--orange));
-        }
-        input {
-            width: 100%; padding: 0.9rem 1rem 0.9rem 45px;
-            background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 12px;
-            color: #fff; outline: none; font-family: 'Orbitron'; font-size: 0.75rem;
-        }
-        input:focus { border-color: var(--yellow); box-shadow: 0 0 15px rgba(204, 255, 0, 0.2); }
-
-        .btn-boom {
-            width: 100%; padding: 0.9rem; border: none; border-radius: 12px;
-            font-family: 'Orbitron'; font-weight: 900; cursor: pointer;
-            background: linear-gradient(90deg, var(--red), var(--orange));
-            color: #fff; text-transform: uppercase; box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
-            font-size: 0.8rem; margin-top: 5px;
-        }
-        .btn-boom:hover { transform: scale(1.02); filter: brightness(1.1); }
-
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--orange); }
+        input { width: 100%; padding: 0.9rem 1rem 0.9rem 45px; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 12px; color: #fff; outline: none; font-family: 'Orbitron'; font-size: 0.75rem; }
+        .btn-boom { width: 100%; padding: 0.9rem; border: none; border-radius: 12px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; background: linear-gradient(90deg, var(--red), var(--orange)); color: #fff; text-transform: uppercase; font-size: 0.8rem; margin-top: 5px; }
         .btn-google { background: #fff; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: sans-serif; font-weight: bold; }
-        
-        .btn-anon { 
-            background: rgba(255, 255, 255, 0.05); border: 1px dashed var(--yellow); 
-            color: var(--yellow); margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-anon i { font-size: 0.9rem; }
-        .btn-anon:hover { background: var(--yellow); color: #000; border-style: solid; }
-
+        .btn-anon { background: rgba(255, 255, 255, 0.05); border: 1px dashed var(--yellow); color: var(--yellow); margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .divider { margin: 1rem 0; color: #444; font-size: 0.65rem; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
         .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #222; }
-
         .error-msg { background: rgba(255, 0, 60, 0.15); border: 1px solid var(--red); color: var(--red); padding: 10px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 12px; display: none; font-weight: bold; }
-        
         .toggle-link { margin-top: 1rem; font-size: 0.8rem; color: #666; cursor: pointer; }
         .toggle-link b { color: var(--yellow); }
-
-        #recoveryMenu { display: none; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #recoveryMenu { display: none; }
     </style>
 </head>
 <body>
@@ -104,7 +41,7 @@
     <div class="inner">
         <div class="logo-box"><i class="fas fa-atom"></i></div>
         <h1>PROYECTO BOOM</h1>
-        <p class="subtitle">Estoy creando la página al 100% para que todo funcione correctamente.</p>
+        <p class="subtitle">Acceso restringido. Solo personal autorizado.</p>
 
         <div id="alertBox" class="error-msg"></div>
 
@@ -114,14 +51,14 @@
                 <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="lPass" placeholder="CONTRASEÑA" required></div>
                 <button class="btn-boom">INGRESAR AL SISTEMA</button>
             </form>
-            
-            
+            <div class="divider">O ACCEDE CON</div>
+            <button class="btn-boom btn-google" id="gBtnLog"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="18"> GOOGLE</button>
             <p class="toggle-link" onclick="view('reg')">¿Sin cuenta? <b>REGÍSTRATE</b></p>
         </div>
 
         <div id="recoveryMenu">
             <h2 style="color:var(--yellow); font-size:1rem; margin-bottom:10px;">ACCESO DENEGADO</h2>
-            <p style="font-size:0.7rem; color:#888; margin-bottom:15px;">La contraseña es incorrecta. ¿Enviar enlace de recuperación? el enlace puede estar en la bandeja de spam de Gmail revisa bien antes de que expire</p>
+            <p style="font-size:0.7rem; color:#888; margin-bottom:15px;">Contraseña incorrecta. Revisa tu carpeta de Spam tras enviar.</p>
             <div class="input-group"><i class="fas fa-paper-plane"></i><input type="email" id="resEmail" readonly></div>
             <button class="btn-boom" id="sendReset">ENVIAR ENLACE</button>
             <p class="toggle-link" onclick="location.reload()"><b>VOLVER</b></p>
@@ -135,7 +72,7 @@
                 <button class="btn-boom">UNIRSE AL PROYECTO</button>
             </form>
             <div class="divider">O ACCEDE CON</div>
-            
+            <button class="btn-boom btn-google" id="gBtnReg"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="18"> GOOGLE</button>
             <button class="btn-boom btn-anon" onclick="enterAnon()">
                 <i class="fas fa-user-secret"></i> MODO ANÓNIMO (INFILTRADO)
             </button>
@@ -161,15 +98,10 @@ const auth = getAuth();
 const db = getFirestore();
 const provider = new GoogleAuthProvider();
 
-// --- DETECCIÓN AUTOMÁTICA DE SESIÓN ---
+// DETECCIÓN DE SESIÓN
 onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // Si hay sesión, va directo al main
-        location.href = "main.html";
-    } else {
-        // Si no hay sesión, muestra el card de login
-        document.getElementById('cardCont').style.display = 'block';
-    }
+    if (user) { location.href = "main.html"; } 
+    else { document.getElementById('cardCont').style.display = 'block'; }
 });
 
 window.view = (t) => {
@@ -179,27 +111,16 @@ window.view = (t) => {
     recoveryMenu.style.display = 'none';
 }
 
-// LOGIN INTELIGENTE
+// LOGIN
 loginForm.onsubmit = async e => {
     e.preventDefault();
-    alertBox.style.display = 'none';
-    const email = lEmail.value;
-
     try {
-        await signInWithEmailAndPassword(auth, email, lPass.value);
-        // onAuthStateChanged hará la redirección automáticamente
+        await signInWithEmailAndPassword(auth, lEmail.value, lPass.value);
     } catch (err) {
-        const q = query(collection(db, "users"), where("email", "==", email));
+        const q = query(collection(db, "users"), where("email", "==", lEmail.value));
         const snap = await getDocs(q);
-
-        if (snap.empty) {
-            alertBox.textContent = "ESTA CUENTA NO EXISTE. REGÍSTRATE.";
-            alertBox.style.display = 'block';
-        } else {
-            loginSection.style.display = 'none';
-            recoveryMenu.style.display = 'block';
-            resEmail.value = email;
-        }
+        if (snap.empty) { alertBox.textContent = "CUENTA NO EXISTE."; alertBox.style.display = 'block'; }
+        else { loginSection.style.display = 'none'; recoveryMenu.style.display = 'block'; resEmail.value = lEmail.value; }
     }
 }
 
@@ -207,51 +128,49 @@ loginForm.onsubmit = async e => {
 sendReset.onclick = async () => {
     try {
         await sendPasswordResetEmail(auth, resEmail.value);
-        alertBox.textContent = "¡ENLACE ENVIADO! REVISA TU CORREO.";
-        alertBox.style.display = 'block';
-        alertBox.style.color = "var(--yellow)";
-        alertBox.style.borderColor = "var(--yellow)";
-    } catch (error) {
-        alertBox.textContent = "ERROR AL ENVIAR EL CORREO.";
-        alertBox.style.display = 'block';
-    }
+        alertBox.textContent = "ENLACE ENVIADO."; alertBox.style.display = 'block'; alertBox.style.color = "var(--yellow)";
+    } catch { alertBox.textContent = "ERROR."; alertBox.style.display = 'block'; }
 }
 
-// GOOGLE AUTH
+// GOOGLE AUTH (ESTRUCTURA SOLICITADA)
 const googleAuth = async () => {
     try {
         const res = await signInWithPopup(auth, provider);
         await setDoc(doc(db, "users", res.user.uid), {
             displayName: res.user.displayName,
             email: res.user.email,
+            photoURL: res.user.photoURL || "default.png",
             membership: "suscriptor",
-            insignia: "Verificado",
-            nivel: 0,
-            createdAt: serverTimestamp()
+            createdAt: serverTimestamp(),
+            status: "active",
+            nvl: "0"
         }, { merge: true });
-    } catch { alert("Error con Google"); }
+    } catch { alert("Error Google"); }
 }
+gBtnLog.onclick = googleAuth;
+if(document.getElementById('gBtnReg')) gBtnReg.onclick = googleAuth;
 
-
-// ANÓNIMO
+// ANÓNIMO (ESTRUCTURA SOLICITADA + CONTEO)
 window.enterAnon = async () => {
     try {
         const q = query(collection(db, "users"), where("membership", "==", "anonymous"));
         const snap = await getDocs(q);
-        const count = snap.size + 1;
+        const count = String(snap.size + 1).padStart(3, '0');
         const res = await signInAnonymously(auth);
         
         await setDoc(doc(db, "users", res.user.uid), {
-            displayName: `Anónimo #${String(count).padStart(3, '0')}`,
+            displayName: `Anónimo#${count}`,
+            email: "none",
+            photoURL: "default.png",
             membership: "anonymous",
-            insignia: "🕵️ Infiltrado",
-            nivel: 0,
-            createdAt: serverTimestamp()
+            createdAt: serverTimestamp(),
+            status: "active",
+            nvl: "0"
         });
     } catch (e) { console.error(e); }
 }
 
-// REGISTRO
+// REGISTRO EMAIL (ESTRUCTURA SOLICITADA)
 registerForm.onsubmit = async e => {
     e.preventDefault();
     try {
@@ -259,28 +178,16 @@ registerForm.onsubmit = async e => {
         await setDoc(doc(db, "users", c.user.uid), {
             displayName: rUser.value,
             email: rEmail.value,
+            photoURL: "default.png",
             membership: "suscriptor",
-            insignia: "Nuevo Recluta",
-            nivel: 0,
-            createdAt: serverTimestamp()
+            createdAt: serverTimestamp(),
+            status: "active",
+            nvl: "0"
         });
-    } catch { 
-        alertBox.textContent = "DATOS NO VÁLIDOS O YA EN USO.";
-        alertBox.style.display = 'block';
-    }
+    } catch { alertBox.textContent = "ERROR EN DATOS."; alertBox.style.display = 'block'; }
 }
 
-particlesJS("particles-js", {
-    particles: {
-        number: { value: 50 },
-        color: { value: ["#ccff00", "#ff6a00", "#ff003c"] },
-        shape: { type: "circle" },
-        opacity: { value: 0.3 },
-        size: { value: 2 },
-        line_linked: { enable: true, distance: 100, color: "#ff6a00", opacity: 0.1 },
-        move: { enable: true, speed: 1.5 }
-    }
-});
+particlesJS("particles-js", { particles: { number: { value: 40 }, color: { value: ["#ccff00", "#ff6a00"] }, shape: { type: "circle" }, opacity: { value: 0.3 }, size: { value: 2 }, move: { enable: true, speed: 1 } } });
 </script>
 </body>
 </html>
