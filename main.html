@@ -478,10 +478,8 @@
                 <a href="sensibilidades.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-crosshairs"></i> SENSI</a>`;
             
             authBtn.innerText = "CERRAR SESIÓN"; 
-            authBtn.onclick = () => signOut(auth).then(() => location.reload());
-        } else {
-            profileTarget.innerHTML = `<div class="profile-card"><img src="default.png" class="u-img"><p class="name-anon">Anónimo #000</p><div id="u-badge"><span class="badge-anon">ANÓNIMO <i class="fas fa-ghost"></i></span></div><div class="lvl-tag">NIVEL 0</div></div>`;
-            
+            authBtn.onclick = () => window.location.href = "index.html";
+        
             // REDES EN AMARILLO PARA USUARIO ANÓNIMO
             nav.innerHTML = `<a href="redes.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-share-alt"></i> REDES</a>`;
             
