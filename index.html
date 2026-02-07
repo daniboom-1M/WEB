@@ -114,8 +114,8 @@
                 <div class="input-group"><i class="fas fa-lock"></i><input type="password" id="lPass" placeholder="CONTRASEÑA" required></div>
                 <button class="btn-boom">INGRESAR AL SISTEMA</button>
             </form>
-            <div class="divider">O ACCEDE CON</div>
-            <button class="btn-boom btn-google" id="gBtnLog"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="18"> GOOGLE</button>
+            
+            
             <p class="toggle-link" onclick="view('reg')">¿Sin cuenta? <b>REGÍSTRATE</b></p>
         </div>
 
@@ -135,7 +135,7 @@
                 <button class="btn-boom">UNIRSE AL PROYECTO</button>
             </form>
             <div class="divider">O ACCEDE CON</div>
-            <button class="btn-boom btn-google" id="gBtnReg"><img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" width="18"> GOOGLE</button>
+            
             <button class="btn-boom btn-anon" onclick="enterAnon()">
                 <i class="fas fa-user-secret"></i> MODO ANÓNIMO (INFILTRADO)
             </button>
@@ -231,10 +231,7 @@ const googleAuth = async () => {
         }, { merge: true });
     } catch { alert("Error con Google"); }
 }
-gBtnLog.onclick = googleAuth;
-if(document.getElementById('gBtnReg')) {
-    document.getElementById('gBtnReg').onclick = googleAuth;
-}
+
 
 // ANÓNIMO
 window.enterAnon = async () => {
