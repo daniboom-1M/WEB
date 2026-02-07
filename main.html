@@ -196,7 +196,6 @@
         @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
     </style>
 
-
 </head>
 <body>
 
@@ -206,8 +205,14 @@
 </div>
 
 <header>
-    <div class="h-left"><img src="logo.png" style="width:30px; border-radius:50%; border:1px solid var(--gold);"><div class="neon-title">DANIBOOM <span>X</span> <img src="ff_logo.png" class="ff-logo-header"></div></div>
-    <div class="h-right"><i class="fas fa-bell" id="bellIcon"></i><div class="burger" id="burgerBtn"><span></span><span></span><span></span></div></div>
+    <div class="h-left">
+        <img src="logo.png" style="width:30px; border-radius:50%; border:1px solid var(--gold);">
+        <div class="neon-title">DANIBOOM <span>X</span> <img src="ff_logo.png" class="ff-logo-header"></div>
+    </div>
+    <div class="h-right">
+        <i class="fas fa-bell" id="bellIcon"></i>
+        <div class="burger" id="burgerBtn"><span></span><span></span><span></span></div>
+    </div>
 </header>
 
 <main class="main-content">
@@ -224,7 +229,8 @@
             ¡Hola a todos! Soy <b>DANIBOOM X</b>. Primero que nada, quiero expresar mi más sincero agradecimiento a toda mi comunidad por el apoyo incondicional y a <b>Garena</b> por confiar en mi contenido. Formar parte del programa oficial de Mini Influencers es un logro que comparto con cada uno de ustedes. ¡Aquí encontrarán solo lo mejor para subir de nivel!
         </p>
     </div>
-<div class="section-box" data-aos="fade-up">
+
+    <div class="section-box" data-aos="fade-up">
         <div class="section-title"><i class="fab fa-tiktok"></i> AGRADECIMIENTO ESPECIAL</div>
         <div class="video-text-container">
             <div class="video-tiktok">
@@ -249,7 +255,7 @@
         </div>
     </div>
 
-         <div class="section-box" data-aos="fade-up"> 
+    <div class="section-box" data-aos="fade-up"> 
         <div class="section-title"><i class="fas fa-list-check"></i> ACA ENCONTRARAS...</div>
         <p class="text-large">
             En esta plataforma oficial tendrás acceso a configuraciones de sensibilidad avanzada, herramientas de optimización y una comunidad exclusiva de seguidores. 
@@ -259,46 +265,50 @@
         </p>
     </div>
     
+    <div id="proFeatures" style="display:none;">
+        <div class="section-box" data-aos="fade-up">
+            <div class="section-title"><i class="fas fa-code"></i> APARTADO: APLICACIONES PRO</div>
+            <p class="text-large">
+                En la sección de Aplicaciones Pro se encuentran todas las aplicaciones modificadas con juegos, herramientas premium y funciones con todo ilimitado. 
+                <br><br>
+                Aviso: Cuando el canal oficial de YouTube alcance la meta de 1,000 seguidores, se agregarán paneles y macros 100% funcionales con sistema antiban.
+            </p>
+            <a href="apps-pro.html" class="btn-apoyar">
+                <i class="fab fa-youtube"></i> ACCEDER A APPS PRO
+            </a>
+        </div>
 
-    <div class="section-box" data-aos="fade-up">
-        <div class="section-title"><i class="fas fa-code"></i> APARTADO: APLICACIONES PRO</div>
-        <p class="text-large">
-            En la sección de Aplicaciones Pro se encuentran todas las aplicaciones modificadas con juegos, herramientas premium y funciones con todo ilimitado. 
-            <br><br>
-            Aviso: Cuando el canal oficial de YouTube alcance la meta de 1,000 seguidores, se agregarán paneles y macros 100% funcionales con sistema antiban.
-        </p>
-        <a href="TU_LINK_DE_YOUTUBE" target="_blank" class="btn-apoyar">
-            <i class="fab fa-youtube"></i> APOYAR CANAL
-        </a>
-    </div>
-    
+        <div class="section-box" data-aos="fade-up">
+            <div class="section-title"><i class="fas fa-microchip"></i> DISPOSITIVOS CON SENSIBILIDAD</div>
+            <p class="text-large" style="margin-bottom: 15px;">Explora la lista completa de dispositivos móviles para los que hemos diseñado configuraciones exclusivas:</p>
+            <button class="device-btn" onclick="let d = document.getElementById('deviceList'); d.style.display = d.style.display === 'block' ? 'none' : 'block'">
+                <i class="fas fa-search"></i> VER MODELOS COMPATIBLES
+            </button>
+            <div id="deviceList">
+                <div><span class="brand-tag">SAMSUNG:</span> A10, A20, A30, A50, A70, S10, S20, S21, S22, S23 Ultra, Note 20.</div>
+                <div><span class="brand-tag">XIAOMI:</span> Poco X3 Pro, Poco F4, Redmi Note 8, 9, 10, 11, 12 Pro, Black Shark 5.</div>
+                <div><span class="brand-tag">IPHONE:</span> 6s, 7 Plus, 8, X, XR, 11, 12, 13, 14, 15 Pro Max, iPad Pro.</div>
+                <div><span class="brand-tag">MOTOROLA:</span> G8, G9, G20, G60, Edge 30, Moto Fusion.</div>
+                <div><span class="brand-tag">HUAWEI:</span> P30, P40 Pro, Y9 Prime, Nova 9.</div>
+                <div><span class="brand-tag">OTROS:</span> Realme, Infinix, Tecno, Blue, Honor y más.</div>
+            </div>
+            <a href="sensis.html" class="btn-apoyar" style="margin-top:15px; background:var(--gold); color:#000;">
+                <i class="fas fa-crosshairs"></i> VER SENSIBILIDADES
+            </a>
+        </div>
 
-  <div class="section-box" data-aos="fade-up">
-        <div class="section-title"><i class="fas fa-microchip"></i> DISPOSITIVOS CON SENSIBILIDAD</div>
-        <p class="text-large" style="margin-bottom: 15px;">Explora la lista completa de dispositivos móviles para los que hemos diseñado configuraciones exclusivas:</p>
-        <button class="device-btn" onclick="let d = document.getElementById('deviceList'); d.style.display = d.style.display === 'block' ? 'none' : 'block'">
-            <i class="fas fa-search"></i> VER MODELOS COMPATIBLES
-        </button>
-        <div id="deviceList">
-            <div><span class="brand-tag">SAMSUNG:</span> A10, A20, A30, A50, A70, S10, S20, S21, S22, S23 Ultra, Note 20.</div>
-            <div><span class="brand-tag">XIAOMI:</span> Poco X3 Pro, Poco F4, Redmi Note 8, 9, 10, 11, 12 Pro, Black Shark 5.</div>
-            <div><span class="brand-tag">IPHONE:</span> 6s, 7 Plus, 8, X, XR, 11, 12, 13, 14, 15 Pro Max, iPad Pro.</div>
-            <div><span class="brand-tag">MOTOROLA:</span> G8, G9, G20, G60, Edge 30, Moto Fusion.</div>
-            <div><span class="brand-tag">HUAWEI:</span> P30, P40 Pro, Y9 Prime, Nova 9.</div>
-            <div><span class="brand-tag">OTROS:</span> Realme, Infinix, Tecno, Blue, Honor y más.</div>
+        <div class="section-box" data-aos="fade-up">
+            <div class="section-title"><i class="fas fa-comments"></i> CHAT PARA MIEMBROS Y GLOBAL</div>
+            <p class="text-large">
+                Espacio diseñado para interactuar con todos los usuarios en el chat global. Puedes chatear con los amigos que tengas agregados buscándolos por su UID o nombre de usuario exacto. 
+            </p>
+            <a href="chat.html" class="btn-apoyar" style="background:var(--blue-neon)">
+                <i class="fas fa-paper-plane"></i> ENTRAR AL CHAT
+            </a>
         </div>
     </div>
 
     <div class="section-box" data-aos="fade-up">
-        <div class="section-title"><i class="fas fa-comments"></i> CHAT PARA MIEMBROS Y GLOBAL</div>
-        <p class="text-large">
-            Espacio diseñado para interactuar con todos los usuarios en el chat global. Puedes chatear con los amigos que tengas agregados buscándolos por su UID o nombre de usuario exacto. 
-            <br><br>
-            Estas funciones, junto con las solicitudes de amistad recibidas, las encontrarás en el menú de las tres líneas entrando a la sección Ver Perfil.
-        </p>
-    </div>
-    
-        <div class="section-box" data-aos="fade-up">
         <div class="section-title"><i class="fas fa-share-nodes"></i> TODAS MIS REDES</div>
         <p class="text-large">
             Aquí encontrarás el acceso directo a todas las redes oficiales de DANIBOOM para mantenerte al tanto de las últimas actualizaciones y lanzamientos.
@@ -307,11 +317,11 @@
              <i class="fab fa-tiktok" style="font-size: 24px;"></i>
              <i class="fab fa-instagram" style="font-size: 24px;"></i>
              <i class="fab fa-facebook" style="font-size: 24px;"></i>
-              <i class="fab fa-youtube" style="font-size: 24px;"></i>
+             <i class="fab fa-youtube" style="font-size: 24px;"></i>
         </div>
     </div>
 
-    <div style="background: rgba(0, 242, 255, 0.05); padding: 25px; border-radius: 20px; border: 2px solid var(--blue-neon); margin-top: 20px;">
+    <div id="anonInfoBox" style="background: rgba(0, 242, 255, 0.05); padding: 25px; border-radius: 20px; border: 2px solid var(--blue-neon); margin-top: 20px;">
         <p style="font-size: 16px; color: #fff; font-weight: bold; text-transform: uppercase;">
             <i class="fas fa-info-circle" style="color:var(--blue-neon)"></i> ¿CÓMO USAR LAS FUNCIONES?
         </p>
@@ -319,7 +329,8 @@
             Para acceder a las <b>Aplicaciones Hackeadas</b> y al <b>Creador de Sensibilidades</b>, por favor toca el menú de las 3 líneas en la parte superior derecha de la pantalla e inicia sesión.
         </p>
     </div>
-        <div class="section-box" data-aos="fade-up"> 
+
+    <div class="section-box" data-aos="fade-up"> 
         <div class="section-title"><i class="fas fa-cart-shopping"></i> TIENDA OFICIAL DANIBOOM</div>
         <p class="text-large">
             MARCA OFICIAL DANIBOOM. Próximamente abriremos la tienda oficial con productos exclusivos. Iniciando operaciones en Colombia y expandiendo el servicio muy pronto a todos los países para quienes deseen apoyar el proyecto.
@@ -327,11 +338,12 @@
     </div>
 </main>
 
-
 <div id="chatIA">
     <div class="chat-h">BOOMI BOT 🤖</div>
     <div id="chatMsgs"><div class="bot-m">¡Hola! Soy Boomi Bot. ¿En qué puedo ayudarte?</div></div>
-    <div style="padding:10px; display:flex; gap:5px;"><input type="text" id="chatIn" placeholder="Escribe..." style="flex:1; background:#000; border:1px solid var(--blue-neon); color:#fff; padding:8px; border-radius:5px; outline:none;"></div>
+    <div style="padding:10px; display:flex; gap:5px;">
+        <input type="text" id="chatIn" placeholder="Escribe..." style="flex:1; background:#000; border:1px solid var(--blue-neon); color:#fff; padding:8px; border-radius:5px; outline:none;">
+    </div>
 </div>
 
 <div id="iaToggle" style="position:fixed; bottom:20px; left:20px; z-index:5000; cursor:pointer; text-align:center;">
@@ -346,9 +358,21 @@
 </div>
 
 <div id="menuUser" class="side-panel">
-    <div id="profileTarget"></div> <nav id="userNav"></nav>
-    <div id="adminArea" style="display:none;"><div class="admin-box"><div class="admin-title">ADMIN UTILS</div><a href="notificaciones.html" class="menu-item"><i class="fas fa-bullhorn" style="color:var(--red-neon)"></i> NOTIFICACIONES</a></div></div>
-    <button id="authBtn" style="width:100%; margin-top:20px; background:none; border:1px solid red; color:red; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">INICIAR SESIÓN</button>
+    <div id="profileTarget"></div> 
+    
+    <nav id="userNav">
+        </nav>
+
+    <div id="adminArea" style="display:none;">
+        <div class="admin-box">
+            <div class="admin-title">ADMIN UTILS</div>
+            <a href="notificaciones.html" class="menu-item"><i class="fas fa-bullhorn" style="color:var(--red-neon)"></i> NOTIFICACIONES</a>
+        </div>
+    </div>
+
+    <button id="authBtn" style="width:100%; margin-top:20px; background:none; border:1px solid var(--gold); color:var(--gold); padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">
+        INICIAR SESIÓN
+    </button>
 </div>
 
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -397,7 +421,7 @@
         }
     });
 
-    window.addEventListener('resize', () => { if(typeof AOS !== 'undefined') AOS.refresh(); });
+    window.addEventListener('resize', () => { if(typeof AO !== 'undefined') AOS.refresh(); });
 
     // --- 2. CONTROL DE INTERFAZ (MENÚS Y BOTONES) ---
     const bell = document.getElementById('bellIcon');
