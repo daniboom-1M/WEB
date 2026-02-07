@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DANIBOOM X | SENSIBILIDADES PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold: #ffd700;
+            --red-neon: #ff0000;
+            --blue-neon: #00f2ff;
+            --bg: #050505;
+            --google-gray: #202124;
+            --glow: 0 0 15px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 9999;
+            background: #000; border-bottom: 1px solid #333;
+            padding: 10px 0; box-shadow: 0 0 20px rgba(0,0,0,0.9);
+        }
+
+        .header-top { display: flex; justify-content: space-between; padding: 0 15px; align-items: center; }
+        .h-left { display: flex; align-items: center; gap: 10px; }
+        .logo-principal { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--gold); filter: drop-shadow(var(--glow) var(--gold)); }
+        
+        .neon-title { font-weight: 900; font-size: 16px; text-shadow: var(--glow) #fff; display: flex; align-items: center; gap: 6px; }
+        .neon-title span { color: var(--red-neon); text-shadow: var(--glow) var(--red-neon); }
+        .ff-logo-white { height: 22px; filter: brightness(0) invert(1) drop-shadow(0 0 8px #fff); }
+
+        /* --- AJUSTE DE DISTANCIA (IDÉNTICO A MAIN.HTML) --- */
+        .h-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; /* Espacio reducido para que estén pegados */
+            justify-content: flex-end; 
+        }
+
+        .fa-bell { 
+            font-size: 22px; 
+            color: var(--gold); 
+            cursor: pointer; 
+            filter: drop-shadow(var(--glow) var(--gold)); 
+            transition: 0.3s;
+            margin: 0; /* Sin márgenes para control total del gap */
+        }
+
+        /* --- BURGER ANIMADA --- */
+        .burger { cursor: pointer; display: flex; flex-direction: column; gap: 5px; position: relative; z-index: 10001; }
+        .burger span { width: 28px; height: 3px; background: var(--gold); transition: 0.4s; box-shadow: var(--glow) var(--gold); }
+        .burger.open span:nth-child(1) { transform: rotate(45deg) translate(6px, 5px); }
+        .burger.open span:nth-child(2) { opacity: 0; }
+        .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(6px, -5px); }
+
+        /* --- BUSCADOR Y AUTOCOMPLETADO --- */
+        .search-wrapper { padding: 10px 15px 0; position: relative; }
+        .google-search-bar {
+            display: flex; align-items: center; background: var(--google-gray);
+            border-radius: 24px; padding: 10px 18px; border: 1px solid #333;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        #deviceSearch { flex: 1; background: transparent; border: none; color: #fff; outline: none; margin-left: 10px; font-size: 15px; font-family: sans-serif; }
+        
+        #suggestions {
+            position: absolute; top: 100%; left: 15px; right: 15px;
+            background: var(--google-gray); border-radius: 0 0 20px 20px;
+            border: 1px solid #333; border-top: none; display: none; z-index: 9500;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .suggest-item {
+            padding: 14px 20px; color: #eee; cursor: pointer; font-family: sans-serif;
+            display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #2d2e30;
+        }
+        .suggest-item:hover { background: #303134; color: var(--gold); }
+
+        /* --- INTERFAZ DE VOZ GOOGLE --- */
+        #voiceOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: rgba(5, 5, 5, 0.98); z-index: 11000;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .voice-wave { display: flex; align-items: center; gap: 6px; height: 80px; }
+        .wave-bar { width: 4px; height: 15px; background: var(--blue-neon); border-radius: 10px; animation: waveAnim 1s infinite ease-in-out; box-shadow: 0 0 10px var(--blue-neon); }
+        @keyframes waveAnim { 0%, 100% { height: 15px; } 50% { height: 60px; } }
+        #voiceText { font-size: 22px; color: #fff; text-align: center; margin-top: 30px; padding: 0 30px; text-shadow: 0 0 10px var(--blue-neon); }
+
+        /* --- MENÚ LATERAL --- */
+        #menuUser {
+            position: fixed; top: 0; right: -310px; width: 300px; height: 100vh;
+            background: rgba(5,5,5,0.98); border-left: 2px solid var(--gold);
+            transition: 0.5s; z-index: 9000; padding: 120px 15px 40px; overflow-y: auto;
+        }
+        #menuUser.active { right: 0; }
+
+        /* --- NOTIFICACIONES --- */
+        #menuNotif {
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+            background: #050505; transition: 0.5s ease; z-index: 12000; 
+            padding: 40px 20px; overflow-y: auto;
+            border-left: 2px solid var(--gold);
+            backdrop-filter: blur(10px);
+        }
+        #menuNotif.active { right: 0; }
+        .close-notif { position: absolute; top: 25px; right: 25px; font-size: 35px; color: var(--gold); cursor: pointer; z-index: 12001; }
+
+        /* --- MARCAS NEÓN --- */
+        .brand-header {
+            padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px;
+            margin-top: 12px; cursor: pointer; display: flex; justify-content: space-between;
+            align-items: center; font-weight: 700; font-size: 13px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .brand-header span i { margin-right: 12px; filter: drop-shadow(0 0 5px currentColor); }
+        .submenu { display: none; flex-direction: column; background: rgba(0,0,0,0.4); }
+        .submenu a { padding: 12px 45px; color: #fff; text-decoration: none; font-size: 12px; }
+
+        /* --- CONTENIDO --- */
+        .main-content { margin-top: 180px; padding: 20px; text-align: center; }
+        .section-box { 
+            background: rgba(15,15,15,0.8); border: 1px solid #222; 
+            border-radius: 20px; padding: 45px 25px; 
+            box-shadow: 0 0 30px rgba(255,215,0,0.05);
+            max-width: 600px; margin: 0 auto;
+        }
+        .neon-txt-main { 
+            color: var(--gold); 
+            text-shadow: var(--glow) var(--gold); 
+            font-size: 24px; 
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+        .sub-txt-hacker { 
+            color: #ddd; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            line-height: 1.6;
+        }
+        .sub-txt-hacker span { color: var(--red-neon); font-weight: bold; text-shadow: 0 0 5px var(--red-neon); }
+
+        /* --- ANIMACIONES Y TARJETAS NEÓN --- */
+        .bell-shake { 
+            animation: shake 0.5s infinite; 
+            color: var(--red-neon) !important; 
+            filter: drop-shadow(0 0 10px var(--red-neon)); 
+        }
+
+        @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(15deg); } 75% { transform: rotate(-15deg); } }
+
+        .notif-card {
+            border-radius: 15px; padding: 20px; margin-bottom: 20px;
+            position: relative; overflow: visible; display: flex; flex-direction: column;
+            gap: 12px; border: 2px solid transparent; background: rgba(20,20,20,0.9);
+            transition: 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            text-align: left;
+        }
+        .notif-card h4 { font-size: 16px; font-weight: 900; text-transform: uppercase; text-shadow: 0 0 10px currentColor; width: 80%; }
+        .notif-card p { font-size: 13px; color: #eee; line-height: 1.4; }
+
+        .platform-icon { 
+            position: absolute; top: 15px; right: 15px; font-size: 35px; 
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .card-youtube { border-color: #ff0000; color: #ff0000; }
+        .card-tiktok { border-color: #00f2ff; color: #00f2ff; }
+        .card-whatsapp { border-color: #25d366; color: #25d366; }
+        .card-facebook { border-color: #1877f2; color: #1877f2; }
+        .card-instagram { border-color: #e4405f; color: #e4405f; }
+        .card-sistema { border-color: var(--gold); color: var(--gold); }
+
+        .notif-btn {
+            display: inline-flex !important;
+            align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 14px; border-radius: 10px;
+            text-decoration: none !important; font-weight: 900; font-size: 12px;
+            text-transform: uppercase; margin-top: 10px; 
+            background: #fff; color: #000 !important;
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+            cursor: pointer; z-index: 10;
+        }
+
+        .timer-text { font-size: 10px; color: #aaa; margin-top: 5px; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; }
+</style>
+id=""
+
+
+</head>
+<body>
+
+    <header>
+    <div class="header-top">
+        <div class="h-left">
+            <img src="logo.png" class="logo-principal">
+            <div class="neon-title">
+                DANIBOOM <span>X</span> 
+                <img src="ff_logo.png" class="ff-logo-white">
+            </div>
+        </div>
+
+        <div class="h-right">
+            <i class="fas fa-bell" id="bellIcon"></i>
+            <div class="burger" id="burgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="search-wrapper">
+        <div class="google-search-bar">
+            <i class="fas fa-search" style="color:#888"></i>
+            <input type="text" id="deviceSearch" placeholder="Busca tu modelo..." autocomplete="off">
+            <i class="fas fa-microphone" id="micBtn" style="color:var(--blue-neon); filter:drop-shadow(0 0 8px var(--blue-neon)); cursor:pointer;"></i>
+        </div>
+        <div id="suggestions"></div>
+    </div>
+</header>
+
+<div id="menuNotif" class="side-panel">
+    <i class="fas fa-times close-notif" id="closeNotif"></i>
+    <h2 style="text-align:center; color:var(--gold); margin-top:20px; font-size: 18px; font-family: 'Orbitron', sans-serif;">NOTIFICACIONES</h2>
+    <div id="notifList"></div>
+</div>
+
+
+    <div id="voiceOverlay">
+        <div class="voice-wave"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
+        <p id="voiceText">Escuchando...</p>
+        <p id="voiceText">dime tú celular</p>
+    </div>
+
+    <div id="menuNotif">
+        <i class="fas fa-times close-notif" id="closeNotif"></i>
+        <h2 style="text-align:center; color:var(--gold); text-shadow: var(--glow) var(--gold); margin-top:40px;">NOTIFICACIONES</h2>
+        <div id="notifList" style="margin-top:40px;"></div>
+    </div>
+
+    <div id="menuUser">
+        <nav>
+            <a href="index.html" style="color:var(--gold); text-shadow: var(--glow) var(--gold); text-decoration:none; display:block; margin-bottom:20px; font-size:18px;"><i class="fas fa-home"></i> INICIO</a>
+            <a href="sensi_ia.html" style="color:var(--blue-neon); text-shadow: var(--glow) var(--blue-neon); text-decoration:none; display:block; margin-bottom:30px; font-size:18px;"><i class="fas fa-robot"></i> SENSI IA</a>
+            <div id="brandsContainer"></div>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="section-box" data-aos="zoom-in">
+            <h1 class="neon-txt-main">LAS MEJORES SENSIBILIDADES DE FREE FIRE</h1>
+            <p class="sub-txt-hacker">Configura tu marca para pegar <span>TODO ROJO</span> y que te acusen de <span>HACKER</span> en Free Fire si no encuentras tu marca es porque <span>ESTOY TRABAJANDO EN LA PAGINA PARA QUE QUEDE AL 100%.</span></p>
+        </div>
+    </div>
+
+            <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+    // Configuración de Firebase
+    const firebaseConfig = { 
+        apiKey: "AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4", 
+        authDomain: "web1-3b83a.firebaseapp.com", 
+        projectId: "web1-3b83a" 
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore();
+
+    // BASE DE DATOS DE MODELOS
+    const modelosDB = [
+        { name: "iPhone 11", url: "iphone11.html" }, 
+        { name: "iPhone XR", url: "iphonexr.html" },
+        { name: "Redmi Note 9", url: "redmi9.html" }, 
+        { name: "Redmi Note 9a", url: "redmi9a.html" },
+        { name: "Samsung A31", url: "samsunga31.html" }, 
+        { name: "Poco X3 Pro", url: "pocox3.html" }
+    ];
+
+    const searchInput = document.getElementById('deviceSearch');
+    const suggestBox = document.getElementById('suggestions');
+
+    // LÓGICA DE AUTOCOMPLETADO
+    searchInput.oninput = () => {
+        const val = searchInput.value.toLowerCase();
+        suggestBox.innerHTML = "";
+        if (val.length > 0) {
+            const matches = modelosDB.filter(m => m.name.toLowerCase().includes(val)).slice(0, 3);
+            if (matches.length > 0) {
+                suggestBox.style.display = "block";
+                matches.forEach(m => {
+                    const div = document.createElement('div');
+                    div.className = "suggest-item";
+                    div.innerHTML = `<i class="fas fa-search"></i> ${m.name}`;
+                    div.onclick = () => window.location.href = m.url;
+                    suggestBox.appendChild(div);
+                });
+            } else { suggestBox.style.display = "none"; }
+        } else { suggestBox.style.display = "none"; }
+    };
+
+    // --- SECCIÓN DE VOZ PROFESIONAL ---
+    const micBtn = document.getElementById('micBtn');
+    const voiceOverlay = document.getElementById('voiceOverlay');
+    
+    if ('webkitSpeechRecognition' in window) {
+        const rec = new webkitSpeechRecognition();
+        rec.lang = 'es-ES';
+        rec.continuous = false;
+        rec.interimResults = false;
+
+        micBtn.onclick = () => { 
+            voiceOverlay.style.display = 'flex'; 
+            voiceOverlay.innerHTML = `
+                <div class="voice-wave" style="display: flex; align-items: center; gap: 8px; height: 100px; justify-content: center;">
+                    <div class="wave-bar" style="width: 5px; height: 20px; background: var(--blue-neon); border-radius: 10px; animation: waveAnim 0.8s infinite ease-in-out; box-shadow: 0 0 15px var(--blue-neon);"></div>
+                    <div class="wave-bar" style="width: 5px; height: 40px; background: var(--blue-neon); border-radius: 10px; animation: waveAnim 0.8s infinite ease-in-out 0.2s; box-shadow: 0 0 15px var(--blue-neon);"></div>
+                    <div class="wave-bar" style="width: 5px; height: 20px; background: var(--blue-neon); border-radius: 10px; animation: waveAnim 0.8s infinite ease-in-out 0.4s; box-shadow: 0 0 15px var(--blue-neon);"></div>
+                </div>
+                <div id="voiceContent" style="text-align: center; margin-top: 30px;">
+                    <p id="voiceText" style="font-size: 20px; color: #fff; text-shadow: 0 0 10px #fff; font-weight: bold; margin-bottom: 10px; font-family: 'Orbitron', sans-serif;">Dime la marca de tu celular</p>
+                    <p id="voiceStatus" style="color: #666; font-size: 14px; margin-bottom: 30px; font-family: 'Orbitron', sans-serif;">Escuchando...</p>
+                    <button id="cancelVoice" style="background: transparent; border: 2px solid #ff0000; color: #ff0000; padding: 12px 35px; border-radius: 30px; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 13px; cursor: pointer; text-shadow: 0 0 8px #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;">CANCELAR</button>
+                </div>`;
+            rec.start(); 
+            document.getElementById('cancelVoice').onclick = (e) => { e.stopPropagation(); rec.stop(); voiceOverlay.style.display = 'none'; };
+        };
+
+        rec.onresult = (e) => {
+            const res = e.results[0][0].transcript.toLowerCase().trim();
+            const vText = document.getElementById('voiceText');
+            if(vText) vText.innerHTML = `<span style="color:var(--blue-neon); text-shadow: 0 0 15px var(--blue-neon);">"${res}"</span>`;
+            const coincidencia = modelosDB.find(m => res.includes(m.name.toLowerCase()));
+            setTimeout(() => {
+                if (coincidencia) { window.location.href = coincidencia.url; } 
+                else { searchInput.value = res; searchInput.oninput(); voiceOverlay.style.display = 'none'; }
+            }, 1200);
+        };
+        rec.onerror = () => { setTimeout(() => { voiceOverlay.style.display = 'none'; }, 1500); };
+    }
+
+    // LÓGICA DE MENÚS Y CAMPANA (NOTIFICACIONES)
+    const burgerBtn = document.getElementById('burgerBtn');
+    const menuUser = document.getElementById('menuUser');
+    const bellIcon = document.getElementById('bellIcon');
+    const menuNotif = document.getElementById('menuNotif');
+    const closeNotif = document.getElementById('closeNotif');
+
+    burgerBtn.onclick = () => { burgerBtn.classList.toggle('open'); menuUser.classList.toggle('active'); };
+    
+    // Abrir Notificaciones
+    bellIcon.onclick = () => { 
+        menuNotif.classList.add('active'); 
+        bellIcon.classList.remove('bell-shake'); 
+        localStorage.setItem('lastSeenNotif', Date.now()); 
+    };
+    
+    // Cerrar Notificaciones
+    closeNotif.onclick = () => { menuNotif.classList.remove('active'); };
+
+    // FUNCIÓN TIEMPO (Para notificaciones)
+    function formatTime(seconds) {
+        if (seconds >= 86400) return Math.floor(seconds / 86400) + " días";
+        if (seconds >= 3600) return Math.floor(seconds / 3600) + " horas";
+        if (seconds >= 60) return Math.floor(seconds / 60) + " minutos";
+        return Math.floor(seconds) + " segundos";
+    }
+
+    // --- NOTIFICACIONES EN TIEMPO REAL (FIREBASE) ---
+    onSnapshot(query(collection(db, "notifications"), orderBy("createdAt", "desc")), (snap) => {
+        const list = document.getElementById('notifList');
+        if(!list) return;
+        list.innerHTML = ""; let hasNew = false; const ahora = Date.now();
+        
+        snap.forEach(docSnap => {
+            const n = docSnap.data(); const id = docSnap.id;
+            let fechaMs = (n.createdAt && n.createdAt.toMillis) ? n.createdAt.toMillis() : (typeof n.createdAt === 'number' ? n.createdAt : ahora);
+            const segPasados = (ahora - fechaMs) / 1000;
+            if (n.duration && segPasados > n.duration) return;
+
+            const type = (n.iconType || "").toLowerCase();
+            let cardClass = "card-sistema"; let icon = "fas fa-bell";
+            if(type.includes("youtube")) { cardClass = "card-youtube"; icon = "fab fa-youtube"; }
+            else if(type.includes("tiktok")) { cardClass = "card-tiktok"; icon = "fab fa-tiktok"; }
+            else if(type.includes("whatsapp")) { cardClass = "card-whatsapp"; icon = "fab fa-whatsapp"; }
+            else if(type.includes("facebook")) { cardClass = "card-facebook"; icon = "fab fa-facebook"; }
+            else if(type.includes("instagram")) { cardClass = "card-instagram"; icon = "fab fa-instagram"; }
+
+            const tieneLink = n.link && n.link !== "" && n.link !== "#";
+            const btnHTML = tieneLink ? `<a href="${n.link}" target="_blank" class="notif-btn">VER VIDEO AHORA <i class="fas fa-play-circle"></i></a>` : "";
+            
+            let timerHTML = "";
+            if(n.duration) {
+                const segQuedan = Math.max(0, n.duration - segPasados);
+                timerHTML = `<p id="timer-${id}" class="timer-text">Expira en: ${formatTime(segQuedan)}</p>`;
+            }
+
+            list.innerHTML += `<div class="notif-card ${cardClass}" id="card-${id}"><i class="${icon} platform-icon"></i><h4>${n.title}</h4><p>${n.message}</p>${btnHTML}${timerHTML}</div>`;
+
+            if (n.duration) {
+                const interval = setInterval(() => {
+                    const segQ = Math.max(0, n.duration - ((Date.now() - fechaMs) / 1000));
+                    const el = document.getElementById(`timer-${id}`);
+                    if(el) el.innerText = `Expira en: ${formatTime(segQ)}`;
+                    if (segQ <= 0) { clearInterval(interval); document.getElementById(`card-${id}`)?.remove(); }
+                }, 1000);
+            }
+            if (fechaMs > (localStorage.getItem('lastSeenNotif') || 0)) hasNew = true;
+        });
+        if(hasNew) bellIcon.classList.add('bell-shake');
+    });
+
+    // GENERACIÓN DINÁMICA DE MARCAS
+    const marcas = [
+        { n: "Xiaomi", c: "#ff6600", i: "fa-mobile-alt" },
+        { n: "Samsung", c: "#00f2ff", i: "fa-mobile" },
+        { n: "Apple", c: "#ffffff", i: "fa-apple", fab: true },
+        { n: "Motorola", c: "#5cb8ff", i: "fa-phone-flip" },
+        { n: "Huawei", c: "#ff0011", i: "fa-h" },
+        { n: "Poco", c: "#fffb00", i: "fa-bolt" },
+        { n: "Infinix", c: "#84ff00", i: "fa-fire" },
+        { n: "Realme", c: "#ffc400", i: "fa-star" },
+        { n: "Google", c: "#4285f4", i: "fa-g" },
+        { n: "ZTE", c: "#0072bc", i: "fa-signal" }
+    ];
+
+    marcas.forEach(m => {
+        document.getElementById('brandsContainer').innerHTML += `
+            <div class="brand-header" style="border-left: 3px solid ${m.c}; color: ${m.c}; text-shadow: 0 0 8px ${m.c};" onclick="toggleSub('${m.n.toLowerCase()}Sub')">
+                <span><i class="${m.fab ? 'fab' : 'fas'} ${m.i}"></i>${m.n.toUpperCase()}</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div id="${m.n.toLowerCase()}Sub" class="submenu">
+                <a href="${m.n.toLowerCase()}.html">MODELOS ${m.n}</a>
+            </div>
+        `;
+    });
+
+    window.toggleSub = (id) => {
+        const s = document.getElementById(id);
+        s.style.display = s.style.display === "flex" ? "none" : "flex";
+    };
+
+    AOS.init({ duration: 1000 });
+</script>
+
+
+</body>
+</html>
