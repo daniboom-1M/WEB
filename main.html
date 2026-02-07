@@ -375,7 +375,7 @@
     </button>
 </div>
 
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
 <script type="module">
@@ -421,7 +421,7 @@
         }
     });
 
-    window.addEventListener('resize', () => { if(typeof AO !== 'undefined') AOS.refresh(); });
+    window.addEventListener('resize', () => { if(typeof AOS !== 'undefined') AOS.refresh(); });
 
     // --- 2. CONTROL DE INTERFAZ (MENÚS Y BOTONES) ---
     const bell = document.getElementById('bellIcon');
@@ -430,7 +430,6 @@
     const menuN = document.getElementById('menuNotif');
     const closeNotif = document.getElementById('closeNotif');
 
-    // Efecto hamburguesa y apertura de menú lateral
     if(burger) {
         burger.onclick = () => { 
             burger.classList.toggle('open'); 
@@ -459,19 +458,26 @@
         return Math.floor(seconds) + " segundos";
     }
 
-    // --- 4. GESTIÓN DE ROLES Y USUARIO (EDITADO PARA COLOR AMARILLO) ---
+    // --- 4. GESTIÓN DE ROLES Y USUARIO (CORREGIDO PARA EVITAR SOBRESCRITURA) ---
     onAuthStateChanged(auth, async (user) => {
         const profileTarget = document.getElementById('profileTarget');
         const nav = document.getElementById('userNav');
         const authBtn = document.getElementById('authBtn');
         const adminArea = document.getElementById('adminArea');
+        const proFeatures = document.getElementById('proFeatures');
+        const anonInfoBox = document.getElementById('anonInfoBox');
 
         if (user) {
             const snap = await getDoc(doc(db, "users", user.uid));
             const data = snap.data() || {};
-            const role = data.membership || 'anonymous';
-            let badgeHTML = ""; let nameClass = "name-anon";
+            
+            // Determinar rol real
+            const role = user.isAnonymous ? 'anonymous' : (data.membership || 'suscriptor');
+            
+            let badgeHTML = ""; 
+            let nameClass = "name-anon";
 
+            // Configuración de Perfil y Admin Area según Rango
             if(role === 'owner') { 
                 nameClass = "name-owner"; 
                 badgeHTML = `<span class="badge-owner">OWNER <i class="fas fa-crown"></i></span>`; 
@@ -492,23 +498,49 @@
                 if(adminArea) adminArea.style.display = 'none'; 
             }
 
-            profileTarget.innerHTML = `<div class="profile-card"><img src="${data.photoURL || 'default.png'}" class="u-img"><p class="${nameClass}">${data.displayName || "USUARIO"}</p><div id="u-badge">${badgeHTML}</div><div class="lvl-tag">NIVEL ${data.level || 1}</div></div>`;
+            // Inyectar Perfil
+            profileTarget.innerHTML = `
+                <div class="profile-card" style="text-align:center; padding:10px;">
+                    <img src="${data.photoURL || 'default.png'}" class="u-img" style="width:60px; height:60px; border-radius:10px; border:2px solid var(--gold);">
+                    <p class="${nameClass}" style="margin:5px 0; font-weight:900;">${data.displayName || (user.isAnonymous ? "INVITADO" : "USUARIO")}</p>
+                    <div id="u-badge">${badgeHTML}</div>
+                    <div class="lvl-tag" style="font-size:10px; color:var(--gold);">NIVEL ${data.level || 1}</div>
+                </div>`;
             
-            // TODOS LOS ENLACES AHORA CON ESTILO AMARILLO DIRECTO
-            nav.innerHTML = `
-                <a href="perfil.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-user-circle"></i> VER PERFIL</a>
-                <a href="redes.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-share-alt"></i> REDES</a>
-                <a href="chat.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-comments"></i> CHAT</a>
-                <a href="sensibilidades.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-crosshairs"></i> SENSI</a>`;
-            
-            authBtn.innerText = "CERRAR SESIÓN"; 
-            authBtn.onclick = () => window.location.href = "index.html";
-        
-            // REDES EN AMARILLO PARA USUARIO ANÓNIMO
-            nav.innerHTML = `<a href="redes.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-share-alt"></i> REDES</a>`;
-            
-            authBtn.innerText = "INICIAR SESIÓN"; 
-            authBtn.onclick = () => window.location.href = "index.html";
+            // LÓGICA DE NAV Y CONTENIDO SEGÚN ROL
+            if (role === 'anonymous') {
+                // VISIBILIDAD EN MAIN
+                if(proFeatures) proFeatures.style.display = 'none';
+                if(anonInfoBox) anonInfoBox.style.display = 'block';
+
+                // MENÚ LATERAL ANÓNIMO
+                nav.innerHTML = `<a href="redes.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-share-alt"></i> REDES</a>`;
+                
+                authBtn.innerText = "INICIAR SESIÓN"; 
+                authBtn.style.color = "var(--gold)";
+                authBtn.style.borderColor = "var(--gold)";
+                authBtn.onclick = () => { signOut(auth).then(() => window.location.href = "index.html"); };
+            } 
+            else {
+                // VISIBILIDAD EN MAIN
+                if(proFeatures) proFeatures.style.display = 'block';
+                if(anonInfoBox) anonInfoBox.style.display = 'none';
+
+                // MENÚ LATERAL PRO
+                nav.innerHTML = `
+                    <a href="perfil.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-user-circle"></i> VER PERFIL</a>
+                    <a href="redes.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-share-alt"></i> REDES</a>
+                    <a href="chat.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-comments"></i> CHAT</a>
+                    <a href="sensibilidades.html" class="menu-item" style="color: #ffff00; text-decoration: none;"><i class="fas fa-crosshairs"></i> SENSI</a>`;
+                
+                authBtn.innerText = "CERRAR SESIÓN"; 
+                authBtn.style.color = "red";
+                authBtn.style.borderColor = "red";
+                authBtn.onclick = () => { signOut(auth).then(() => window.location.href = "index.html"); };
+            }
+        } else {
+            // Si no hay usuario en absoluto (ni anónimo), al login
+            window.location.href = "index.html";
         }
     });
 
@@ -553,7 +585,7 @@
             }
             if (fechaMs > (localStorage.getItem('lastSeenNotif') || 0)) hasNew = true;
         });
-        if(hasNew) bell.classList.add('bell-shake');
+        if(hasNew) bell?.classList.add('bell-shake');
     });
 
     // --- 6. CHAT IA BOOMI BOT ---
@@ -583,5 +615,6 @@
         };
     }
 </script>
+    
 </body>
 </html>
