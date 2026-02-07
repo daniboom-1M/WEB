@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BOOMI SENSEI | OFICIAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --neon-yellow: #f4ff00; --neon-orange: #ff8c00; --neon-red: #ff0000; --bg-black: #050505; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+        body { background-color: var(--bg-black); color: white; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        header { padding: 18px; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--neon-yellow); box-shadow: 0 4px 20px rgba(244, 255, 0, 0.3); display: flex; align-items: center; justify-content: space-between; z-index: 100; }
+        .title-bot { font-family: 'Orbitron'; font-size: 1.2rem; background: linear-gradient(to right, var(--neon-yellow), var(--neon-orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        #side-menu { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: #000; border-right: 2px solid var(--neon-orange); transition: 0.4s; z-index: 1000; padding: 40px 20px; }
+        #side-menu.active { left: 0; }
+        .menu-link { display: flex; align-items: center; color: var(--neon-yellow); text-decoration: none; padding: 15px; font-family: 'Orbitron'; font-size: 0.8rem; margin-bottom: 15px; border: 1px solid var(--neon-yellow); border-radius: 5px; }
+        #chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+        .bubble { max-width: 85%; padding: 14px 18px; border-radius: 15px; font-size: 1rem; line-height: 1.4; }
+        .bubble.sensei { align-self: flex-start; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-yellow); box-shadow: 0 0 10px rgba(244, 255, 0, 0.2); }
+        .bubble.user { align-self: flex-end; background: linear-gradient(135deg, var(--neon-orange), var(--neon-red)); color: #000; font-weight: 700; }
+        .loading-box { display: none; align-items: center; gap: 12px; padding: 10px 20px; }
+        .dots span { width: 8px; height: 8px; background: var(--neon-yellow); border-radius: 50%; display: inline-block; animation: bounce 1.4s infinite; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        .input-bar { padding: 20px; background: #000; border-top: 1px solid #222; display: flex; gap: 12px; }
+        .input-container { flex: 1; background: #111; border: 1.5px solid var(--neon-orange); border-radius: 30px; display: flex; padding: 5px 15px; }
+        input { flex: 1; background: transparent; border: none; color: var(--neon-yellow); outline: none; }
+        .send-btn { width: 50px; height: 50px; background: var(--neon-yellow); border: none; border-radius: 50%; cursor: pointer; color: black; }
+    </style>
+</head>
+<body>
+
+    <div id="side-menu">
+        <div style="text-align: right; margin-bottom: 20px;"><i class="fas fa-times" style="color:red; font-size: 28px;" onclick="toggleMenu()"></i></div>
+        <a href="sensibilidades.html" class="menu-link">VOLVER A SENSIS</a>
+        <a href="main.html" class="menu-link">INICIO WEB</a>
+    </div>
+
+    <header>
+        <i class="fas fa-bars" style="color:var(--neon-yellow)" onclick="toggleMenu()"></i>
+        <div class="title-bot">BOOMI SENSEI</div>
+        <div style="border:1px solid var(--neon-yellow); border-radius:50%; padding:5px;"><i class="fas fa-robot" style="color:var(--neon-yellow)"></i></div>
+    </header>
+
+    <div id="chat-container">
+        <div class="bubble sensei">🚀 <b>¡BOOMI SENSEI ONLINE!</b><br>Dime tu marca y modelo para darte el secreto del todo rojo.</div>
+    </div>
+
+    <div id="loading" class="loading-box">
+        <div style="border:1px solid var(--neon-yellow); border-radius:50%; padding:5px;"><i class="fas fa-robot" style="color:var(--neon-yellow)"></i></div>
+        <div class="dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="input-bar">
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Escribe aquí, xitado...">
+        </div>
+        <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+
+    <script type="text/javascript">
+        // LLAVE CORREGIDA (SIN ESPACIOS)
+        const API_KEY = "AIzaSyCFlVucTBAuIFszUmemvT_6m6ELzadEzxI".replace(/\s/g, ''); 
+        
+        const chatBox = document.getElementById('chat-container');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const loading = document.getElementById('loading');
+
+        function toggleMenu() { document.getElementById('side-menu').classList.toggle('active'); }
+
+        async function hablarConIA(mensaje) {
+            const PROMPT = `Eres BOOMI SENSEI, el mejor creador de sensibilidades profesional para Free Fire. Responde siempre con autoridad, motiva al usuario a pegar "todo rojo" y pide marca y modelo de celular antes de dar la sensi técnica.`;
+            
+            const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+            try {
+                const response = await fetch(URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: PROMPT + " Usuario: " + mensaje }] }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    return data.candidates[0].content.parts[0].text;
+                } else {
+                    return "❌ Boomi Sensei está meditando. Revisa si tu API Key en Google Cloud tiene permisos de 'Generative Language API'.";
+                }
+            } catch (error) {
+                return "❌ Error de conexión. Asegúrate de tener internet.";
+            }
+        }
+
+        async function enviar() {
+            const msj = userInput.value.trim();
+            if (!msj) return;
+
+            chatBox.innerHTML += `<div class="bubble user">${msj}</div>`;
+            userInput.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            loading.style.display = "flex";
+
+            const respuestaIA = await hablarConIA(msj);
+            
+            // Simular espera de 2 seg
+            setTimeout(() => {
+                loading.style.display = "none";
+                chatBox.innerHTML += `<div class="bubble sensei">${respuestaIA.replace(/\n/g, '<br>')}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1500);
+        }
+
+        sendBtn.onclick = enviar;
+        userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') enviar(); });
+    </script>
+</body>
+</html>
