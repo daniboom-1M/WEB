@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DANIBOOM WEB | ELITE LOGIN</title>
+<title>DANIBOOM WEB | ELITE EDITION</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,34 +26,34 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  position: relative;
 }
 
 #canvasAtoms { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
+/* --- CARGADOR --- */
 #loader {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: #000; z-index: 9999; display: flex; flex-direction: column;
   justify-content: center; align-items: center;
 }
 
+.warning-glitch { font-size: 50px; color: var(--neon-red); animation: glitch 0.2s infinite; }
+@keyframes glitch { 0% { transform: translateX(2px); } 50% { opacity: 0.7; } 100% { transform: translateX(-2px); } }
+
 /* --- ALERTAS SUPERIORES --- */
 #statusAlert {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 0.75rem;
-  font-weight: 900;
-  margin-bottom: 20px;
-  display: none;
-  text-transform: uppercase;
-  border: 1px solid transparent;
-  animation: fadeIn 0.4s ease;
+  width: 100%; padding: 12px; border-radius: 10px;
+  font-size: 0.75rem; font-weight: 900; margin-bottom: 20px;
+  display: none; text-transform: uppercase; border: 1px solid transparent;
+  animation: slideDown 0.4s ease;
 }
-.alert-error { background: rgba(255, 0, 0, 0.1); color: var(--neon-red); border-color: var(--neon-red) !important; box-shadow: 0 0 15px var(--neon-red); }
-.alert-warn { background: rgba(255, 136, 0, 0.1); color: var(--neon-orange); border-color: var(--neon-orange) !important; box-shadow: 0 0 15px var(--neon-orange); }
+.alert-error { background: rgba(255, 0, 0, 0.15); color: var(--neon-red); border-color: var(--neon-red) !important; box-shadow: 0 0 15px var(--neon-red); }
+.alert-warn { background: rgba(255, 136, 0, 0.15); color: var(--neon-orange); border-color: var(--neon-orange) !important; box-shadow: 0 0 15px var(--neon-orange); }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
+/* --- CARD PRINCIPAL --- */
 .main-card-neon {
   z-index: 10; width: 92%; max-width: 400px; padding: 2px;
   background: linear-gradient(135deg, var(--neon-gold), var(--neon-red));
@@ -61,45 +61,46 @@ body {
 }
 
 .inner-content {
-  background: rgba(5, 5, 5, 0.95); border-radius: 18px;
-  padding: 25px; text-align: center; backdrop-filter: blur(15px);
+  background: rgba(5, 5, 5, 0.96); border-radius: 18px;
+  padding: 25px; text-align: center; backdrop-filter: blur(20px);
 }
 
 .rayo-badge {
-  width: 60px; height: 60px; border: 2px solid var(--neon-gold);
+  width: 65px; height: 65px; border: 2px solid var(--neon-gold);
   border-radius: 50%; margin: 0 auto 15px;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 15px var(--neon-gold);
+  box-shadow: 0 0 20px var(--neon-gold);
 }
 
-h1 { font-size: 1.3rem; color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); margin-bottom: 5px; }
+h1 { font-size: 1.4rem; color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); margin-bottom: 5px; }
 
+/* INPUTS --- */
 .f-box { position: relative; margin-bottom: 12px; }
 .f-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--neon-gold); }
 
 input {
   width: 100%; padding: 12px 10px 12px 45px;
-  background: #111; border: 1px solid #333; border-radius: 10px;
-  color: #fff; outline: none; font-size: 0.9rem;
+  background: #0a0a0a; border: 1px solid #333; border-radius: 10px;
+  color: #fff; outline: none; font-size: 0.9rem; transition: 0.3s;
 }
 input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-gold); }
 
 .btn-main {
-  width: 100%; padding: 14px; background: var(--neon-gold);
+  width: 100%; padding: 15px; background: var(--neon-gold);
   border: none; border-radius: 10px; font-weight: 900;
-  cursor: pointer; text-transform: uppercase; box-shadow: 0 0 15px var(--neon-gold);
-  transition: 0.3s;
+  cursor: pointer; text-transform: uppercase; box-shadow: 0 0 20px var(--neon-gold);
+  transition: 0.3s; margin-top: 5px;
 }
-.btn-main:active { transform: scale(0.95); }
+.btn-main:hover { filter: brightness(1.2); }
 
 .btn-anon {
-  width: 100%; padding: 10px; background: transparent;
+  width: 100%; padding: 12px; background: transparent;
   border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
   border-radius: 10px; margin-top: 15px; cursor: pointer;
-  font-size: 0.8rem; font-weight: 700;
+  font-size: 0.8rem; font-weight: bold; text-shadow: 0 0 5px var(--neon-cyan);
 }
 
-.switch { margin-top: 15px; font-size: 0.75rem; color: #888; cursor: pointer; }
+.switch { margin-top: 18px; font-size: 0.75rem; color: #777; cursor: pointer; }
 .switch span { color: var(--neon-gold); font-weight: bold; text-decoration: underline; }
 </style>
 </head>
@@ -108,8 +109,8 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
 <canvas id="canvasAtoms"></canvas>
 
 <div id="loader">
-  <div class="warning-glitch" style="font-size:50px; color:red;"><i class="fas fa-shield-virus"></i></div>
-  <h2 style="color:var(--neon-red); letter-spacing:3px;">SISTEMA BOOM</h2>
+  <div class="warning-glitch"><i class="fas fa-biohazard"></i></div>
+  <h2 style="color:var(--neon-red); letter-spacing:4px; margin-top:10px;">SISTEMA CARGANDO</h2>
 </div>
 
 <div class="main-card-neon" id="mainWrapper">
@@ -117,31 +118,32 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
     
     <div id="statusAlert"></div>
 
-    <div class="rayo-badge"><i class="fas fa-bolt" style="color:var(--neon-gold); font-size:25px;"></i></div>
+    <div class="rayo-badge"><i class="fas fa-bolt" style="color:var(--neon-gold); font-size:28px;"></i></div>
     <h1>DANIBOOM WEB</h1>
-    <p style="font-size:0.7rem; color:#666; margin-bottom:20px; font-family:'Rajdhani';">V2.0 PRO INTERFACE</p>
+    <p style="font-size:0.7rem; color:#555; margin-bottom:20px;">ESTOY TRABAJANDO EN LA PAGINA PARA QUE QUEDE AL 100% CON TODAS SUS FUNCIONES, DISFRUTA</p>
 
     <div id="loginBox">
-      <div class="f-box"><i class="fas fa-envelope"></i><input id="lEmail" type="email" placeholder="CORREO"></div>
-      <div class="f-box"><i class="fas fa-lock"></i><input id="lPass" type="password" placeholder="PASSWORD"></div>
-      <button class="btn-main" id="lBtn">INICIAR SESIÓN</button>
-      <div class="switch" onclick="showView('reg')">¿NO TIENES CUENTA? <span>REGISTRARSE</span></div>
+      <div class="f-box"><i class="fas fa-envelope"></i><input id="lEmail" type="email" placeholder="CORREO ELECTRÓNICO"></div>
+      <div class="f-box"><i class="fas fa-lock"></i><input id="lPass" type="password" placeholder="CONTRASEÑA"></div>
+      <button class="btn-main" id="lBtn">INGRESAR AL SISTEMA</button>
+      <div class="switch" onclick="showView('reg')">¿ERES NUEVO? <span>CREAR CUENTA</span></div>
     </div>
 
     <div id="registerBox" style="display:none">
       <div class="f-box"><i class="fas fa-user"></i><input id="rUser" type="text" placeholder="NOMBRE DE USUARIO"></div>
-      <div class="f-box"><i class="fas fa-envelope"></i><input id="rEmail" type="email" placeholder="CORREO"></div>
-      <div class="f-box"><i class="fas fa-lock"></i><input id="rPass" type="password" placeholder="CONTRASEÑA"></div>
-      <button class="btn-main" id="rBtn">CREAR CUENTA</button>
-      <button class="btn-anon" id="aBtn"><i class="fas fa-user-secret"></i> ACCESO ANÓNIMO</button>
+      <div class="f-box"><i class="fas fa-envelope"></i><input id="rEmail" type="email" placeholder="CORREO ELECTRÓNICO"></div>
+      <div class="f-box"><i class="fas fa-lock"></i><input id="rPass" type="password" placeholder="CREA UNA CONTRASEÑA"></div>
+      <button class="btn-main" id="rBtn">REGISTRARSE AHORA</button>
+      <button class="btn-anon" id="aBtn"><i class="fas fa-ghost"></i> ACCESO ANÓNIMO</button>
       <div class="switch" onclick="showView('log')">¿YA TIENES CUENTA? <span>LOGUEAR</span></div>
     </div>
 
     <div id="forgotBox" style="display:none">
-      <h3 style="color:var(--neon-gold); font-size:0.8rem; margin-bottom:15px;">RESTABLECER CREDENCIALES</h3>
-      <div class="f-box"><i class="fas fa-envelope"></i><input id="fEmail" type="email" placeholder="CORREO DE RECUPERACIÓN"></div>
+      <h3 style="color:var(--neon-gold); font-size:0.8rem; margin-bottom:15px;">CAMBIAR TU CONTRASEÑA</h3>
+      <p style="font-size:0.7rem; color:#555; margin-bottom:20px;">EL MENSAJE LLEGARA A TU CORREO, SI NO LO VEZ, REVISA EN SPAM</p>
+      <div class="f-box"><i class="fas fa-envelope"></i><input id="fEmail" type="email" placeholder="CORREO PARA EL ENLACE"></div>
       <button class="btn-main" id="fBtn">ENVIAR ENLACE</button>
-      <div class="switch" onclick="showView('log')"><span>VOLVER ATRÁS</span></div>
+      <div class="switch" onclick="showView('log')"><span>CANCELAR Y VOLVER</span></div>
     </div>
 
   </div>
@@ -149,7 +151,7 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, sendPasswordResetEmail, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -168,6 +170,7 @@ function showAlert(msg, type) {
   alert.innerText = msg;
   alert.className = type === 'error' ? 'alert-error' : 'alert-warn';
   alert.style.display = 'block';
+  window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 onAuthStateChanged(auth, user => {
@@ -188,62 +191,74 @@ window.showView = (v) => {
   document.getElementById('statusAlert').style.display = 'none';
 };
 
-// LOGIN LOGIC
+// --- LÓGICA DE LOGIN INTELIGENTE ---
 lBtn.onclick = async () => {
-  const e = lEmail.value, p = lPass.value;
-  if(!e || !p) return showAlert("Faltan datos", "error");
-  
+  const e = lEmail.value.trim(), p = lPass.value;
+  if(!e || !p) return showAlert("POR FAVOR COMPLETA LOS DATOS", "error");
+
   try {
+    // Intentamos entrar
     await signInWithEmailAndPassword(auth, e, p);
-  } catch(err) { 
-    if (err.code === 'auth/user-not-found') {
-        showAlert("ESTA CUENTA NO EXISTE. ¡CREA UNA!", "error");
-    } else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-        showAlert("CONTRASEÑA INCORRECTA. REDIRIGIENDO...", "warn");
-        fEmail.value = e;
-        setTimeout(() => showView('forgot'), 2000);
-    } else {
-        showAlert("ERROR DE CONEXIÓN", "error");
+  } catch(err) {
+    // Si falla, verificamos si el correo existe realmente
+    try {
+        const methods = await fetchSignInMethodsForEmail(auth, e);
+        if (methods.length === 0) {
+            showAlert("ESTA CUENTA NO EXISTE. ¡CREA UNA!", "error");
+        } else {
+            // El correo existe, la clave está mal
+            showAlert("CONTRASEÑA INCORRECTA. REDIRIGIENDO...", "warn");
+            fEmail.value = e;
+            setTimeout(() => showView('forgot'), 2000);
+        }
+    } catch(checkErr) {
+        // Fallback para errores de red o seguridad
+        showAlert("ERROR EN CREDENCIALES", "error");
     }
   }
 };
 
-// RESET LOGIC
+// --- RECUPERACIÓN ---
 fBtn.onclick = async () => {
+    if(!fEmail.value) return showAlert("INGRESA UN CORREO VÁLIDO", "error");
     try {
         await sendPasswordResetEmail(auth, fEmail.value);
-        showAlert("ENLACE ENVIADO AL CORREO", "warn");
+        showAlert("ENLACE ENVIADO. REVISA TU CORREO.", "warn");
         setTimeout(() => showView('log'), 3000);
-    } catch(e) { showAlert("CORREO INVÁLIDO", "error"); }
+    } catch(e) { showAlert("NO SE PUDO ENVIAR EL CORREO", "error"); }
 };
 
-// REGISTER LOGIC
+// --- REGISTRO ---
 rBtn.onclick = async () => {
   if(!rUser.value || !rEmail.value || !rPass.value) return showAlert("LLENA TODOS LOS CAMPOS", "error");
   try {
     const res = await createUserWithEmailAndPassword(auth, rEmail.value, rPass.value);
     await setDoc(doc(db, "users", res.user.uid), {
-      displayName: rUser.value, email: rEmail.value, membership: "suscriptor", status: "active", nvl: "1", createdAt: serverTimestamp()
+      displayName: rUser.value, 
+      email: rEmail.value, 
+      membership: "suscriptor", 
+      status: "active", 
+      level: 1, 
+      createdAt: serverTimestamp()
     });
-  } catch(e) { showAlert("CORREO YA EN USO O ERROR", "error"); }
+  } catch(e) { showAlert("ERROR: EL CORREO YA EXISTE", "error"); }
 };
 
-// ANONYMOUS LOGIC (PERFIL AUTO-CONFIGURADO)
+// --- ACCESO ANÓNIMO CON ROL FIJO ---
 aBtn.onclick = async () => {
   try {
     const res = await signInAnonymously(auth);
-    // Guardamos sus datos de anónimo para que main.html los lea correctamente
     await setDoc(doc(db, "users", res.user.uid), {
       displayName: "ANÓNIMO #001",
       membership: "anonymous",
-      nvl: "0",
+      level: 0,
       createdAt: serverTimestamp()
     });
     location.href = "main.html";
-  } catch(e) { showAlert("FALLO AL ENTRAR COMO ANÓNIMO", "error"); }
+  } catch(e) { showAlert("ERROR AL ENTRAR COMO ANÓNIMO", "error"); }
 };
 
-// Canvas... (mismo código optimizado)
+// --- CANVAS BACKGROUND ---
 const canvas = document.getElementById('canvasAtoms');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -252,12 +267,12 @@ function init() {
   particles = [];
   const count = Math.min(30, (canvas.width * canvas.height) / 20000); 
   for (let i = 0; i < count; i++) {
-    particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5), vy: (Math.random()-0.5), r: 1.5 });
+    particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.8, vy: (Math.random()-0.5)*0.8, r: 1.2 });
   }
 }
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "rgba(255, 215, 0, 0.5)"; ctx.strokeStyle = "rgba(255, 215, 0, 0.1)";
+  ctx.fillStyle = "rgba(255, 215, 0, 0.4)"; ctx.strokeStyle = "rgba(255, 215, 0, 0.08)";
   particles.forEach((p, i) => {
     p.x += p.vx; p.y += p.vy;
     if (p.x < 0 || p.x > canvas.width) p.vx *= -1; if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
