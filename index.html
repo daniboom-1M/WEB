@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>DANIBOOM WEB | FLUID EDITION</title>
+<title>DANIBOOM WEB | ELITE LOGIN</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,206 +23,131 @@ body {
   background: #000;
   color: #fff;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  position: relative;
 }
 
-/* --- CANVAS OPTIMIZADO (SIN LAG) --- */
-#canvasAtoms {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: -1;
-}
+#canvasAtoms { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-/* --- CARGADOR GLITCH --- */
 #loader {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: #000;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: #000; z-index: 9999; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
 }
 
-.warning-glitch {
-  font-size: 80px;
-  color: var(--neon-red);
-  text-shadow: 0 0 20px var(--neon-red);
-  animation: glitch-fluid 0.2s infinite;
+/* --- ALERTAS SUPERIORES --- */
+#statusAlert {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  display: none;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  animation: fadeIn 0.4s ease;
 }
+.alert-error { background: rgba(255, 0, 0, 0.1); color: var(--neon-red); border-color: var(--neon-red) !important; box-shadow: 0 0 15px var(--neon-red); }
+.alert-warn { background: rgba(255, 136, 0, 0.1); color: var(--neon-orange); border-color: var(--neon-orange) !important; box-shadow: 0 0 15px var(--neon-orange); }
 
-@keyframes glitch-fluid {
-  0% { transform: translate(2px,0); }
-  50% { transform: translate(-2px,0); opacity: 0.8; }
-  100% { transform: translate(0); }
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* --- CONTENEDOR PRINCIPAL --- */
 .main-card-neon {
-  z-index: 10;
-  width: 90%;
-  max-width: 400px;
-  padding: 2px;
+  z-index: 10; width: 92%; max-width: 400px; padding: 2px;
   background: linear-gradient(135deg, var(--neon-gold), var(--neon-red));
-  border-radius: 20px;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-  display: none; 
+  border-radius: 20px; display: none;
 }
 
 .inner-content {
-  background: rgba(5, 5, 5, 0.92);
-  border-radius: 18px;
-  padding: 30px 20px;
-  text-align: center;
-  backdrop-filter: blur(10px);
+  background: rgba(5, 5, 5, 0.95); border-radius: 18px;
+  padding: 25px; text-align: center; backdrop-filter: blur(15px);
 }
 
 .rayo-badge {
-  width: 70px; height: 70px;
-  border: 3px solid var(--neon-gold);
-  border-radius: 50%;
-  margin: 0 auto 20px;
+  width: 60px; height: 60px; border: 2px solid var(--neon-gold);
+  border-radius: 50%; margin: 0 auto 15px;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 20px var(--neon-gold);
+  box-shadow: 0 0 15px var(--neon-gold);
 }
 
-h1 { font-size: 1.5rem; color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); margin-bottom: 10px; }
+h1 { font-size: 1.3rem; color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); margin-bottom: 5px; }
 
-.alert-p { font-family: 'Rajdhani'; font-size: 0.85rem; color: #ccc; margin-bottom: 20px; }
-.alert-p b { color: var(--neon-orange); cursor: pointer; text-decoration: underline; }
-
-/* INPUTS --- */
-.f-box { position: relative; margin-bottom: 15px; }
+.f-box { position: relative; margin-bottom: 12px; }
 .f-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--neon-gold); }
 
 input {
   width: 100%; padding: 12px 10px 12px 45px;
   background: #111; border: 1px solid #333; border-radius: 10px;
-  color: #fff; outline: none; transition: 0.3s;
+  color: #fff; outline: none; font-size: 0.9rem;
 }
 input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-gold); }
 
 .btn-main {
-  width: 100%; padding: 15px; background: var(--neon-gold);
+  width: 100%; padding: 14px; background: var(--neon-gold);
   border: none; border-radius: 10px; font-weight: 900;
-  cursor: pointer; text-transform: uppercase; box-shadow: 0 0 20px var(--neon-gold);
+  cursor: pointer; text-transform: uppercase; box-shadow: 0 0 15px var(--neon-gold);
+  transition: 0.3s;
 }
+.btn-main:active { transform: scale(0.95); }
 
 .btn-anon {
-  width: 100%; padding: 12px; background: transparent;
+  width: 100%; padding: 10px; background: transparent;
   border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
   border-radius: 10px; margin-top: 15px; cursor: pointer;
-  text-shadow: 0 0 5px var(--neon-cyan);
+  font-size: 0.8rem; font-weight: 700;
 }
 
-.switch { margin-top: 20px; font-size: 0.8rem; color: #777; cursor: pointer; }
-.switch span { color: var(--neon-gold); font-weight: bold; }
-
-/* ESTILO PARA EL MENSAJE DE ERROR */
-#errorMsg { font-size: 0.75rem; color: var(--neon-red); margin-top: 10px; display: none; font-weight: bold; }
+.switch { margin-top: 15px; font-size: 0.75rem; color: #888; cursor: pointer; }
+.switch span { color: var(--neon-gold); font-weight: bold; text-decoration: underline; }
 </style>
 </head>
-
 <body>
 
 <canvas id="canvasAtoms"></canvas>
 
 <div id="loader">
-  <div class="warning-glitch"><i class="fas fa-biohazard"></i></div>
-  <h2 style="color:var(--neon-red); letter-spacing:5px; margin-top:10px;">PELIGRO</h2>
-  <p style="font-size:0.7rem; margin-top:10px; opacity:0.6;">Sincronizando Daniboom Web...</p>
+  <div class="warning-glitch" style="font-size:50px; color:red;"><i class="fas fa-shield-virus"></i></div>
+  <h2 style="color:var(--neon-red); letter-spacing:3px;">SISTEMA BOOM</h2>
 </div>
 
 <div class="main-card-neon" id="mainWrapper">
   <div class="inner-content">
-    <div class="rayo-badge"><i class="fas fa-bolt" style="color:var(--neon-gold); font-size:30px;"></i></div>
-    <h1>DANIBOOM WEB</h1>
     
-    <p class="alert-p" id="msgInfo">
-      Los usuarios anónimos tienen acceso restringido. 
-      <b onclick="showView('reg')">Crea una cuenta</b> para liberar todo el poder.
-    </p>
+    <div id="statusAlert"></div>
+
+    <div class="rayo-badge"><i class="fas fa-bolt" style="color:var(--neon-gold); font-size:25px;"></i></div>
+    <h1>DANIBOOM WEB</h1>
+    <p style="font-size:0.7rem; color:#666; margin-bottom:20px; font-family:'Rajdhani';">V2.0 PRO INTERFACE</p>
 
     <div id="loginBox">
       <div class="f-box"><i class="fas fa-envelope"></i><input id="lEmail" type="email" placeholder="CORREO"></div>
       <div class="f-box"><i class="fas fa-lock"></i><input id="lPass" type="password" placeholder="PASSWORD"></div>
-      <div id="errorMsg"></div>
-      <button class="btn-main" id="lBtn">INGRESAR</button>
-      <div class="switch" onclick="showView('reg')">¿SISTEMA NUEVO? <span>REGISTRARSE</span></div>
+      <button class="btn-main" id="lBtn">INICIAR SESIÓN</button>
+      <div class="switch" onclick="showView('reg')">¿NO TIENES CUENTA? <span>REGISTRARSE</span></div>
     </div>
 
     <div id="registerBox" style="display:none">
-      <div class="f-box"><i class="fas fa-user"></i><input id="rUser" type="text" placeholder="NOMBRE USUARIO"></div>
+      <div class="f-box"><i class="fas fa-user"></i><input id="rUser" type="text" placeholder="NOMBRE DE USUARIO"></div>
       <div class="f-box"><i class="fas fa-envelope"></i><input id="rEmail" type="email" placeholder="CORREO"></div>
-      <div class="f-box"><i class="fas fa-lock"></i><input id="rPass" type="password" placeholder="PASSWORD"></div>
+      <div class="f-box"><i class="fas fa-lock"></i><input id="rPass" type="password" placeholder="CONTRASEÑA"></div>
       <button class="btn-main" id="rBtn">CREAR CUENTA</button>
+      <button class="btn-anon" id="aBtn"><i class="fas fa-user-secret"></i> ACCESO ANÓNIMO</button>
       <div class="switch" onclick="showView('log')">¿YA TIENES CUENTA? <span>LOGUEAR</span></div>
     </div>
 
     <div id="forgotBox" style="display:none">
-        <h3 style="color:var(--neon-gold); font-size: 0.9rem; margin-bottom: 10px;">RECUPERAR ACCESO</h3>
-        <p class="alert-p">Se enviará un enlace a tu correo para restablecer tu contraseña.</p>
-        <div class="f-box"><i class="fas fa-envelope"></i><input id="fEmail" type="email" placeholder="CONFIRMA TU CORREO"></div>
-        <button class="btn-main" id="fBtn">ENVIAR ENLACE</button>
-        <button class="btn-anon" style="border-color:var(--neon-red); color:var(--neon-red); margin-top:10px;" onclick="showView('log')">CANCELAR</button>
+      <h3 style="color:var(--neon-gold); font-size:0.8rem; margin-bottom:15px;">RESTABLECER CREDENCIALES</h3>
+      <div class="f-box"><i class="fas fa-envelope"></i><input id="fEmail" type="email" placeholder="CORREO DE RECUPERACIÓN"></div>
+      <button class="btn-main" id="fBtn">ENVIAR ENLACE</button>
+      <div class="switch" onclick="showView('log')"><span>VOLVER ATRÁS</span></div>
     </div>
 
-    <button class="btn-anon" id="aBtn">ACCESO ANÓNIMO</button>
   </div>
 </div>
 
 <script type="module">
-const canvas = document.getElementById('canvasAtoms');
-const ctx = canvas.getContext('2d');
-let particles = [];
-
-function init() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  particles = [];
-  const count = Math.min(40, (canvas.width * canvas.height) / 15000); 
-  for (let i = 0; i < count; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 1,
-      vy: (Math.random() - 0.5) * 1,
-      r: 1.5
-    });
-  }
-}
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "rgba(255, 215, 0, 0.8)";
-  ctx.strokeStyle = "rgba(255, 215, 0, 0.15)";
-  particles.forEach((p, i) => {
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fill();
-    for (let j = i + 1; j < particles.length; j++) {
-      let p2 = particles[j];
-      let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-      if (dist < 110) {
-        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
-      }
-    }
-  });
-  requestAnimationFrame(draw);
-}
-window.addEventListener('resize', init);
-init(); draw();
-
-// --- LÓGICA FIREBASE ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
@@ -236,6 +161,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
+
+// --- SISTEMA DE ALERTAS ---
+function showAlert(msg, type) {
+  const alert = document.getElementById('statusAlert');
+  alert.innerText = msg;
+  alert.className = type === 'error' ? 'alert-error' : 'alert-warn';
+  alert.style.display = 'block';
+}
 
 onAuthStateChanged(auth, user => {
   setTimeout(() => {
@@ -252,66 +185,93 @@ window.showView = (v) => {
   loginBox.style.display = v === 'log' ? 'block' : 'none';
   registerBox.style.display = v === 'reg' ? 'block' : 'none';
   forgotBox.style.display = v === 'forgot' ? 'block' : 'none';
-  errorMsg.style.display = 'none';
+  document.getElementById('statusAlert').style.display = 'none';
 };
 
+// LOGIN LOGIC
 lBtn.onclick = async () => {
   const e = lEmail.value, p = lPass.value;
-  if(!e || !p) return alert("Faltan datos");
+  if(!e || !p) return showAlert("Faltan datos", "error");
   
-  errorMsg.style.display = 'none';
-
   try {
     await signInWithEmailAndPassword(auth, e, p);
   } catch(err) { 
-    console.log(err.code);
-    // DETECCIÓN INTELIGENTE DE ERRORES
     if (err.code === 'auth/user-not-found') {
-        errorMsg.innerText = "EL CORREO NO EXISTE. ¡CREA UNA CUENTA!";
-        errorMsg.style.display = 'block';
-    } else if (err.code === 'auth/wrong-password') {
-        // SI LA CONTRASEÑA ES INCORRECTA, ABRIR RECUPERACIÓN
-        fEmail.value = e; // Autocompleta el correo
-        showView('forgot');
-    } else {
-        // Otros errores (como demasiados intentos o credenciales inválidas generales)
-        errorMsg.innerText = "CONTRASEÑA INCORRECTA O ERROR DE SISTEMA";
-        errorMsg.style.display = 'block';
-        // OPCIONAL: Si quieres que abra recuperación con cualquier error de credenciales:
+        showAlert("ESTA CUENTA NO EXISTE. ¡CREA UNA!", "error");
+    } else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        showAlert("CONTRASEÑA INCORRECTA. REDIRIGIENDO...", "warn");
         fEmail.value = e;
-        setTimeout(()=> showView('forgot'), 1500);
+        setTimeout(() => showView('forgot'), 2000);
+    } else {
+        showAlert("ERROR DE CONEXIÓN", "error");
     }
   }
 };
 
-// Lógica de recuperar contraseña
+// RESET LOGIC
 fBtn.onclick = async () => {
-    if(!fEmail.value) return alert("Ingresa tu correo");
     try {
         await sendPasswordResetEmail(auth, fEmail.value);
-        alert("¡Enlace enviado! Revisa tu bandeja de entrada o spam.");
-        showView('log');
-    } catch(e) {
-        alert("Error al enviar el enlace. Verifica el correo.");
-    }
+        showAlert("ENLACE ENVIADO AL CORREO", "warn");
+        setTimeout(() => showView('log'), 3000);
+    } catch(e) { showAlert("CORREO INVÁLIDO", "error"); }
 };
 
+// REGISTER LOGIC
 rBtn.onclick = async () => {
-  if(!rUser.value || !rEmail.value || !rPass.value) return alert("Completa los campos");
+  if(!rUser.value || !rEmail.value || !rPass.value) return showAlert("LLENA TODOS LOS CAMPOS", "error");
   try {
     const res = await createUserWithEmailAndPassword(auth, rEmail.value, rPass.value);
     await setDoc(doc(db, "users", res.user.uid), {
-      displayName: rUser.value, email: rEmail.value, membership: "suscriptor", status: "active", nvl: "0", createdAt: serverTimestamp()
+      displayName: rUser.value, email: rEmail.value, membership: "suscriptor", status: "active", nvl: "1", createdAt: serverTimestamp()
     });
-  } catch(e) { alert("Error en el registro o correo ya en uso"); }
+  } catch(e) { showAlert("CORREO YA EN USO O ERROR", "error"); }
 };
 
+// ANONYMOUS LOGIC (PERFIL AUTO-CONFIGURADO)
 aBtn.onclick = async () => {
   try {
-    await signInAnonymously(auth);
+    const res = await signInAnonymously(auth);
+    // Guardamos sus datos de anónimo para que main.html los lea correctamente
+    await setDoc(doc(db, "users", res.user.uid), {
+      displayName: "ANÓNIMO #001",
+      membership: "anonymous",
+      nvl: "0",
+      createdAt: serverTimestamp()
+    });
     location.href = "main.html";
-  } catch(e) { console.error(e); }
+  } catch(e) { showAlert("FALLO AL ENTRAR COMO ANÓNIMO", "error"); }
 };
+
+// Canvas... (mismo código optimizado)
+const canvas = document.getElementById('canvasAtoms');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function init() {
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  particles = [];
+  const count = Math.min(30, (canvas.width * canvas.height) / 20000); 
+  for (let i = 0; i < count; i++) {
+    particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5), vy: (Math.random()-0.5), r: 1.5 });
+  }
+}
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255, 215, 0, 0.5)"; ctx.strokeStyle = "rgba(255, 215, 0, 0.1)";
+  particles.forEach((p, i) => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1; if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    for (let j = i + 1; j < particles.length; j++) {
+      let p2 = particles[j];
+      if (Math.hypot(p.x - p2.x, p.y - p2.y) < 100) {
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+      }
+    }
+  });
+  requestAnimationFrame(draw);
+}
+window.addEventListener('resize', init); init(); draw();
 </script>
 </body>
 </html>
