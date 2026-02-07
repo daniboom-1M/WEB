@@ -72,7 +72,7 @@ body {
   background: linear-gradient(135deg, var(--neon-gold), var(--neon-red));
   border-radius: 20px;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-  display: none; /* Se activa cuando carga */
+  display: none; 
 }
 
 .inner-content {
@@ -123,6 +123,9 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
 
 .switch { margin-top: 20px; font-size: 0.8rem; color: #777; cursor: pointer; }
 .switch span { color: var(--neon-gold); font-weight: bold; }
+
+/* ESTILO PARA EL MENSAJE DE ERROR */
+#errorMsg { font-size: 0.75rem; color: var(--neon-red); margin-top: 10px; display: none; font-weight: bold; }
 </style>
 </head>
 
@@ -149,6 +152,7 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
     <div id="loginBox">
       <div class="f-box"><i class="fas fa-envelope"></i><input id="lEmail" type="email" placeholder="CORREO"></div>
       <div class="f-box"><i class="fas fa-lock"></i><input id="lPass" type="password" placeholder="PASSWORD"></div>
+      <div id="errorMsg"></div>
       <button class="btn-main" id="lBtn">INGRESAR</button>
       <div class="switch" onclick="showView('reg')">¿SISTEMA NUEVO? <span>REGISTRARSE</span></div>
     </div>
@@ -161,12 +165,19 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
       <div class="switch" onclick="showView('log')">¿YA TIENES CUENTA? <span>LOGUEAR</span></div>
     </div>
 
+    <div id="forgotBox" style="display:none">
+        <h3 style="color:var(--neon-gold); font-size: 0.9rem; margin-bottom: 10px;">RECUPERAR ACCESO</h3>
+        <p class="alert-p">Se enviará un enlace a tu correo para restablecer tu contraseña.</p>
+        <div class="f-box"><i class="fas fa-envelope"></i><input id="fEmail" type="email" placeholder="CONFIRMA TU CORREO"></div>
+        <button class="btn-main" id="fBtn">ENVIAR ENLACE</button>
+        <button class="btn-anon" style="border-color:var(--neon-red); color:var(--neon-red); margin-top:10px;" onclick="showView('log')">CANCELAR</button>
+    </div>
+
     <button class="btn-anon" id="aBtn">ACCESO ANÓNIMO</button>
   </div>
 </div>
 
 <script type="module">
-// --- CANVAS ULTRA FLUIDO (Optimizado para GitHub/Móvil) ---
 const canvas = document.getElementById('canvasAtoms');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -175,7 +186,6 @@ function init() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   particles = [];
-  // Menos partículas = Más fluidez
   const count = Math.min(40, (canvas.width * canvas.height) / 15000); 
   for (let i = 0; i < count; i++) {
     particles.push({
@@ -192,24 +202,18 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "rgba(255, 215, 0, 0.8)";
   ctx.strokeStyle = "rgba(255, 215, 0, 0.15)";
-
   particles.forEach((p, i) => {
     p.x += p.vx; p.y += p.vy;
     if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
     if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
     ctx.fill();
-
     for (let j = i + 1; j < particles.length; j++) {
       let p2 = particles[j];
       let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
       if (dist < 110) {
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
       }
     }
   });
@@ -218,10 +222,10 @@ function draw() {
 window.addEventListener('resize', init);
 init(); draw();
 
-// --- LÓGICA FIREBASE (SOLUCIÓN CICLO INFINITO) ---
+// --- LÓGICA FIREBASE ---
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey:"AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -236,9 +240,6 @@ const db = getFirestore();
 onAuthStateChanged(auth, user => {
   setTimeout(() => {
     document.getElementById('loader').style.display = 'none';
-    
-    // SI HAY USUARIO Y NO ES ANÓNIMO -> REDIRECCIONAR AL MAIN
-    // SI ES ANÓNIMO -> SE QUEDA AQUÍ PARA PODER LOGUEARSE DE VERDAD
     if (user && !user.isAnonymous) {
       location.href = "main.html";
     } else {
@@ -250,15 +251,49 @@ onAuthStateChanged(auth, user => {
 window.showView = (v) => {
   loginBox.style.display = v === 'log' ? 'block' : 'none';
   registerBox.style.display = v === 'reg' ? 'block' : 'none';
+  forgotBox.style.display = v === 'forgot' ? 'block' : 'none';
+  errorMsg.style.display = 'none';
 };
 
 lBtn.onclick = async () => {
   const e = lEmail.value, p = lPass.value;
   if(!e || !p) return alert("Faltan datos");
+  
+  errorMsg.style.display = 'none';
+
   try {
-    // Si ya es anónimo, Firebase intentará vincular o simplemente cambiar de sesión
     await signInWithEmailAndPassword(auth, e, p);
-  } catch(err) { alert("Error: Credenciales inválidas"); }
+  } catch(err) { 
+    console.log(err.code);
+    // DETECCIÓN INTELIGENTE DE ERRORES
+    if (err.code === 'auth/user-not-found') {
+        errorMsg.innerText = "EL CORREO NO EXISTE. ¡CREA UNA CUENTA!";
+        errorMsg.style.display = 'block';
+    } else if (err.code === 'auth/wrong-password') {
+        // SI LA CONTRASEÑA ES INCORRECTA, ABRIR RECUPERACIÓN
+        fEmail.value = e; // Autocompleta el correo
+        showView('forgot');
+    } else {
+        // Otros errores (como demasiados intentos o credenciales inválidas generales)
+        errorMsg.innerText = "CONTRASEÑA INCORRECTA O ERROR DE SISTEMA";
+        errorMsg.style.display = 'block';
+        // OPCIONAL: Si quieres que abra recuperación con cualquier error de credenciales:
+        fEmail.value = e;
+        setTimeout(()=> showView('forgot'), 1500);
+    }
+  }
+};
+
+// Lógica de recuperar contraseña
+fBtn.onclick = async () => {
+    if(!fEmail.value) return alert("Ingresa tu correo");
+    try {
+        await sendPasswordResetEmail(auth, fEmail.value);
+        alert("¡Enlace enviado! Revisa tu bandeja de entrada o spam.");
+        showView('log');
+    } catch(e) {
+        alert("Error al enviar el enlace. Verifica el correo.");
+    }
 };
 
 rBtn.onclick = async () => {
@@ -268,13 +303,13 @@ rBtn.onclick = async () => {
     await setDoc(doc(db, "users", res.user.uid), {
       displayName: rUser.value, email: rEmail.value, membership: "suscriptor", status: "active", nvl: "0", createdAt: serverTimestamp()
     });
-  } catch(e) { alert("Error en el registro"); }
+  } catch(e) { alert("Error en el registro o correo ya en uso"); }
 };
 
 aBtn.onclick = async () => {
   try {
-    const res = await signInAnonymously(auth);
-    location.href = "main.html"; // El anónimo si va al main directo al darle click
+    await signInAnonymously(auth);
+    location.href = "main.html";
   } catch(e) { console.error(e); }
 };
 </script>
