@@ -31,7 +31,6 @@ body {
 
 #canvasAtoms { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-/* --- CARGADOR --- */
 #loader {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: #000; z-index: 9999; display: flex; flex-direction: column;
@@ -41,7 +40,6 @@ body {
 .warning-glitch { font-size: 50px; color: var(--neon-red); animation: glitch 0.2s infinite; }
 @keyframes glitch { 0% { transform: translateX(2px); } 50% { opacity: 0.7; } 100% { transform: translateX(-2px); } }
 
-/* --- ALERTAS SUPERIORES --- */
 #statusAlert {
   width: 100%; padding: 12px; border-radius: 10px;
   font-size: 0.75rem; font-weight: 900; margin-bottom: 20px;
@@ -53,7 +51,6 @@ body {
 
 @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* --- CARD PRINCIPAL --- */
 .main-card-neon {
   z-index: 10; width: 92%; max-width: 400px; padding: 2px;
   background: linear-gradient(135deg, var(--neon-gold), var(--neon-red));
@@ -74,7 +71,6 @@ body {
 
 h1 { font-size: 1.4rem; color: var(--neon-gold); text-shadow: 0 0 10px var(--neon-gold); margin-bottom: 5px; }
 
-/* INPUTS --- */
 .f-box { position: relative; margin-bottom: 12px; }
 .f-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--neon-gold); }
 
@@ -91,7 +87,6 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
   cursor: pointer; text-transform: uppercase; box-shadow: 0 0 20px var(--neon-gold);
   transition: 0.3s; margin-top: 5px;
 }
-.btn-main:hover { filter: brightness(1.2); }
 
 .btn-anon {
   width: 100%; padding: 12px; background: transparent;
@@ -120,7 +115,7 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
 
     <div class="rayo-badge"><i class="fas fa-bolt" style="color:var(--neon-gold); font-size:28px;"></i></div>
     <h1>DANIBOOM WEB</h1>
-    <p style="font-size:0.7rem; color:#555; margin-bottom:20px;">ESTOY TRABAJANDO EN LA PAGINA PARA QUE QUEDE AL 100% CON TODAS SUS FUNCIONES, DISFRUTA</p>
+    <p style="font-size:0.7rem; color:#888; margin-bottom:20px; font-family:'Rajdhani'; text-transform:uppercase;">Mejorando la plataforma al 100% para ti</p>
 
     <div id="loginBox">
       <div class="f-box"><i class="fas fa-envelope"></i><input id="lEmail" type="email" placeholder="CORREO ELECTRÓNICO"></div>
@@ -139,11 +134,11 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
     </div>
 
     <div id="forgotBox" style="display:none">
-      <h3 style="color:var(--neon-gold); font-size:0.8rem; margin-bottom:15px;">CAMBIAR TU CONTRASEÑA</h3>
-      <p style="font-size:0.7rem; color:#555; margin-bottom:20px;">EL MENSAJE LLEGARA A TU CORREO, SI NO LO VEZ, REVISA EN SPAM</p>
-      <div class="f-box"><i class="fas fa-envelope"></i><input id="fEmail" type="email" placeholder="CORREO PARA EL ENLACE"></div>
+      <h3 style="color:var(--neon-gold); font-size:0.8rem; margin-bottom:10px;">RESTABLECER CONTRASEÑA</h3>
+      <p style="font-size:0.65rem; color:#666; margin-bottom:15px;">REVISA TU BANDEJA DE ENTRADA O SPAM</p>
+      <div class="f-box"><i class="fas fa-envelope"></i><input id="fEmail" type="email" placeholder="TU CORREO REGISTRADO"></div>
       <button class="btn-main" id="fBtn">ENVIAR ENLACE</button>
-      <div class="switch" onclick="showView('log')"><span>CANCELAR Y VOLVER</span></div>
+      <div class="switch" onclick="showView('log')"><span>CANCELAR</span></div>
     </div>
 
   </div>
@@ -152,7 +147,7 @@ input:focus { border-color: var(--neon-gold); box-shadow: 0 0 15px var(--neon-go
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, onAuthStateChanged, sendPasswordResetEmail, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, serverTimestamp, collection, query, where, getDocs, count } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey:"AIzaSyChOQg743fsmGK89KVLoNAri_VGklArRi4",
@@ -164,7 +159,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
 
-// --- SISTEMA DE ALERTAS ---
 function showAlert(msg, type) {
   const alert = document.getElementById('statusAlert');
   alert.innerText = msg;
@@ -191,46 +185,32 @@ window.showView = (v) => {
   document.getElementById('statusAlert').style.display = 'none';
 };
 
-// --- LÓGICA DE LOGIN INTELIGENTE ---
+// --- LOGIN CON DETECCIÓN ---
 lBtn.onclick = async () => {
   const e = lEmail.value.trim(), p = lPass.value;
-  if(!e || !p) return showAlert("POR FAVOR COMPLETA LOS DATOS", "error");
+  if(!e || !p) return showAlert("COMPLETA LOS CAMPOS", "error");
 
   try {
-    // Intentamos entrar
     await signInWithEmailAndPassword(auth, e, p);
   } catch(err) {
-    // Si falla, verificamos si el correo existe realmente
     try {
         const methods = await fetchSignInMethodsForEmail(auth, e);
         if (methods.length === 0) {
             showAlert("ESTA CUENTA NO EXISTE. ¡CREA UNA!", "error");
         } else {
-            // El correo existe, la clave está mal
             showAlert("CONTRASEÑA INCORRECTA. REDIRIGIENDO...", "warn");
             fEmail.value = e;
             setTimeout(() => showView('forgot'), 2000);
         }
     } catch(checkErr) {
-        // Fallback para errores de red o seguridad
-        showAlert("ERROR EN CREDENCIALES", "error");
+        showAlert("ERROR DE CREDENCIALES", "error");
     }
   }
 };
 
-// --- RECUPERACIÓN ---
-fBtn.onclick = async () => {
-    if(!fEmail.value) return showAlert("INGRESA UN CORREO VÁLIDO", "error");
-    try {
-        await sendPasswordResetEmail(auth, fEmail.value);
-        showAlert("ENLACE ENVIADO. REVISA TU CORREO.", "warn");
-        setTimeout(() => showView('log'), 3000);
-    } catch(e) { showAlert("NO SE PUDO ENVIAR EL CORREO", "error"); }
-};
-
 // --- REGISTRO ---
 rBtn.onclick = async () => {
-  if(!rUser.value || !rEmail.value || !rPass.value) return showAlert("LLENA TODOS LOS CAMPOS", "error");
+  if(!rUser.value || !rEmail.value || !rPass.value) return showAlert("LLENA TODO EL FORMULARIO", "error");
   try {
     const res = await createUserWithEmailAndPassword(auth, rEmail.value, rPass.value);
     await setDoc(doc(db, "users", res.user.uid), {
@@ -241,24 +221,48 @@ rBtn.onclick = async () => {
       level: 1, 
       createdAt: serverTimestamp()
     });
-  } catch(e) { showAlert("ERROR: EL CORREO YA EXISTE", "error"); }
+  } catch(e) { showAlert("ESTE CORREO YA ESTÁ EN USO", "error"); }
 };
 
-// --- ACCESO ANÓNIMO CON ROL FIJO ---
+// --- ACCESO ANÓNIMO CONTADOR PRO ---
 aBtn.onclick = async () => {
   try {
+    // 1. Contar cuántos anónimos hay en Firestore
+    const q = query(collection(db, "users"), where("membership", "==", "anonymous"));
+    const snapshot = await getDocs(q);
+    const totalAnonimos = snapshot.size + 1;
+    
+    // Formatear a 001, 002...
+    const anonID = String(totalAnonimos).padStart(3, '0');
+    
+    // 2. Iniciar sesión anónima
     const res = await signInAnonymously(auth);
+    
+    // 3. Guardar en Firestore con el nombre incremental
     await setDoc(doc(db, "users", res.user.uid), {
-      displayName: "ANÓNIMO #001",
+      displayName: `ANÓNIMO#${anonID}`,
       membership: "anonymous",
       level: 0,
       createdAt: serverTimestamp()
     });
+    
     location.href = "main.html";
-  } catch(e) { showAlert("ERROR AL ENTRAR COMO ANÓNIMO", "error"); }
+  } catch(e) { 
+    console.error(e);
+    showAlert("ERROR AL CREAR SESIÓN ANÓNIMA", "error"); 
+  }
 };
 
-// --- CANVAS BACKGROUND ---
+fBtn.onclick = async () => {
+    if(!fEmail.value) return showAlert("ESCRIBE TU CORREO", "error");
+    try {
+        await sendPasswordResetEmail(auth, fEmail.value);
+        showAlert("¡ENLACE ENVIADO! REVISA TU EMAIL", "warn");
+        setTimeout(() => showView('log'), 3000);
+    } catch(e) { showAlert("NO SE PUDO ENVIAR EL CORREO", "error"); }
+};
+
+// CANVAS
 const canvas = document.getElementById('canvasAtoms');
 const ctx = canvas.getContext('2d');
 let particles = [];
