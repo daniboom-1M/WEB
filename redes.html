@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DANIBOOM | REDES</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
+body{background:#0b0b0b;color:#fff;overflow-x:hidden}
+
+/* HEADER */
+header{
+  position:fixed;
+  top:0;width:100%;z-index:1000;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 2rem;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(10px)
+}
+.logo{display:flex;align-items:center;gap:1rem}
+.logo img{width:55px;height:55px;border-radius:50%;border:2px solid gold}
+.logo span{
+  font-family:'Press Start 2P';
+  font-size:.9rem;color:#ffd700;
+  text-shadow:0 0 6px gold,0 0 18px gold
+}
+
+/* MENU */
+.menu-btn{width:26px;display:flex;flex-direction:column;gap:5px;cursor:pointer}
+.menu-btn span{height:3px;background:gold;border-radius:3px;transition:.4s}
+.menu-btn.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.menu-btn.active span:nth-child(2){opacity:0}
+.menu-btn.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+
+.menu-popup{
+  position:fixed;top:80px;right:20px;
+  background:#111;border:2px solid gold;border-radius:12px;
+  padding:1rem;display:none;flex-direction:column;gap:.8rem;
+  box-shadow:0 0 15px gold
+}
+.menu-popup.show{display:flex}
+.menu-popup a{color:gold;text-decoration:none}
+
+/* MUSIC */
+.music-controls{display:flex;align-items:center;gap:.6rem}
+.music-controls button{
+  background:gold;color:#000;border:none;
+  padding:.4rem .8rem;border-radius:6px;cursor:pointer
+}
+.music-controls input{width:90px}
+
+/* CONTENIDO */
+main{padding:120px 1.5rem 3rem}
+.title{text-align:center;font-size:2.4rem;color:#ffd700;margin-bottom:.5rem;text-shadow:0 0 6px gold,0 0 20px gold}
+.desc{text-align:center;color:#aaa;margin-bottom:4rem}
+
+/* SECCIONES */
+.social-section{
+  --neon:#fff;
+  max-width:900px;
+  margin:0 auto 4rem;
+  border:2px solid var(--neon);
+  border-radius:22px;
+  padding:2.5rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:1.6rem;
+  box-shadow:0 0 20px var(--neon);
+  opacity:0;
+  transform:translateY(60px);
+  transition:.7s
+}
+.social-section.active{opacity:1;transform:translateY(0)}
+
+.social-section h2{
+  font-size:2.2rem;
+  color:var(--neon);
+  text-shadow:0 0 8px var(--neon),0 0 22px var(--neon)
+}
+.social-section p{color:#ccc}
+
+.social-image img{
+  width:100%;
+  max-width:520px;
+  border-radius:18px;
+  border:2px solid #222;
+}
+
+.social-btn{
+  display:inline-flex;
+  align-items:center;gap:.6rem;
+  padding:.8rem 2rem;
+  border:2px solid var(--neon);
+  border-radius:30px;
+  color:var(--neon);
+  text-decoration:none;
+  box-shadow:0 0 14px var(--neon);
+  transition:.4s
+}
+.social-btn:hover{
+  background:var(--neon);
+  color:#000;
+  box-shadow:0 0 35px var(--neon)
+}
+
+/* COLORES */
+.youtube{--neon:#ff0000}
+.tiktok{--neon:#ffffff}
+.twitch{--neon:#9146ff}
+.kick{--neon:#00ff66}
+.instagram{--neon:#ff2fa4}
+.facebook{--neon:#1877f2}
+.whatsapp{--neon:#25d366}
+.clan{--neon:#ff6a00}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <img src="logo.png">
+    <span>DANIBOOM RUSH LINK</span>
+  </div>
+
+  <div class="menu-btn" onclick="toggleMenu(this)">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="menu-popup" id="menuPopup">
+    <a>APÓYAME BRO</a>
+    <div class="music-controls">
+      <button id="musicToggle"><i class="fa fa-play"></i></button>
+      <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1 class="title">REDES</h1>
+  <p class="desc">ESTÁS EN MI ZONA OFICIAL TODAS MIS REDES ESTÁN AQUÍ, POR FAVOR APOYAME EN TODAS MIS REDES CON UNA SUSCRIPCIÓN, LIK Y UN HERMOSO COMENTARIO, PARA CRECER ESTA COMUNIDAD, GRACIAS BRO!</p>
+  
+   <h1 class="title">MAS COSAS..</h1>
+  <p class="desc">ESTOY TRABAJANDO PARA MEJORAR MI PAGINA Y AGREGARLE EL SITIO DE DESCARGAS, CON LOS MEJORES JUEGOS HACK, APLICACIONES PRO GRATIS, PANELES, AIMBOTS O SENSIBILIDADES PARA CADA CELULAR, MODO HACKER, BRASILEÑO 100% ROJO CON AJUSTES PROFESIONALES Y MI TIENDA CON MI MARCA, POR SI ME QUIERES APOYAR PARA CONSEGUIR MI PC, GRACIAS BRO!!</p>
+
+  <!-- SECCIONES -->
+  <!-- YouTube -->
+  <section class="social-section youtube">
+    <div class="social-text">
+      <h2>YouTube</h2>
+      <p>EL CANAL DONDE LLEVO EL GAMEPLAY DE FREE FIRE AL SIGUIENTE NIVEL, SUSCRÍBETE Y NO TE PIERDAS NINGUNA PARTIDA NI MOMENTO DIVERTIDO.</p>
+    </div>
+    <div class="social-image">
+      <img src="youtube.jpg">
+    </div>
+    <a href="https://youtube.com/@daniboom1k?si=c0uZYUvlD8wgwmCR" class="social-btn">
+      <i class="fab fa-youtube"></i> Ver canal
+    </a>
+  </section>
+
+  <!-- TikTok -->
+  <section class="social-section tiktok">
+    <div class="social-text">
+      <h2>TikTok</h2>
+      <p>CLIPS, JUGADAS ÉPICAS Y LOCURAS DE FREE FIRE EN MENOS DE UN MINUTO DISFRUTA, APOYA CON TU HERMOSO LIK Y COMPARTIENDO.</p>
+    </div>
+    <div class="social-image">
+      <img src="tiktok.jpg">
+    </div>
+    <a href="https://www.tiktok.com/@danib00m?_r=1&_t=ZS-933TKXAmneX" class="social-btn">
+      <i class="fab fa-tiktok"></i> Ver perfil
+    </a>
+  </section>
+
+  <!-- Twitch -->
+  <section class="social-section twitch">
+    <div class="social-text">
+      <h2>Twitch</h2>
+      <p>VEN A MIS STREAMS EN VIVO, JUEGO FREE FIRE Y CHARLA CONMIGO O LA COMUNIDAD EN SALAS, TORNEOS O PARTIDAS, PASA UN RATO AGRADABLE, JUEGA CONMIGO.</p>
+    </div>
+    <div class="social-image">
+      <img src="Twitch.jpg">
+    </div>
+    <a href="https://m.twitch.tv/daniboom1k/home?tt_content=channel&tt_medium=mobile_web_share" class="social-btn">
+      <i class="fab fa-twitch"></i> Ir al stream
+    </a>
+  </section>
+
+  <!-- Kick -->
+  <section class="social-section kick">
+    <div class="social-text">
+      <h2>Kick</h2>
+      <p>STREAMS, JUGADAS EN VIVO, DIVIÉRTETE Y JUEGA CONMIGO O CON MI COMUNIDAD, EN SALAS, TORNEOS O PARTIDAS, TODO EN FREE FIRE CON DANIBOOM.</p>
+    </div>
+    <div class="social-image">
+      <img src="Kick.jpg">
+    </div>
+    <a href="https://kick.com/dani-boom" class="social-btn">
+      <i class="fa fa-play"></i> Ver canal
+    </a>
+  </section>
+
+  <!-- Instagram -->
+  <section class="social-section instagram">
+    <div class="social-text">
+      <h2>Instagram</h2>
+      <p>MOMENTOS, CLIPS Y DETRÁS DE CÁMARAS DE MIS PARTIDAS DE FREE FIRE, MIRA TODO LO NUEVO DE DANIBOOM Y APOYAME BRO, NO LO OLVIDES!</p>
+    </div>
+    <div class="social-image">
+      <img src="instagram.jpg">
+    </div>
+    <a href="https://www.instagram.com/dani.boom00?igsh=MWI3b2g3aWZudjd0dw==" class="social-btn">
+      <i class="fab fa-instagram"></i> Ver perfil
+    </a>
+  </section>
+
+  <!-- Facebook -->
+  <section class="social-section facebook">
+    <div class="social-text">
+      <h2>Facebook</h2>
+      <p>COMUNIDAD DE GAMERS, CLIPS Y NOTICIAS SOBRE MIS PARTIDAS DE FREE FIRE, LO MEJOR DE DANIBOOM, APOYAME BRO!</p>
+    </div>
+    <div class="social-image">
+      <img src="facebook.jpg">
+    </div>
+    <a href="https://www.facebook.com/share/1BhWz29LyR/" class="social-btn">
+      <i class="fab fa-facebook"></i> Ver página
+    </a>
+  </section>
+
+  <!-- WhatsApp -->
+  <section class="social-section whatsapp">
+    <div class="social-text">
+      <h2>Canal WhatsApp</h2>
+      <p>INFO, CLIPS Y ALERTAS DE NUEVAS PARTIDAS, STREAMS DE FREE FIRE, TORNEOS, SALAS, INCLUSO MIS NUEVOS VIDEOS DIRECTO A TU CELULAR.</p>
+    </div>
+    <div class="social-image">
+      <img src="canal.jpg">
+    </div>
+    <a href="https://whatsapp.com/channel/0029VbBhbGYLY6d0V6hMl00v" class="social-btn">
+      <i class="fab fa-whatsapp"></i> Unirme
+    </a>
+  </section>
+
+  <!-- Clan -->
+  <section class="social-section clan">
+    <div class="social-text">
+      <h2>Clan Boom Crush</h2>
+      <p>CLAN BOOM RUSH, CLAN OFICIAL DE DANIBOOM, DONDE LUCHAMOS POR SER LOS MEJORES SI QUIERES SER PARTE DE ESTA HISTORIA Y DEJAR TU HUELLA HAZ LA PRUEBA, ANTES QUE SE LLENEN LOS CUPOS!!</p>
+      <p>BOOM RUSH NO RECLUTA POR LLENAR CUPOS… RECLUTA PARA DOMINAR.</p>
+    </div>
+    <div class="social-image">
+      <img src="clan.jpg">
+    </div>
+    <a href="https://chat.whatsapp.com/Lkun6PAocMY7jWTIc6QYgM" class="social-btn">
+      <i class="fa fa-shield-halved"></i> Solicitar aprobación
+    </a>
+  </section>
+
+</main>
+
+<script>
+/* ================= MENU ================= */
+const menuPopup = document.getElementById('menuPopup');
+
+function toggleMenu(btn){
+  btn.classList.toggle("active");
+  menuPopup.classList.toggle("show");
+}
+
+/* ================= ANIMACIONES – ACTIVAR/DESACTIVAR AL SCROLL ================= */
+const sections = document.querySelectorAll('.social-section');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('active');   // Aparece con animación
+    } else {
+      entry.target.classList.remove('active'); // Desaparece con animación
+    }
+  });
+}, { threshold: 0.35 });
+
+sections.forEach(section => observer.observe(section));
+
+/* ================= 🎵 MÚSICA FIX GOOGLE DRIVE ================= */
+const music = new Audio('redes.mp3');
+music.loop = true;
+music.volume = 0.5;
+
+const musicToggle = document.getElementById('musicToggle');
+const volumeControl = document.getElementById('volumeControl');
+let isPlaying = false;
+
+volumeControl.addEventListener('input', () => {
+  music.volume = volumeControl.value;
+});
+
+musicToggle.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if(!isPlaying){
+    music.play().then(() => {
+      isPlaying = true;
+      musicToggle.innerHTML = '<i class="fa fa-pause"></i>';
+    }).catch(err => console.log('Audio bloqueado hasta interacción:', err));
+  } else {
+    music.pause();
+    isPlaying = false;
+    musicToggle.innerHTML = '<i class="fa fa-play"></i>';
+  }
+});
+</script>
+
+</body>
+</html>
